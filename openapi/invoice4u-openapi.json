@@ -990,11 +990,11 @@
       },
       "CommonObject": {
         "type": "object",
-        "description": "Response envelope inherited by most objects. Always check Errors before using the payload.",
+        "description": "Response envelope inherited by most objects. Server-generated — never send these fields in requests. Always check Errors before using the payload.",
         "properties": {
-          "Errors": { "type": "array", "items": { "$ref": "#/components/schemas/CommonError" } },
-          "Info": { "type": "array", "items": { "$ref": "#/components/schemas/CommonInfo" } },
-          "OpenInfo": { "type": "object", "additionalProperties": { "type": "string" }, "nullable": true }
+          "Errors": { "type": "array", "readOnly": true, "items": { "$ref": "#/components/schemas/CommonError" } },
+          "Info": { "type": "array", "readOnly": true, "items": { "$ref": "#/components/schemas/CommonInfo" } },
+          "OpenInfo": { "type": "object", "readOnly": true, "additionalProperties": { "type": "string" }, "nullable": true }
         }
       },
       "AssociatedEmail": {
