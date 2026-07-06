@@ -67,3 +67,9 @@ Treat error `134` with a returned `DocumentNumber > 0` as success-idempotent: th
 ## Errors
 
 All [Create a Document errors](create-document.md#common-errors) apply, plus the duplicate behavior above.
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/CreateDocumentWithIdentifierValidation" method="post" %}
+{% endopenapi-operation %}
+

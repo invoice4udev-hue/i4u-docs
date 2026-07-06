@@ -1,6 +1,4 @@
-# Table of contents
-
-* [README](README.md)
+# Summary
 
 ## Getting Started
 
@@ -12,7 +10,7 @@
 ## Authentication
 
 * [Authentication Overview](authentication/overview.md)
-* [Login with API Key](authentication/login-with-api-key.md)
+* [Authenticate with Your API Key](authentication/is-authenticated.md)
 
 ## Customers
 

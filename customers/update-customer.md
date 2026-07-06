@@ -59,3 +59,9 @@ Content-Type: application/json
 | `CustomerNameCanNotBeEmpty` (28) | `Name` missing. |
 | `CustomerUniqueIdNotNumeric` (79) | `UniqueID` contains non-digits. |
 | `ID = -1 … -4` | Duplicate name / external number / unique ID / GUID — see [result codes](overview.md#createupdate-result-codes). |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateCustomer" method="post" %}
+{% endopenapi-operation %}
+

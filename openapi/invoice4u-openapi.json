@@ -30,43 +30,6 @@
     { "name": "Registration", "description": "Partner-only account registration." }
   ],
   "paths": {
-    "/VerifyLoginApiKey": {
-      "post": {
-        "tags": ["Authentication"],
-        "operationId": "VerifyLoginApiKey",
-        "summary": "Login with API key",
-        "description": "Returns an authentication token for a valid organization API key (GUID). Recommended for server-to-server integrations.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["apiKey"],
-                "properties": {
-                  "apiKey": { "type": "string", "format": "uuid", "example": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Token string, error name, or null.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "VerifyLoginApiKeyResult": { "type": "string", "nullable": true }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/GetExpDateByApiKey": {
       "post": {
         "tags": ["Authentication"],
@@ -92,6 +55,56 @@
                 "schema": {
                   "type": "object",
                   "properties": { "GetExpDateByApiKeyResult": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/IsAuthenticated": {
+      "post": {
+        "tags": ["Authentication"],
+        "operationId": "IsAuthenticated",
+        "summary": "Verify a token or API key",
+        "description": "Validates an organization API key (GUID) or token and returns the resolved user. An account expired more than 4 days ago adds an `ExpiredAccount` error.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "token": { "type": "string", "description": "Your organization API key (GUID).", "example": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resolved user, or a user object whose Errors array is populated when the token/key is invalid or the account is expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IsAuthenticatedResult": {
+                      "type": "object",
+                      "description": "Authenticated user details.",
+                      "properties": {
+                        "ID": { "type": "integer" },
+                        "Email": { "type": "string" },
+                        "OrgID": { "type": "integer" },
+                        "ExpirationDate": { "type": "string", "nullable": true },
+                        "Errors": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/CommonError" }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }

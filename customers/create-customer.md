@@ -78,3 +78,9 @@ Content-Type: application/json
 | `CustomerUniqueIdExistsForUser` (78) / `ID = -3` | Duplicate `UniqueID`. |
 | `CustomerGuidExists` (84) / `ID = -4` | Duplicate `Guid`. |
 | `ClientDoesntExists` (7) | `ID` supplied but no such customer (update path). |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/CreateCustomer" method="post" %}
+{% endopenapi-operation %}
+

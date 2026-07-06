@@ -77,3 +77,9 @@ Content-Type: application/json
 {% hint style="info" %}
 Fetching one known document? Use the [single-document lookups](get-document.md) instead — faster and simpler.
 {% endhint %}
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetDocuments" method="post" %}
+{% endopenapi-operation %}
+

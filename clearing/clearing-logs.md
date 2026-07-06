@@ -78,3 +78,12 @@ Pass a `ClearingLog` object (`clearingLog`) with at least `ClientName`, `Amount`
 | `UnauthorizedUser` (80) | Invalid token/credentials. |
 | `ApiUnauthorizedAccessForEntityNotBelongingToUser` (322) | Log belongs to another organization. |
 | `ClearingCompanyUndefined` (8) | No clearing account configured. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetClearingLogById" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetClearingLogByParams" method="post" %}
+{% endopenapi-operation %}
+

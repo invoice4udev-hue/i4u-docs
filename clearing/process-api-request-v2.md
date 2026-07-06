@@ -141,3 +141,9 @@ Refund constraints: Cardcom refunds are validated against the remaining balance;
 | `NumberOfItemsIsNotEqual` (24) | `DocItem*` pipe-lists have different lengths. |
 | `ClearingError` (32) | Charge declined / provider error — details in `Paramters`. |
 | `ClearingErrorRefundTimeExceeded` (158) | Refund window exceeded. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}
+

@@ -67,3 +67,15 @@ All three return the full [Document object](document-object.md):
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | Invalid token. |
 | `ApiDocumentDoesNotExistForUser` (321) | Document belongs to another organization. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetDocument" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetDocumentByNumber" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetDocumentByApiIdentifier" method="post" %}
+{% endopenapi-operation %}
+

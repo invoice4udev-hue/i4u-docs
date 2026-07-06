@@ -56,3 +56,9 @@ Content-Type: application/json
 ## Errors
 
 Returns `null` when the token is invalid or on server error. Use the returned `ID` values as `BranchID` when [creating documents](../documents/create-document.md).
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetBranches" method="post" %}
+{% endopenapi-operation %}
+

@@ -45,3 +45,12 @@ The number must be at least **9 characters** — otherwise `AllocationNumberInva
 | `AllocationNumberInvalid` (162) | Number shorter than 9 characters. |
 | `AllocationNumberNotGenerated` (152) / `AllocationNumberNotSaved` (153) | ITA fetch/store failure. |
 | `AllocationNumberDeclined` (156) / `AllocationNumberDeclinedWaitDecision` (157) | ITA declined the request / pending decision. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/FetchAllocationNumber" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateAllocationNumber" method="post" %}
+{% endopenapi-operation %}
+

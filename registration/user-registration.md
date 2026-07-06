@@ -41,3 +41,9 @@ This endpoint is **restricted**. It requires a partner-specific unique token iss
 ### Becoming a partner
 
 If you need to create Invoice4U accounts on behalf of your users (platforms, marketplaces, accounting suites), contact Invoice4U business development to receive a partner token and register your server IPs. Onboarding includes bundle mapping and QA-environment access.
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/UserRegistrationApi" method="post" %}
+{% endopenapi-operation %}
+

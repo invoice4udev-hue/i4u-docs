@@ -99,3 +99,15 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 | `ClientIDDoesntExists` (37) | Customer not found / belongs to another organization. |
 | `CustomerNotFound` (136) | Invalid lookup value. |
 | `GeneralError` (0) | Server error. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerById" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomersByOrgId" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomers" method="post" %}
+{% endopenapi-operation %}
+

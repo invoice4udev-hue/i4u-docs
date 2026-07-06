@@ -114,3 +114,9 @@ On QA the PDF links point to `newviewqa.invoice4u.co.il`; on production to `newv
 | `ExpiredAccount` (66) | Account subscription expired. |
 | `ActionRestrictedForUser` (141) | The user is restricted from creating this document type. |
 | `TimeoutDB` (147) | Server error during creation — verify with [GetDocumentByApiIdentifier](get-document.md) before retrying. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
+{% endopenapi-operation %}
+

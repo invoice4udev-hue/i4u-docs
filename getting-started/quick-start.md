@@ -2,17 +2,19 @@
 
 Create your first document in five steps. Work against the **QA environment** (`https://apiqa.invoice4u.co.il/Services/ApiService.svc`) until your flow is stable.
 
-### 1. Get a token
+### 1. Get your API key
+
+Copy your organization API key (GUID) from the Invoice4U web application (Settings). You'll pass it as `token` in every call — there is no separate login step. Optionally verify it:
 
 ```http
-POST /Services/ApiService.svc/VerifyLoginApiKey HTTP/1.1
+POST /Services/ApiService.svc/IsAuthenticated HTTP/1.1
 Host: apiqa.invoice4u.co.il
 Content-Type: application/json
 
-{ "apiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f" }
+{ "token": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f" }
 ```
 
-Store the returned token — you'll pass it as `token` in every call. See [Authentication Overview](../authentication/overview.md).
+See [Authentication Overview](../authentication/overview.md).
 
 ### 2. Create a customer
 
@@ -67,3 +69,4 @@ See [Get a Single Document](../documents/get-document.md).
 
 * Charging cards? Read the [Clearing Endpoints Overview](../clearing/overview.md).
 * Before going live, read [Key Tips & Differences](key-tips.md).
+* Prefer Postman? Download the ready-made [Invoice4U Postman collection](https://github.com/invoice4udev-hue/i4u-docs/blob/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — or import the [OpenAPI spec](https://github.com/invoice4udev-hue/i4u-docs/blob/main/openapi/invoice4u-openapi.json) directly into Postman.

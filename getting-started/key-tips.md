@@ -16,9 +16,8 @@ Practical notes that save integration time. Read this before going live.
 
 ### Tokens
 
-* Get the token **once** and reuse it — don't log in before every call.
-* Authenticate with your **API key** ([VerifyLoginApiKey](../authentication/verify-login-api-key.md)) — email+password login is no longer supported.
-* Invalid/stale token → `UnauthorizedUser` (80). Re-login and retry once.
+* Your **API key** (GUID) *is* the token — pass it as `token` in every call; there is no login step ([details](../authentication/is-authenticated.md)). Email+password login is no longer supported.
+* Invalid key → `UnauthorizedUser` (80). Check the key in the Invoice4U web app.
 
 ### Documents
 
