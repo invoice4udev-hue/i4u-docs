@@ -37,6 +37,7 @@ Your server                    Invoice4U                        Customer
 | --------- | ------- | ---- |
 | Regular charge (hosted page) | — | [Process a Clearing Request (V2)](process-api-request-v2.md) |
 | Charge with installments / credit | `Type` = 2/3 | [Process a Clearing Request (V2)](process-api-request-v2.md) |
+| Bit / Google Pay / Apple Pay | `IsBitPayment` / `IsGooglePay` / `IsApplePay` | [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) |
 | Save card token only | `AddToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
 | Save token + charge | `AddTokenAndCharge` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
 | Charge saved token | `ChargeWithToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
@@ -52,4 +53,4 @@ Your server                    Invoice4U                        Customer
 
 * A clearing account configured and active on your organization (`GetClearingAccount` returns it).
 * For tokens / standing orders: the token / standing-order feature enabled on your clearing terminal (`ApiTokenizationNotApprovedInClearingTerminal` 309 / `ApiStandingOrderNotApprovedInClearingTerminal` 310 otherwise).
-* For Google Pay / Apple Pay: enabled per account (`ApiGooglePayNotAllowedForUser` 316 / `ApiApplePayNotAllowedForUser` 317).
+* For Bit / Google Pay / Apple Pay: see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) — wallet methods need account enablement and vendor support.

@@ -61,7 +61,7 @@ POST /Services/ApiService.svc/GetDocumentByApiIdentifier HTTP/1.1
 { "apiIdentifier": "my-first-doc-001", "docType": 3, "token": "<token>" }
 ```
 
-See [Retrieve Documents](../documents/get-documents.md).
+See [Get a Single Document](../documents/get-document.md).
 
 ### Next
 

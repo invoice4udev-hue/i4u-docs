@@ -31,7 +31,8 @@ The main clearing endpoint. Creates a hosted payment page, charges a saved token
 | `IsQaMode` | boolean | No | `true` when testing against QA. |
 | `OrderIdClientUsage` | string | No | Your order reference, echoed back in callbacks. |
 | `CreditCardCompanyType` | int | No | Card company override. |
-| `IsBitPayment` / `IsGooglePay` / `IsApplePay` | boolean | No | Alternative payment methods (must be enabled on the account). |
+
+Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `IsApplePay` flags — see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) for enablement, limitations and errors.
 
 ### Customer
 

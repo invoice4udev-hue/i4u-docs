@@ -81,30 +81,6 @@ Sets up a recurring monthly charge via the hosted page:
 }
 ```
 
-## Attach an externally-captured token — `TokenAddForClient`
-
-If you already hold a provider token, attach it to a customer:
-
-| | |
-| - | - |
-| **Method** | `POST` |
-| **Path** | `/TokenAddForClient` |
-
-```json
-{
-  "otd": {
-    "Token": "<provider-token>",
-    "ClientId": 88231,
-    "CardExpDate": "0328",
-    "FullName": "Israel Israeli",
-    "OwnerSocialId": "012345678"
-  },
-  "token": "<auth-token>"
-}
-```
-
-`ClientId` is required. Returns the stored token record, or errors on failure.
-
 ## Errors
 
 | Error (ID) | Meaning |

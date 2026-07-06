@@ -1,5 +1,6 @@
 {
   "openapi": "3.0.3",
+  "x-enable-proxy": true,
   "info": {
     "title": "Invoice4U API",
     "description": "The Invoice4U API lets you create tax-compliant documents (invoices, receipts, credit invoices and more), manage customers and branches, and charge credit cards through the Invoice4U clearing service.\n\nAll endpoints are POST with a JSON body that wraps the operation parameters by name (WCF wrapped-request style). Responses wrap the result in a `<Operation>Result` property. Most endpoints require a `token` obtained from a login endpoint.",
@@ -29,44 +30,6 @@
     { "name": "Registration", "description": "Partner-only account registration." }
   ],
   "paths": {
-    "/VerifyLoginPostREST": {
-      "post": {
-        "tags": ["Authentication"],
-        "operationId": "VerifyLoginPostREST",
-        "summary": "Login with email & password",
-        "description": "Returns an authentication token for the given account credentials. Returns null on failure or an error name string (e.g. ApiPasswordExpiredChangeYourPassword).",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["email", "password"],
-                "properties": {
-                  "email": { "type": "string", "format": "email", "example": "user@example.com" },
-                  "password": { "type": "string", "format": "password", "example": "your-password" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Token string, error name, or null.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "VerifyLoginPostRESTResult": { "type": "string", "nullable": true, "description": "The authentication token. Pass as `token` in subsequent calls." }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/VerifyLoginApiKey": {
       "post": {
         "tags": ["Authentication"],
@@ -129,76 +92,6 @@
                 "schema": {
                   "type": "object",
                   "properties": { "GetExpDateByApiKeyResult": { "type": "string" } }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/UpdatePU": {
-      "post": {
-        "tags": ["Authentication"],
-        "operationId": "UpdatePU",
-        "summary": "Change account password",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["newPU", "token"],
-                "properties": {
-                  "newPU": { "type": "string", "format": "password", "description": "New password. Must pass the password policy." },
-                  "token": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User object; check Errors (PasswordNotValid=17, UnauthorizedUser=80).",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": { "UpdatePUResult": { "$ref": "#/components/schemas/CommonObject" } }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/UpdateAKU": {
-      "post": {
-        "tags": ["Authentication"],
-        "operationId": "UpdateAKU",
-        "summary": "Rotate API key",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["newAkU", "token"],
-                "properties": {
-                  "newAkU": { "type": "string", "format": "uuid", "description": "New API key (GUID)." },
-                  "token": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User object; check Errors (ApiKeyNotInCorrectFormat=303).",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": { "UpdateAKUResult": { "$ref": "#/components/schemas/CommonObject" } }
                 }
               }
             }
@@ -880,51 +773,6 @@
                       "items": { "$ref": "#/components/schemas/ClearingLog" }
                     }
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/TokenAddForClient": {
-      "post": {
-        "tags": ["Clearing"],
-        "operationId": "TokenAddForClient",
-        "summary": "Attach an externally-captured card token to a customer",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["otd", "token"],
-                "properties": {
-                  "otd": {
-                    "type": "object",
-                    "required": ["Token", "ClientId"],
-                    "properties": {
-                      "Token": { "type": "string", "description": "Provider card token." },
-                      "ClientId": { "type": "integer", "description": "Customer ID. Required." },
-                      "CardExpDate": { "type": "string", "example": "0328" },
-                      "FullName": { "type": "string" },
-                      "OwnerSocialId": { "type": "string" }
-                    }
-                  },
-                  "token": { "type": "string", "description": "Authentication token." }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "The stored token record.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": { "TokenAddForClientResult": { "type": "object", "nullable": true } }
                 }
               }
             }

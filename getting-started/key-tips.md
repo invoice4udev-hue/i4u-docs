@@ -17,7 +17,7 @@ Practical notes that save integration time. Read this before going live.
 ### Tokens
 
 * Get the token **once** and reuse it — don't log in before every call.
-* Prefer [API-key login](../authentication/verify-login-api-key.md) over email+password.
+* Authenticate with your **API key** ([VerifyLoginApiKey](../authentication/verify-login-api-key.md)) — email+password login is no longer supported.
 * Invalid/stale token → `UnauthorizedUser` (80). Re-login and retry once.
 
 ### Documents

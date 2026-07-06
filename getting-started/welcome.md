@@ -40,10 +40,7 @@ Content-Type: application/json
 
 ### Authentication
 
-Almost every endpoint takes a `token` parameter. You obtain a token once via a login endpoint and pass it in the body of each subsequent call:
-
-1. [Login with Email & Password](../authentication/verify-login.md) — `VerifyLogin`
-2. [Login with API Key](../authentication/verify-login-api-key.md) — `VerifyLoginApiKey`
+Almost every endpoint takes a `token` parameter. You obtain a token once via [Login with API Key](../authentication/verify-login-api-key.md) (`VerifyLoginApiKey`) and pass it in the body of each subsequent call.
 
 ### Response envelope
 

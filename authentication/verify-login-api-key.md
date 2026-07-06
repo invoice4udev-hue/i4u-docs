@@ -1,6 +1,6 @@
 # Login with API Key
 
-Returns an authentication token for a valid organization API key (GUID). This is the recommended login method for server-to-server integrations.
+Returns an authentication token for a valid organization API key (GUID). This is the **only supported login method** — email+password login (`VerifyLogin`) has been retired and its tokens are not accepted by the API.
 
 ## Endpoint
 

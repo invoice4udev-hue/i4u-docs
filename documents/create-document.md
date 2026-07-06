@@ -113,4 +113,4 @@ On QA the PDF links point to `newviewqa.invoice4u.co.il`; on production to `newv
 | `NotEnoughDocuments` (65) / `NotEnoughCredits` (18) | Document quota exhausted. |
 | `ExpiredAccount` (66) | Account subscription expired. |
 | `ActionRestrictedForUser` (141) | The user is restricted from creating this document type. |
-| `TimeoutDB` (147) | Server error during creation — verify with [GetDocumentByApiIdentifier](get-documents.md) before retrying. |
+| `TimeoutDB` (147) | Server error during creation — verify with [GetDocumentByApiIdentifier](get-document.md) before retrying. |
