@@ -7,7 +7,7 @@ The `DocumentType` field on every document is a numeric enum:
 | `1` | Invoice | חשבונית מס | Tax invoice. |
 | `2` | Receipt | קבלה | Payment receipt against invoices. |
 | `3` | InvoiceReceipt | חשבונית מס קבלה | Combined invoice + receipt (most common for immediate payment). |
-| `4` | InvoiceCredit | חשבונית זיכוי | Credit invoice (refund/cancellation). |
+| `4` | InvoiceCredit | חשבונית זיכוי | Credit invoice (refund/cancellation). See the dedicated [Credit Invoices guide](credit-invoices.md) for full & partial credits. |
 | `5` | ProformaInvoice | חשבון עסקה | Proforma invoice. |
 | `6` | InvoiceOrder | הזמנת עבודה | Work order. |
 | `7` | InvoiceQuote | הצעת מחיר | Price quote. |

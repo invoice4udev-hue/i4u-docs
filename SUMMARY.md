@@ -31,6 +31,7 @@
 * [The Document Object](documents/document-object.md)
 * [Create a Document](documents/create-document.md)
 * [Create a Document with Identifier Validation](documents/create-document-with-validation.md)
+* [Credit Invoices (Full & Partial)](documents/credit-invoices.md)
 * [Get a Single Document](documents/get-document.md)
 * [Search Documents](documents/search-documents.md)
 * [Allocation Numbers (Israel Tax)](documents/allocation-numbers.md)
