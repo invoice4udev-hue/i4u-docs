@@ -45,3 +45,18 @@
 ## User Registration
 
 * [User Registration (Partners)](registration/user-registration.md)
+
+## OpenAPI Specs
+
+* ```yaml
+  type: builtin:openapi
+  props:
+    models: true
+    downloadLink: true
+    grouping: by-operation
+  dependencies:
+    spec:
+      ref:
+        kind: openapi
+        spec: invoice4u-api
+  ```
