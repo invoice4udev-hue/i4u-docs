@@ -1,8 +1,8 @@
-# Summary
+# Table of contents
 
 ## Getting Started
 
-* [Welcome to the Invoice4U API](getting-started/welcome.md)
+* [Welcome to the Invoice4U API](README.md)
 * [Quick Start](getting-started/quick-start.md)
 * [Key Tips & Differences](getting-started/key-tips.md)
 * [טיפים וחידודים - עברית](getting-started/key-tips-hebrew.md)
