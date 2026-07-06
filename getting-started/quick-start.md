@@ -69,4 +69,4 @@ See [Get a Single Document](../documents/get-document.md).
 
 * Charging cards? Read the [Clearing Endpoints Overview](../clearing/overview.md).
 * Before going live, read [Key Tips & Differences](key-tips.md).
-* Prefer Postman? Download the ready-made [Invoice4U Postman collection](../.gitbook/assets/invoice4u-postman-collection.json) — or download the [OpenAPI spec](../.gitbook/assets/invoice4u-openapi.json) and import it directly into Postman.
+* Prefer Postman? Download the ready-made [Invoice4U Postman collection](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — or download the [OpenAPI spec](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) and import it directly into Postman.
