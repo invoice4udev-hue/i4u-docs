@@ -1,0 +1,13 @@
+name: Publish OpenAPI
+on:
+  push:
+    branches: [main]
+    paths: ['openapi/invoice4u-openapi.json']
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx @gitbook/cli openapi publish --spec invoice4u-api --organization ${{ vars.GITBOOK_ORG_ID }} openapi/invoice4u-openapi.json
+        env:
+          GITBOOK_TOKEN: ${{ secrets.GITBOOK_TOKEN }}
