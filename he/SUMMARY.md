@@ -1,29 +1,29 @@
 # Summary
 
-## תחילת עבודה
+## תחילת עבודה (Getting Started)
 
 * [ברוכים הבאים](getting-started/welcome.md)
 * [התחלה מהירה](getting-started/quick-start.md)
 * [טיפים וחידודים](getting-started/key-tips.md)
 
-## אימות
+## אימות (Authentication)
 
 * [סקירת אימות](authentication/overview.md)
 * [אימות עם מפתח הגישה](authentication/is-authenticated.md)
 
-## לקוחות
+## לקוחות (Customers)
 
 * [סקירת מתודות לקוחות](customers/overview.md)
 * [יצירת לקוח](customers/create-customer.md)
 * [עדכון לקוח](customers/update-customer.md)
 * [שליפת לקוחות](customers/get-customers.md)
 
-## סניפים
+## סניפים (Branches)
 
 * [סקירת מתודות סניפים](branches/overview.md)
 * [שליפת סניפים](branches/get-branches.md)
 
-## מסמכים
+## מסמכים (Documents)
 
 * [סקירת מתודות מסמכים](documents/overview.md)
 * [סוגי מסמכים](documents/document-types.md)
@@ -35,7 +35,7 @@
 * [חיפוש מסמכים](documents/search-documents.md)
 * [מספרי הקצאה (רשות המסים)](documents/allocation-numbers.md)
 
-## סליקה (תשלומים)
+## סליקה ותשלומים (Clearing Payments)
 
 * [סקירת מתודות סליקה](clearing/overview.md)
 * [ביצוע בקשת סליקה (גרסה 2)](clearing/process-api-request-v2.md)
@@ -43,6 +43,6 @@
 * [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
 * [לוגים של סליקה](clearing/clearing-logs.md)
 
-## רישום משתמשים
+## רישום משתמשים (User Registration)
 
 * [רישום משתמשים (שותפים)](registration/user-registration.md)
