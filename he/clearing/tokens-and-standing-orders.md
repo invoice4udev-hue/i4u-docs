@@ -1,14 +1,14 @@
-# טוקנים והוראות קבע
+# ‫טוקנים והוראות קבע‬
 
-שמרו את כרטיס הלקוח כ**טוקן** לחיובים עתידיים מצד השרת, או הקימו **הוראת קבע** (חיוב חודשי חוזר). כל התהליכים עוברים דרך [`ProcessApiRequestV2`](process-api-request-v2.md) עם הדגלים שלהלן.
+‫שמרו את כרטיס הלקוח כ**טוקן** לחיובים עתידיים מצד השרת, או הקימו **הוראת קבע** (חיוב חודשי חוזר). כל התהליכים עוברים דרך [`ProcessApiRequestV2`](process-api-request-v2.md) עם הדגלים שלהלן.‬
 
 {% hint style="info" %}
-טוקנים והוראות קבע חייבים להיות מופעלים על מסוף הסליקה שלכם. אחרת תקבלו `ApiTokenizationNotApprovedInClearingTerminal` ‏(309) / `ApiStandingOrderNotApprovedInClearingTerminal` ‏(310).
+‫טוקנים והוראות קבע חייבים להיות מופעלים על מסוף הסליקה שלכם. אחרת תקבלו `ApiTokenizationNotApprovedInClearingTerminal` ‏(309) / `ApiStandingOrderNotApprovedInClearingTerminal` ‏(310).‬
 {% endhint %}
 
-## שמירת טוקן — `AddToken`
+## ‫שמירת טוקן — `AddToken`‬
 
-פותח דף מתארח שקולט את הכרטיס ושומר טוקן, **ללא חיוב**.
+‫פותח דף מתארח שקולט את הכרטיס ושומר טוקן, **ללא חיוב**.‬
 
 ```json
 {
@@ -25,15 +25,15 @@
 }
 ```
 
-הפנו את הלקוח ל-`ClearingRedirectUrl` המוחזר. הטוקן נשמר כנגד הלקוח (מומלץ `CustomerId` כדי שהטוקן יהיה שליף בהמשך).
+‫הפנו את הלקוח ל-`ClearingRedirectUrl` המוחזר. הטוקן נשמר כנגד הלקוח (מומלץ `CustomerId` כדי שהטוקן יהיה שליף בהמשך).‬
 
-## שמירה + חיוב — `AddTokenAndCharge`
+## ‫שמירה + חיוב — `AddTokenAndCharge`‬
 
-זהה לקודם אך גם מחייב את `Sum` מיידית. לא ניתן לשלב עם `IsStandingOrderClearance` ‏(`ApiBadRequestChargeMethodMustBeSelected`, 319).
+‫זהה לקודם אך גם מחייב את `Sum` מיידית. לא ניתן לשלב עם `IsStandingOrderClearance` ‏(`ApiBadRequestChargeMethodMustBeSelected`, 319).‬
 
-## חיוב טוקן שמור — `ChargeWithToken`
+## ‫חיוב טוקן שמור — `ChargeWithToken`‬
 
-שרת-לשרת, סינכרוני — ללא הפניה:
+‫שרת-לשרת, סינכרוני — ללא הפניה:‬
 
 ```json
 {
@@ -49,20 +49,20 @@
 }
 ```
 
-הטוקן השמור של הלקוח מזוהה אוטומטית. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).
+‫הטוקן השמור של הלקוח מזוהה אוטומטית. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).‬
 
-## הוראת קבע — `IsStandingOrderClearance`
+## ‫הוראת קבע — `IsStandingOrderClearance`‬
 
-מקים חיוב חודשי חוזר דרך הדף המתארח:
+‫מקים חיוב חודשי חוזר דרך הדף המתארח:‬
 
-| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
+| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
-| `IsStandingOrderClearance` | boolean | ‏כן | ‏מצב הוראת קבע. |
-| `StandingOrderDuration` | int | ‏**כן** | ‏מספר החיובים החודשיים (`ApiStandingOrderDurationNotFilled`, 301). |
-| `DocHeadline` | string | ‏**כן** | ‏נושא המסמכים החוזרים (`ApiStandingOrderDocSubjectNotFilled`, 302). |
-| `Sum` | double | ‏כן | ‏הסכום החודשי. |
-| `StandingOrderFirstChargeAmount` | double | ‏לא | ‏סכום שונה לחיוב הראשון. |
-| `StandingOrderCallBackUrl` | string | ‏לא | ‏נקרא בכל חיוב חוזר. חייב להיות URL אבסולוטי תקין (`ApiStandingOrderCallbackurlInvalid`, 318). |
+| `IsStandingOrderClearance` | boolean | ‫כן‬ | ‫מצב הוראת קבע.‬ |
+| `StandingOrderDuration` | int | ‫**כן**‬ | ‫מספר החיובים החודשיים (`ApiStandingOrderDurationNotFilled`, 301).‬ |
+| `DocHeadline` | string | ‫**כן**‬ | ‫נושא המסמכים החוזרים (`ApiStandingOrderDocSubjectNotFilled`, 302).‬ |
+| `Sum` | double | ‫כן‬ | ‫הסכום החודשי.‬ |
+| `StandingOrderFirstChargeAmount` | double | ‫לא‬ | ‫סכום שונה לחיוב הראשון.‬ |
+| `StandingOrderCallBackUrl` | string | ‫לא‬ | ‫נקרא בכל חיוב חוזר. חייב להיות URL אבסולוטי תקין (`ApiStandingOrderCallbackurlInvalid`, 318).‬ |
 
 ```json
 {
@@ -81,13 +81,13 @@
 }
 ```
 
-## שגיאות
+## ‫שגיאות‬
 
-| ‏שגיאה (ID) | ‏משמעות |
+| ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‏טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג). |
-| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‏הוראות קבע לא מופעלות. |
-| `ApiTokenDoesntExistForThatCustomer` (304) | ‏אין טוקן שמור (או שיש כמה) עבור הלקוח. |
-| `ApiTokenWasCreatedChargeFailed` (313) | ‏הטוקן נשמר, החיוב נדחה. |
-| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | ‏ולידציית הוראת קבע. |
-| `ApiBadRequestChargeMethodMustBeSelected` (319) | ‏דגלי מצב סותרים. |
+| `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג).‬ |
+| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות.‬ |
+| `ApiTokenDoesntExistForThatCustomer` (304) | ‫אין טוקן שמור (או שיש כמה) עבור הלקוח.‬ |
+| `ApiTokenWasCreatedChargeFailed` (313) | ‫הטוקן נשמר, החיוב נדחה.‬ |
+| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | ‫ולידציית הוראת קבע.‬ |
+| `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלי מצב סותרים.‬ |

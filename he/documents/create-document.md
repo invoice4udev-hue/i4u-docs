@@ -1,31 +1,31 @@
-# יצירת מסמך
+# ‫יצירת מסמך‬
 
-יוצר מסמך חתום וממוספר. זוהי המתודה המרכזית של ה-API.
+‫יוצר מסמך חתום וממוספר. זוהי המתודה המרכזית של ה-API.‬
 
-## מתודה
+## ‫מתודה‬
 
 | | |
 | - | - |
-| ‏**מתודה** | `POST` |
-| ‏**נתיב** | `/CreateDocument` |
-| ‏**תשובה** | ‏אובייקט `Document` — בדקו את `Errors` תחילה |
+| ‫**מתודה**‬ | `POST` |
+| ‫**נתיב**‬ | `/CreateDocument` |
+| ‫**תשובה**‬ | ‫אובייקט `Document` — בדקו את `Errors` תחילה‬ |
 
-וריאציות:
+‫וריאציות:‬
 
-| ‏נתיב | ‏מתודה | ‏הערות |
+| ‫נתיב‬ | ‫מתודה‬ | ‫הערות‬ |
 | ---- | ----- | ----- |
-| `/CreateDocument` | POST | ‏הסטנדרטי. |
-| `/CreateDocumentREST` | GET/POST | ‏וריאציית REST מפורשת, אותו גוף. |
-| `/CreateDocumentWithIdentifierValidation` | POST | ‏דוחה כפילויות לפי `ApiIdentifier` — ראו [עמוד ייעודי](create-document-with-validation.md). |
+| `/CreateDocument` | POST | ‫הסטנדרטי.‬ |
+| `/CreateDocumentREST` | GET/POST | ‫וריאציית REST מפורשת, אותו גוף.‬ |
+| `/CreateDocumentWithIdentifierValidation` | POST | ‫דוחה כפילויות לפי `ApiIdentifier` — ראו [עמוד ייעודי](create-document-with-validation.md).‬ |
 
-## סכימת הבקשה
+## ‫סכימת הבקשה‬
 
-| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
+| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
-| `doc` | Document | ‏כן | ‏המסמך ליצירה. ראו [אובייקט המסמך](document-object.md) ודרישות פר סוג ב[סוגי מסמכים](document-types.md). |
-| `token` | string | ‏כן | ‏טוקן אימות. |
+| `doc` | Document | ‫כן‬ | ‫המסמך ליצירה. ראו [אובייקט המסמך](document-object.md) ודרישות פר סוג ב[סוגי מסמכים](document-types.md).‬ |
+| `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
-## דוגמת בקשה — חשבונית מס קבלה (סוג 3)
+## ‫דוגמת בקשה — חשבונית מס קבלה (סוג 3)‬
 
 ```http
 POST /Services/ApiService.svc/CreateDocument HTTP/1.1
@@ -65,7 +65,7 @@ Content-Type: application/json
 }
 ```
 
-## דוגמת תשובה
+## ‫דוגמת תשובה‬
 
 ```json
 {
@@ -87,35 +87,35 @@ Content-Type: application/json
 ```
 
 {% hint style="info" %}
-ב-QA קישורי ה-PDF מפנים ל-`newviewqa.invoice4u.co.il`; בפרודקשן ל-`newview.invoice4u.co.il`.
+‫ב-QA קישורי ה-PDF מפנים ל-`newviewqa.invoice4u.co.il`; בפרודקשן ל-`newview.invoice4u.co.il`.‬
 {% endhint %}
 
-## הערות התנהגות
+## ‫הערות התנהגות‬
 
-* ‏**הסכומים מחושבים בצד השרת** מתוך `Items` (סוגים מבוססי פריטים) או `Payments` (+`Deduction`) — אתם לא שולחים `Total`.
-* ‏ב**חשבונית מס קבלה**, סכום התשלומים חייב להיות שווה לסכום הפריטים (פער עיגול של ±0.01 ניתן לתיקון אוטומטי — ראו `AutoFixPaymentsMismatchItems` ב[אובייקט המסמך](document-object.md)). אי-התאמה ← `PaymentAmountDoesntMatchItemsAmount` (56) עם `OpenInfo.PaymentMismatchDelta`.
-* ‏**משלוח אימייל** מתבצע אוטומטית כאשר `AssociatedEmails` מוגדר; **משלוח SMS** כאשר `SmsMessages` מוגדר.
-* ‏ארגונים המחוברים ל-**2Sign** עם תהליכי מסמכים לחתימה מקבלים את המסמך כמשימת חתימה במקום אימייל רגיל.
-* ‏חלון כפילויות: מסמך זהה בתוך `ApiDuplicityTimeValidation` שניות (ברירת מחדל 60) ← `DocumentAlreadyCreated` (134).
+* ‫**הסכומים מחושבים בצד השרת** מתוך `Items` (סוגים מבוססי פריטים) או `Payments` (+`Deduction`) — אתם לא שולחים `Total`.‬
+* ‫ב**חשבונית מס קבלה**, סכום התשלומים חייב להיות שווה לסכום הפריטים (פער עיגול של ±0.01 ניתן לתיקון אוטומטי — ראו `AutoFixPaymentsMismatchItems` ב[אובייקט המסמך](document-object.md)). אי-התאמה ← `PaymentAmountDoesntMatchItemsAmount` (56) עם `OpenInfo.PaymentMismatchDelta`.‬
+* ‫**משלוח אימייל** מתבצע אוטומטית כאשר `AssociatedEmails` מוגדר; **משלוח SMS** כאשר `SmsMessages` מוגדר.‬
+* ‫ארגונים המחוברים ל-**2Sign** עם תהליכי מסמכים לחתימה מקבלים את המסמך כמשימת חתימה במקום אימייל רגיל.‬
+* ‫חלון כפילויות: מסמך זהה בתוך `ApiDuplicityTimeValidation` שניות (ברירת מחדל 60) ← `DocumentAlreadyCreated` (134).‬
 
-## שגיאות נפוצות {#common-errors}
+## ‫שגיאות נפוצות‬ {#common-errors}
 
-| ‏שגיאה (ID) | ‏משמעות |
+| ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
+| `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
 | `DocumentTypeNotInRange` (33) | `DocumentType` לא מוכר. |
-| `ClientDoesntExists` (7) / `ClientIDDoesntExists` (37) | ‏לקוח חסר/לא מוכר. |
-| `DocumentItemsNotSpecified` (34) / `DocumentItemMissingName` (39) / `DocumentItemQuantityCannotBeZero` (40) / `DocumentItemPriceCannotBeZero` (41) | ‏ולידציית פריטים. `Paramters` מכיל את מספר השורה. |
-| `PaymentsNotSpecified` (45) / `PaymentDateMissing` (46) / `PaymentAmountCannotBeZero` (47) / `PaymentTypeOutOfRange` (51) | ‏ולידציית תשלומים. |
-| `PaymentAmountDoesntMatchItemsAmount` (56) | ‏תשלומים ≠ סכום הפריטים. |
+| `ClientDoesntExists` (7) / `ClientIDDoesntExists` (37) | ‫לקוח חסר/לא מוכר.‬ |
+| `DocumentItemsNotSpecified` (34) / `DocumentItemMissingName` (39) / `DocumentItemQuantityCannotBeZero` (40) / `DocumentItemPriceCannotBeZero` (41) | ‫ולידציית פריטים. `Paramters` מכיל את מספר השורה.‬ |
+| `PaymentsNotSpecified` (45) / `PaymentDateMissing` (46) / `PaymentAmountCannotBeZero` (47) / `PaymentTypeOutOfRange` (51) | ‫ולידציית תשלומים.‬ |
+| `PaymentAmountDoesntMatchItemsAmount` (56) | ‫תשלומים ≠ סכום הפריטים.‬ |
 | `InvalidDateRange` (3) | `IssueDate` עתידי או לפני המסמך האחרון שלכם. |
-| `DocumentAlreadyCreated` (134) | ‏זוהתה כפילות. |
-| `NotEnoughDocuments` (65) / `NotEnoughCredits` (18) | ‏מכסת המסמכים נגמרה. |
-| `ExpiredAccount` (66) | ‏תוקף מנוי החשבון פג. |
-| `ActionRestrictedForUser` (141) | ‏המשתמש מוגבל מיצירת סוג מסמך זה. |
-| `TimeoutDB` (147) | ‏שגיאת שרת בעת היצירה — אמתו עם [GetDocumentByApiIdentifier](get-document.md) לפני ניסיון חוזר. |
+| `DocumentAlreadyCreated` (134) | ‫זוהתה כפילות.‬ |
+| `NotEnoughDocuments` (65) / `NotEnoughCredits` (18) | ‫מכסת המסמכים נגמרה.‬ |
+| `ExpiredAccount` (66) | ‫תוקף מנוי החשבון פג.‬ |
+| `ActionRestrictedForUser` (141) | ‫המשתמש מוגבל מיצירת סוג מסמך זה.‬ |
+| `TimeoutDB` (147) | ‫שגיאת שרת בעת היצירה — אמתו עם [GetDocumentByApiIdentifier](get-document.md) לפני ניסיון חוזר.‬ |
 
-## נסו את זה
+## ‫נסו את זה‬
 
 {% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
 {% endopenapi-operation %}

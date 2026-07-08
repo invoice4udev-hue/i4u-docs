@@ -1,40 +1,40 @@
-# חיפוש מסמכים
+# ‫חיפוש מסמכים‬
 
-חיפוש מסמכים מסונן על פני הארגון המאומת.
+‫חיפוש מסמכים מסונן על פני הארגון המאומת.‬
 
-## מתודה
+## ‫מתודה‬
 
 | | |
 | - | - |
-| ‏**מתודה** | `POST` |
-| ‏**נתיב** | `/GetDocuments` |
-| ‏**תשובה** | `CommonCollection<Document[]>` — ‏`{ "Response": [ ... ], "Errors": [] }` |
+| ‫**מתודה**‬ | `POST` |
+| ‫**נתיב**‬ | `/GetDocuments` |
+| ‫**תשובה**‬ | `CommonCollection<Document[]>` — ‏`{ "Response": [ ... ], "Errors": [] }` |
 
-## סכימת הבקשה — `dr` (DocumentsRequest)
+## ‫סכימת הבקשה — `dr` (DocumentsRequest)‬
 
-| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
+| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
-| `DocumentType` | int | ‏לא | ‏סינון לפי [סוג מסמך](document-types.md) בודד. |
-| `DocumentTypes` | string | ‏לא | ‏רשימת סוגים מופרדת בפסיקים. |
-| `From` / `To` | datetime | ‏לא | ‏טווח תאריכי הפקה. |
-| `FromActualCreationDate` / `ToActualCreationDate` | datetime | ‏לא | ‏טווח תאריכי יצירה בפועל. |
-| `FromPaymentDueDate` / `ToPaymentDueDate` | datetime | ‏לא | ‏טווח תאריכי פירעון. |
-| `Status` | int | ‏לא | ‏[סטטוס מסמך](document-types.md#statusid). |
-| `CustomerID` | int | ‏לא | ‏סינון לפי לקוח. |
-| `CustomerName` | string | ‏לא | ‏סינון לפי שם לקוח (חייב להתקיים — אחרת `ClientDoesntExists`, 7). |
-| `BranchID` | int | ‏לא | ‏סינון לפי סניף. |
-| `DocumentNumber` / `ExectDocumentNumber` | int | ‏לא | ‏תחילית מספר / מספר מדויק. |
-| `FromNumber` / `ToNumber` | int | ‏לא | ‏טווח מספרי מסמכים. |
-| `FromAmount` / `ToAmount` | float | ‏לא | ‏טווח סכום כולל. |
-| `Currency` | string | ‏לא | ‏סינון מטבע. |
-| `PaymentType` | int | ‏לא | ‏סינון קבלות לפי סוג תשלום. |
-| `ItemCode` / `ItemDescription` | string | ‏לא | ‏סינון לפי שדות פריט. |
-| `ItemsIncluded` | boolean | ‏לא | ‏כלילת `Items` מלאים בתוצאות. |
-| `PaymentsIncluded` | boolean | ‏לא | ‏כלילת `Payments` מלאים בתוצאות. |
-| `OnlyGeneralClient` / `GeneralClientName` | bool / string | ‏לא | ‏סינוני לקוח מזדמן. |
-| `Limit` | int | ‏לא | ‏מספר שורות מרבי. |
+| `DocumentType` | int | ‫לא‬ | ‫סינון לפי [סוג מסמך](document-types.md) בודד.‬ |
+| `DocumentTypes` | string | ‫לא‬ | ‫רשימת סוגים מופרדת בפסיקים.‬ |
+| `From` / `To` | datetime | ‫לא‬ | ‫טווח תאריכי הפקה.‬ |
+| `FromActualCreationDate` / `ToActualCreationDate` | datetime | ‫לא‬ | ‫טווח תאריכי יצירה בפועל.‬ |
+| `FromPaymentDueDate` / `ToPaymentDueDate` | datetime | ‫לא‬ | ‫טווח תאריכי פירעון.‬ |
+| `Status` | int | ‫לא‬ | ‫[סטטוס מסמך](document-types.md#statusid).‬ |
+| `CustomerID` | int | ‫לא‬ | ‫סינון לפי לקוח.‬ |
+| `CustomerName` | string | ‫לא‬ | ‫סינון לפי שם לקוח (חייב להתקיים — אחרת `ClientDoesntExists`, 7).‬ |
+| `BranchID` | int | ‫לא‬ | ‫סינון לפי סניף.‬ |
+| `DocumentNumber` / `ExectDocumentNumber` | int | ‫לא‬ | ‫תחילית מספר / מספר מדויק.‬ |
+| `FromNumber` / `ToNumber` | int | ‫לא‬ | ‫טווח מספרי מסמכים.‬ |
+| `FromAmount` / `ToAmount` | float | ‫לא‬ | ‫טווח סכום כולל.‬ |
+| `Currency` | string | ‫לא‬ | ‫סינון מטבע.‬ |
+| `PaymentType` | int | ‫לא‬ | ‫סינון קבלות לפי סוג תשלום.‬ |
+| `ItemCode` / `ItemDescription` | string | ‫לא‬ | ‫סינון לפי שדות פריט.‬ |
+| `ItemsIncluded` | boolean | ‫לא‬ | ‫כלילת `Items` מלאים בתוצאות.‬ |
+| `PaymentsIncluded` | boolean | ‫לא‬ | ‫כלילת `Payments` מלאים בתוצאות.‬ |
+| `OnlyGeneralClient` / `GeneralClientName` | bool / string | ‫לא‬ | ‫סינוני לקוח מזדמן.‬ |
+| `Limit` | int | ‫לא‬ | ‫מספר שורות מרבי.‬ |
 
-## דוגמת בקשה
+## ‫דוגמת בקשה‬
 
 ```http
 POST /Services/ApiService.svc/GetDocuments HTTP/1.1
@@ -53,7 +53,7 @@ Content-Type: application/json
 }
 ```
 
-## דוגמת תשובה
+## ‫דוגמת תשובה‬
 
 ```json
 {
@@ -67,18 +67,18 @@ Content-Type: application/json
 }
 ```
 
-## שגיאות
+## ‫שגיאות‬
 
-| ‏שגיאה (ID) | ‏משמעות |
+| ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
-| `ClientDoesntExists` (7) | ‏פילטר `CustomerName` לא התאים ללקוח. |
+| `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
+| `ClientDoesntExists` (7) | ‫פילטר `CustomerName` לא התאים ללקוח.‬ |
 
 {% hint style="info" %}
-שולפים מסמך אחד ידוע? השתמשו ב[שליפות מסמך בודד](get-document.md) — מהיר ופשוט יותר.
+‫שולפים מסמך אחד ידוע? השתמשו ב[שליפות מסמך בודד](get-document.md) — מהיר ופשוט יותר.‬
 {% endhint %}
 
-## נסו את זה
+## ‫נסו את זה‬
 
 {% openapi-operation spec="invoice4u-api" path="/GetDocuments" method="post" %}
 {% endopenapi-operation %}

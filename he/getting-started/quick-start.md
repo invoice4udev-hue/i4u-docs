@@ -1,10 +1,10 @@
-# התחלה מהירה
+# ‫התחלה מהירה‬
 
-צרו את המסמך הראשון שלכם בחמישה צעדים. עבדו מול **סביבת ה-QA** (`https://apiqa.invoice4u.co.il/Services/ApiService.svc`) עד שהתהליך שלכם יציב.
+‫צרו את המסמך הראשון שלכם בחמישה צעדים. עבדו מול **סביבת ה-QA** (`https://apiqa.invoice4u.co.il/Services/ApiService.svc`) עד שהתהליך שלכם יציב.‬
 
 ### 1. השיגו את מפתח ה-API
 
-העתיקו את מפתח ה-API של הארגון (GUID) מאפליקציית ה-Invoice4U (הגדרות). תעבירו אותו כ-`token` בכל קריאה — אין שלב התחברות נפרד. אפשר לאמת אותו:
+‫העתיקו את מפתח ה-API של הארגון (GUID) מאפליקציית ה-Invoice4U (הגדרות). תעבירו אותו כ-`token` בכל קריאה — אין שלב התחברות נפרד. אפשר לאמת אותו:‬
 
 ```http
 POST /Services/ApiService.svc/IsAuthenticated HTTP/1.1
@@ -14,7 +14,7 @@ Content-Type: application/json
 { "token": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f" }
 ```
 
-ראו [סקירת אימות](../authentication/overview.md).
+‫ראו [סקירת אימות](../authentication/overview.md).‬
 
 ### 2. צרו לקוח
 
@@ -27,7 +27,7 @@ POST /Services/ApiService.svc/CreateCustomer HTTP/1.1
 }
 ```
 
-שמרו את ה-`ID` שחוזר. ראו [יצירת לקוח](../customers/create-customer.md).
+‫שמרו את ה-`ID` שחוזר. ראו [יצירת לקוח](../customers/create-customer.md).‬
 
 ### 3. צרו מסמך
 
@@ -48,7 +48,7 @@ POST /Services/ApiService.svc/CreateDocument HTTP/1.1
 }
 ```
 
-ראו [יצירת מסמך](../documents/create-document.md).
+‫ראו [יצירת מסמך](../documents/create-document.md).‬
 
 ### 4. בדקו את התשובה
 
@@ -63,10 +63,10 @@ POST /Services/ApiService.svc/GetDocumentByApiIdentifier HTTP/1.1
 { "apiIdentifier": "my-first-doc-001", "docType": 3, "token": "<token>" }
 ```
 
-ראו [שליפת מסמך בודד](../documents/get-document.md).
+‫ראו [שליפת מסמך בודד](../documents/get-document.md).‬
 
-### מה הלאה
+### ‫מה הלאה‬
 
-* ‏מחייבים כרטיסים? קראו את [סקירת מתודות הסליקה](../clearing/overview.md).
-* ‏לפני עלייה לאוויר, קראו את [הטיפים והחידודים](key-tips.md).
-* ‏מעדיפים Postman? הורידו את [אוסף ה-Postman המוכן של Invoice4U](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — או הורידו את [מפרט ה-OpenAPI](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) וייבאו אותו ישירות ל-Postman.
+* ‫מחייבים כרטיסים? קראו את [סקירת מתודות הסליקה](../clearing/overview.md).‬
+* ‫לפני עלייה לאוויר, קראו את [הטיפים והחידודים](key-tips.md).‬
+* ‫מעדיפים Postman? הורידו את [אוסף ה-Postman המוכן של Invoice4U](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — או הורידו את [מפרט ה-OpenAPI](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) וייבאו אותו ישירות ל-Postman.‬

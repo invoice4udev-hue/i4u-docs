@@ -1,27 +1,27 @@
-# יצירת מסמך עם ולידציית מזהה
+# ‫יצירת מסמך עם ולידציית מזהה‬
 
-זהה ל[יצירת מסמך](create-document.md), אך עם אידמפוטנטיות קפדנית: אם מסמך עם אותו `ApiIdentifier` (ואותו סוג) כבר קיים בארגון שלכם, הקריאה **לא יוצרת מסמך חדש** — היא מחזירה את הקיים עם שגיאת `DocumentAlreadyCreated` מצורפת.
+‫זהה ל[יצירת מסמך](create-document.md), אך עם אידמפוטנטיות קפדנית: אם מסמך עם אותו `ApiIdentifier` (ואותו סוג) כבר קיים בארגון שלכם, הקריאה **לא יוצרת מסמך חדש** — היא מחזירה את הקיים עם שגיאת `DocumentAlreadyCreated` מצורפת.‬
 
-השתמשו במתודה זו כאשר המערכת שלכם עלולה לבצע בקשות חוזרות (תורים, webhooks, פסקי זמן ברשת).
+‫השתמשו במתודה זו כאשר המערכת שלכם עלולה לבצע בקשות חוזרות (תורים, webhooks, פסקי זמן ברשת).‬
 
-## מתודה
+## ‫מתודה‬
 
 | | |
 | - | - |
-| ‏**מתודה** | `POST` |
-| ‏**נתיב** | `/CreateDocumentWithIdentifierValidation` |
-| ‏**תשובה** | `Document` — חדש, או הקיים + `DocumentAlreadyCreated` (134) |
+| ‫**מתודה**‬ | `POST` |
+| ‫**נתיב**‬ | `/CreateDocumentWithIdentifierValidation` |
+| ‫**תשובה**‬ | `Document` — חדש, או הקיים + `DocumentAlreadyCreated` (134) |
 
-## סכימת הבקשה
+## ‫סכימת הבקשה‬
 
-זהה ל[יצירת מסמך](create-document.md):
+‫זהה ל[יצירת מסמך](create-document.md):‬
 
-| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
+| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
-| `doc` | Document | ‏כן | ‏המסמך. **תמיד קבעו `ApiIdentifier`** — מפתח הדה-דופליקציה, ייחודי פר מסמך במערכת שלכם. |
-| `token` | string | ‏כן | ‏טוקן אימות. |
+| `doc` | Document | ‫כן‬ | ‫המסמך. **תמיד קבעו `ApiIdentifier`** — מפתח הדה-דופליקציה, ייחודי פר מסמך במערכת שלכם.‬ |
+| `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
-## דוגמת בקשה
+## ‫דוגמת בקשה‬
 
 ```http
 POST /Services/ApiService.svc/CreateDocumentWithIdentifierValidation HTTP/1.1
@@ -45,9 +45,9 @@ Content-Type: application/json
 }
 ```
 
-## תשובה במקרה של כפילות
+## ‫תשובה במקרה של כפילות‬
 
-כאשר `ApiIdentifier` כבר קיים, התשובה היא המסמך **הקיים** בתוספת השגיאה:
+‫כאשר `ApiIdentifier` כבר קיים, התשובה היא המסמך **הקיים** בתוספת השגיאה:‬
 
 ```json
 {
@@ -62,13 +62,13 @@ Content-Type: application/json
 }
 ```
 
-התייחסו לשגיאה `134` עם `DocumentNumber > 0` מוחזר כהצלחה אידמפוטנטית: המסמך כבר קיים, אין צורך בפעולה.
+‫התייחסו לשגיאה `134` עם `DocumentNumber > 0` מוחזר כהצלחה אידמפוטנטית: המסמך כבר קיים, אין צורך בפעולה.‬
 
-## שגיאות
+## ‫שגיאות‬
 
-כל [שגיאות יצירת מסמך](create-document.md#common-errors) חלות, בתוספת התנהגות הכפילות שלמעלה.
+‫כל [שגיאות יצירת מסמך](create-document.md#common-errors) חלות, בתוספת התנהגות הכפילות שלמעלה.‬
 
-## נסו את זה
+## ‫נסו את זה‬
 
 {% openapi-operation spec="invoice4u-api" path="/CreateDocumentWithIdentifierValidation" method="post" %}
 {% endopenapi-operation %}
