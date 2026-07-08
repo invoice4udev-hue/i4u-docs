@@ -6,24 +6,24 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/CreateCustomer` |
-| **תשובה** | אובייקט `Customer` (בדקו את `Errors` וקודי `ID` שליליים) |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/CreateCustomer` |
+| ‏**תשובה** | ‏אובייקט `Customer` (בדקו את `Errors` וקודי `ID` שליליים) |
 
 וריאציות:
 
-| נתיב | מתודה | אימות | הערות |
+| ‏נתיב | ‏מתודה | ‏אימות | ‏הערות |
 | ---- | ----- | ----- | ----- |
-| `/CreateCustomer` | POST | token | הסטנדרטי — אובייקט `Customer` מלא. |
-| `/CreateCustomerREST` | GET | אימייל+סיסמה | וריאציית query string. |
-| `/CreateCustomerParamsREST` | GET | אימייל+סיסמה | פרמטרים שטוחים (`name`, `customerEmail`, `uniqueId`, `phone`, `cell`, `externalNumber`); תמיד מאפשר שמות לא ייחודיים. |
+| `/CreateCustomer` | POST | token | ‏הסטנדרטי — אובייקט `Customer` מלא. |
+| `/CreateCustomerREST` | GET | ‏אימייל+סיסמה | ‏וריאציית query string. |
+| `/CreateCustomerParamsREST` | GET | ‏אימייל+סיסמה | ‏פרמטרים שטוחים (`name`, `customerEmail`, `uniqueId`, `phone`, `cell`, `externalNumber`); תמיד מאפשר שמות לא ייחודיים. |
 
 ## סכימת הבקשה
 
-| שדה | טיפוס | חובה | תיאור |
+| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
 | --- | ----- | ---- | ----- |
-| `cu` | Customer | כן | הלקוח ליצירה. ראו [אובייקט ה-Customer](overview.md#the-customer-object). מינימום: `Name`. `UniqueID`, אם נשלח, חייב להיות מספרי. |
-| `token` | string | כן | טוקן אימות. |
+| `cu` | Customer | ‏כן | ‏הלקוח ליצירה. ראו [אובייקט ה-Customer](overview.md#the-customer-object). מינימום: `Name`. `UniqueID`, אם נשלח, חייב להיות מספרי. |
+| `token` | string | ‏כן | ‏טוקן אימות. |
 
 ## דוגמת בקשה
 
@@ -68,16 +68,16 @@ Content-Type: application/json
 
 ## שגיאות
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | טוקן לא תקין. |
-| `CustomerNameCanNotBeEmpty` (28) | חסר `Name`. |
+| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
+| `CustomerNameCanNotBeEmpty` (28) | ‏חסר `Name`. |
 | `CustomerUniqueIdNotNumeric` (79) | `UniqueID` מכיל תווים שאינם ספרות. |
-| `CustomerNameExists` (2) / `ID = -1` | שם כפול. קבעו `IsNonUniqueNameCreation: true` כדי לאפשר. |
+| `CustomerNameExists` (2) / `ID = -1` | ‏שם כפול. קבעו `IsNonUniqueNameCreation: true` כדי לאפשר. |
 | `CustomerExternalNumberExists` (31) / `ID = -2` | `ExtNumber` כפול. |
 | `CustomerUniqueIdExistsForUser` (78) / `ID = -3` | `UniqueID` כפול. |
 | `CustomerGuidExists` (84) / `ID = -4` | `Guid` כפול. |
-| `ClientDoesntExists` (7) | נשלח `ID` אך אין לקוח כזה (מסלול העדכון). |
+| `ClientDoesntExists` (7) | ‏נשלח `ID` אך אין לקוח כזה (מסלול העדכון). |
 
 ## נסו את זה
 

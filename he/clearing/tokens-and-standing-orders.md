@@ -55,14 +55,14 @@
 
 מקים חיוב חודשי חוזר דרך הדף המתארח:
 
-| שדה | טיפוס | חובה | תיאור |
+| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
 | --- | ----- | ---- | ----- |
-| `IsStandingOrderClearance` | boolean | כן | מצב הוראת קבע. |
-| `StandingOrderDuration` | int | **כן** | מספר החיובים החודשיים (`ApiStandingOrderDurationNotFilled`, 301). |
-| `DocHeadline` | string | **כן** | נושא המסמכים החוזרים (`ApiStandingOrderDocSubjectNotFilled`, 302). |
-| `Sum` | double | כן | הסכום החודשי. |
-| `StandingOrderFirstChargeAmount` | double | לא | סכום שונה לחיוב הראשון. |
-| `StandingOrderCallBackUrl` | string | לא | נקרא בכל חיוב חוזר. חייב להיות URL אבסולוטי תקין (`ApiStandingOrderCallbackurlInvalid`, 318). |
+| `IsStandingOrderClearance` | boolean | ‏כן | ‏מצב הוראת קבע. |
+| `StandingOrderDuration` | int | ‏**כן** | ‏מספר החיובים החודשיים (`ApiStandingOrderDurationNotFilled`, 301). |
+| `DocHeadline` | string | ‏**כן** | ‏נושא המסמכים החוזרים (`ApiStandingOrderDocSubjectNotFilled`, 302). |
+| `Sum` | double | ‏כן | ‏הסכום החודשי. |
+| `StandingOrderFirstChargeAmount` | double | ‏לא | ‏סכום שונה לחיוב הראשון. |
+| `StandingOrderCallBackUrl` | string | ‏לא | ‏נקרא בכל חיוב חוזר. חייב להיות URL אבסולוטי תקין (`ApiStandingOrderCallbackurlInvalid`, 318). |
 
 ```json
 {
@@ -83,11 +83,11 @@
 
 ## שגיאות
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `ApiTokenizationNotApprovedInClearingTerminal` (309) | טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג). |
-| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | הוראות קבע לא מופעלות. |
-| `ApiTokenDoesntExistForThatCustomer` (304) | אין טוקן שמור (או שיש כמה) עבור הלקוח. |
-| `ApiTokenWasCreatedChargeFailed` (313) | הטוקן נשמר, החיוב נדחה. |
-| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | ולידציית הוראת קבע. |
-| `ApiBadRequestChargeMethodMustBeSelected` (319) | דגלי מצב סותרים. |
+| `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‏טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג). |
+| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‏הוראות קבע לא מופעלות. |
+| `ApiTokenDoesntExistForThatCustomer` (304) | ‏אין טוקן שמור (או שיש כמה) עבור הלקוח. |
+| `ApiTokenWasCreatedChargeFailed` (313) | ‏הטוקן נשמר, החיוב נדחה. |
+| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | ‏ולידציית הוראת קבע. |
+| `ApiBadRequestChargeMethodMustBeSelected` (319) | ‏דגלי מצב סותרים. |

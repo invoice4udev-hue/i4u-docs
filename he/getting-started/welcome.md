@@ -6,15 +6,15 @@
 
 ### קבלת גישה
 
-1. צרו חשבון ב-[invoice4u.co.il](https://invoice4u.co.il).
-2. הפעילו גישת API לארגון שלכם (הגדרות ← API, או פנו לתמיכה).
-3. בצעו אימות עם מפתח ה-API שלכם והשתמשו בו בקריאות ל-API.
+1. ‏צרו חשבון ב-[invoice4u.co.il](https://invoice4u.co.il).
+2. ‏הפעילו גישת API לארגון שלכם (הגדרות ← API, או פנו לתמיכה).
+3. ‏בצעו אימות עם מפתח ה-API שלכם והשתמשו בו בקריאות ל-API.
 
 ### כתובות בסיס
 
-| סביבה | כתובת בסיס |
+| ‏סביבה | ‏כתובת בסיס |
 | ----- | ---------- |
-| פרודקשן | `https://api.invoice4u.co.il/Services/ApiService.svc` |
+| ‏פרודקשן | `https://api.invoice4u.co.il/Services/ApiService.svc` |
 | QA (בדיקות) | `https://apiqa.invoice4u.co.il/Services/ApiService.svc` |
 
 כל המתודות בתיעוד הזה יחסיות לכתובות הבסיס האלה. פתחו ובדקו מול **QA** תחילה, ואז החליפו את כתובת הבסיס ל**פרודקשן**.
@@ -46,11 +46,11 @@ Content-Type: application/json
 
 רוב אובייקטי התשובה יורשים מעטפת משותפת. תמיד בדקו את `Errors` לפני שימוש בתוצאה:
 
-| שדה | סוג | תיאור |
+| ‏שדה | ‏סוג | ‏תיאור |
 | --- | --- | ----- |
-| `Errors` | array | רשימת שגיאות. ריקה בהצלחה. כל פריט: `ID` (קוד שגיאה מספרי), `Error` (שם השגיאה), `Paramters` (הקשר אופציונלי, למשל מספר שורה). |
-| `Info` | array | הודעות מידע (למשל `SuccessfulAction`). |
-| `OpenInfo` | object | תוספות מפתח/ערך שחלק מהמתודות מחזירות (למשל `PaymentMismatchDelta`). |
+| `Errors` | array | ‏רשימת שגיאות. ריקה בהצלחה. כל פריט: `ID` (קוד שגיאה מספרי), `Error` (שם השגיאה), `Paramters` (הקשר אופציונלי, למשל מספר שורה). |
+| `Info` | array | ‏הודעות מידע (למשל `SuccessfulAction`). |
+| `OpenInfo` | object | ‏תוספות מפתח/ערך שחלק מהמתודות מחזירות (למשל `PaymentMismatchDelta`). |
 
 ### צעדים ראשונים
 
@@ -62,6 +62,6 @@ Content-Type: application/json
 
 ### עמודים הבאים
 
-* [התחלה מהירה](quick-start.md)
-* [סקירת אימות](../authentication/overview.md)
-* [סקירת מתודות מסמכים](../documents/overview.md)
+* ‏[התחלה מהירה](quick-start.md)
+* ‏[סקירת אימות](../authentication/overview.md)
+* ‏[סקירת מתודות מסמכים](../documents/overview.md)

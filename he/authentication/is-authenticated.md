@@ -19,10 +19,10 @@ Content-Type: application/json
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/IsAuthenticated` |
-| **גוף** | `{ "token": "<API key>" }` |
-| **תשובה** | אובייקט `User`; בדקו את `Errors[]` לזיהוי בעיות |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/IsAuthenticated` |
+| ‏**גוף** | `{ "token": "<API key>" }` |
+| ‏**תשובה** | ‏אובייקט `User`; בדקו את `Errors[]` לזיהוי בעיות |
 
 חשבון שפג תוקפו לפני יותר מ-**4 ימים** מקבל שגיאת `ExpiredAccount` על המשתמש המוחזר.
 
@@ -40,10 +40,10 @@ Content-Type: application/json
 
 ## שגיאות
 
-| תוצאה | משמעות |
+| ‏תוצאה | ‏משמעות |
 | ----- | ------- |
-| `Errors[]` מכיל `UnauthorizedUser` (80) | מפתח לא נמצא, לא תקין או בוטל. |
-| `Errors[]` מכיל `ExpiredAccount` (66) | תוקף החשבון פג לפני יותר מ-4 ימים. |
+| `Errors[]` מכיל `UnauthorizedUser` (80) | ‏מפתח לא נמצא, לא תקין או בוטל. |
+| `Errors[]` מכיל `ExpiredAccount` (66) | ‏תוקף החשבון פג לפני יותר מ-4 ימים. |
 
 ## קשור: בדיקת תוקף החשבון
 
@@ -51,10 +51,10 @@ Content-Type: application/json
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/GetExpDateByApiKey` |
-| **גוף** | `{ "token": "<API key>" }` |
-| **תשובה** | מחרוזת תאריך תפוגה, או `"UnauthorizedUser"` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/GetExpDateByApiKey` |
+| ‏**גוף** | `{ "token": "<API key>" }` |
+| ‏**תשובה** | ‏מחרוזת תאריך תפוגה, או `"UnauthorizedUser"` |
 
 ## נסו את זה
 

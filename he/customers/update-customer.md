@@ -6,16 +6,16 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/UpdateCustomer` |
-| **תשובה** | אובייקט `Customer` (בדקו את `Errors` וקודי `ID` שליליים) |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/UpdateCustomer` |
+| ‏**תשובה** | ‏אובייקט `Customer` (בדקו את `Errors` וקודי `ID` שליליים) |
 
 ## סכימת הבקשה
 
-| שדה | טיפוס | חובה | תיאור |
+| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
 | --- | ----- | ---- | ----- |
-| `cu` | Customer | כן | הלקוח לעדכון. `ID` **חייב** להיות מזהה לקוח קיים ותקין (`ID = 0` נדחה). שאר השדות לפי [אובייקט ה-Customer](overview.md#the-customer-object) — שלחו את המצב המלא הרצוי. |
-| `token` | string | כן | טוקן אימות. |
+| `cu` | Customer | ‏כן | ‏הלקוח לעדכון. `ID` **חייב** להיות מזהה לקוח קיים ותקין (`ID = 0` נדחה). שאר השדות לפי [אובייקט ה-Customer](overview.md#the-customer-object) — שלחו את המצב המלא הרצוי. |
+| `token` | string | ‏כן | ‏טוקן אימות. |
 
 ## דוגמת בקשה
 
@@ -52,13 +52,13 @@ Content-Type: application/json
 
 ## שגיאות
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | טוקן לא תקין. |
+| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
 | `ClientDoesntExists` (7) | `ID` הוא `0` או שהלקוח לא קיים בארגון שלכם. |
-| `CustomerNameCanNotBeEmpty` (28) | חסר `Name`. |
+| `CustomerNameCanNotBeEmpty` (28) | ‏חסר `Name`. |
 | `CustomerUniqueIdNotNumeric` (79) | `UniqueID` מכיל תווים שאינם ספרות. |
-| `ID = -1 … -4` | כפילות שם / מספר חיצוני / מזהה ייחודי / GUID — ראו [קודי תוצאה](overview.md#createupdate-result-codes). |
+| `ID = -1 … -4` | ‏כפילות שם / מספר חיצוני / מזהה ייחודי / GUID — ראו [קודי תוצאה](overview.md#createupdate-result-codes). |
 
 ## נסו את זה
 

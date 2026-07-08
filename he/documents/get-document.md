@@ -6,8 +6,8 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/GetDocument` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/GetDocument` |
 
 ```json
 { "docId": "7f6a2c1e-8b4d-4f2a-9c3e-0d1e2f3a4b5c", "token": "<token>" }
@@ -19,8 +19,8 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/GetDocumentByNumber` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/GetDocumentByNumber` |
 
 ```json
 { "docNumber": 20260123, "documentType": 3, "token": "<token>" }
@@ -32,8 +32,8 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/GetDocumentByApiIdentifier` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/GetDocumentByApiIdentifier` |
 
 ```json
 { "apiIdentifier": "order-10045-invoice", "docType": 1, "token": "<token>" }
@@ -63,10 +63,10 @@
 
 ## שגיאות
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | טוקן לא תקין. |
-| `ApiDocumentDoesNotExistForUser` (321) | המסמך שייך לארגון אחר. |
+| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
+| `ApiDocumentDoesNotExistForUser` (321) | ‏המסמך שייך לארגון אחר. |
 
 ## נסו את זה
 

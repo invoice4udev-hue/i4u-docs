@@ -8,9 +8,9 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/FetchAllocationNumber` |
-| **תשובה** | `Document` מעודכן (`AllocationNumber`, `AllocationMessage`) |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/FetchAllocationNumber` |
+| ‏**תשובה** | `Document` מעודכן (`AllocationNumber`, `AllocationMessage`) |
 
 ```json
 { "docId": "7f6a2c1e-8b4d-4f2a-9c3e-0d1e2f3a4b5c", "token": "<token>" }
@@ -24,8 +24,8 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/UpdateAllocationNumber` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/UpdateAllocationNumber` |
 
 ```json
 {
@@ -39,12 +39,12 @@
 
 ## שגיאות
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | טוקן לא תקין. |
-| `AllocationNumberInvalid` (162) | מספר קצר מ-9 תווים. |
-| `AllocationNumberNotGenerated` (152) / `AllocationNumberNotSaved` (153) | כשל בשליפה/שמירה מול רשות המסים. |
-| `AllocationNumberDeclined` (156) / `AllocationNumberDeclinedWaitDecision` (157) | רשות המסים דחתה את הבקשה / ממתין להחלטה. |
+| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
+| `AllocationNumberInvalid` (162) | ‏מספר קצר מ-9 תווים. |
+| `AllocationNumberNotGenerated` (152) / `AllocationNumberNotSaved` (153) | ‏כשל בשליפה/שמירה מול רשות המסים. |
+| `AllocationNumberDeclined` (156) / `AllocationNumberDeclinedWaitDecision` (157) | ‏רשות המסים דחתה את הבקשה / ממתין להחלטה. |
 
 ## נסו את זה
 

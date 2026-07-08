@@ -8,18 +8,18 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/CreateDocumentWithIdentifierValidation` |
-| **תשובה** | `Document` — חדש, או הקיים + `DocumentAlreadyCreated` (134) |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/CreateDocumentWithIdentifierValidation` |
+| ‏**תשובה** | `Document` — חדש, או הקיים + `DocumentAlreadyCreated` (134) |
 
 ## סכימת הבקשה
 
 זהה ל[יצירת מסמך](create-document.md):
 
-| שדה | טיפוס | חובה | תיאור |
+| ‏שדה | ‏טיפוס | ‏חובה | ‏תיאור |
 | --- | ----- | ---- | ----- |
-| `doc` | Document | כן | המסמך. **תמיד קבעו `ApiIdentifier`** — מפתח הדה-דופליקציה, ייחודי פר מסמך במערכת שלכם. |
-| `token` | string | כן | טוקן אימות. |
+| `doc` | Document | ‏כן | ‏המסמך. **תמיד קבעו `ApiIdentifier`** — מפתח הדה-דופליקציה, ייחודי פר מסמך במערכת שלכם. |
+| `token` | string | ‏כן | ‏טוקן אימות. |
 
 ## דוגמת בקשה
 

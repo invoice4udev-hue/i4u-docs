@@ -4,35 +4,35 @@
 
 ### מתודות בסקשן הזה
 
-| מתודה | עמוד |
+| ‏מתודה | ‏עמוד |
 | ----- | ---- |
-| `CreateDocument` | [יצירת מסמך](create-document.md) |
-| `CreateDocumentWithIdentifierValidation` | [יצירה עם ולידציית מזהה](create-document-with-validation.md) |
-| `GetDocument`, `GetDocumentByNumber`, `GetDocumentByApiIdentifier`, `IsDocumentExistsByApiIdentifier` | [שליפת מסמך בודד](get-document.md) |
-| `GetDocuments` | [חיפוש מסמכים](search-documents.md) |
-| `FetchAllocationNumber`, `UpdateAllocationNumber` | [מספרי הקצאה (רשות המסים)](allocation-numbers.md) |
+| `CreateDocument` | ‏[יצירת מסמך](create-document.md) |
+| `CreateDocumentWithIdentifierValidation` | ‏[יצירה עם ולידציית מזהה](create-document-with-validation.md) |
+| `GetDocument`, `GetDocumentByNumber`, `GetDocumentByApiIdentifier`, `IsDocumentExistsByApiIdentifier` | ‏[שליפת מסמך בודד](get-document.md) |
+| `GetDocuments` | ‏[חיפוש מסמכים](search-documents.md) |
+| `FetchAllocationNumber`, `UpdateAllocationNumber` | ‏[מספרי הקצאה (רשות המסים)](allocation-numbers.md) |
 
 ### עמודי עזר
 
-* [סוגי מסמכים](document-types.md) — ה-enum של `DocumentType` ומה כל סוג דורש
-* [אובייקט המסמך](document-object.md) — תיעוד מלא של שדות `Document`, `DocumentItem`, `Payment`, `Discount` ואובייקטים קשורים
+* ‏[סוגי מסמכים](document-types.md) — ה-enum של `DocumentType` ומה כל סוג דורש
+* ‏[אובייקט המסמך](document-object.md) — תיעוד מלא של שדות `Document`, `DocumentItem`, `Payment`, `Discount` ואובייקטים קשורים
 
 ### תהליך יצירה טיפוסי
 
-1. אימות ← טוקן.
-2. זיהוי הלקוח: `ClientID` קיים, או שליחת `GeneralCustomer` (מותר רק לחלק מהסוגים).
-3. בניית ה-`Document`: סוג, פריטים ו/או תשלומים, כתובות למשלוח.
+1. ‏אימות ← טוקן.
+2. ‏זיהוי הלקוח: `ClientID` קיים, או שליחת `GeneralCustomer` (מותר רק לחלק מהסוגים).
+3. ‏בניית ה-`Document`: סוג, פריטים ו/או תשלומים, כתובות למשלוח.
 4. `POST /CreateDocument`.
-5. בדיקת `Errors`; בהצלחה, השתמשו ב-`DocumentNumber`, `ID` ובשדות `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink`.
+5. ‏בדיקת `Errors`; בהצלחה, השתמשו ב-`DocumentNumber`, `ID` ובשדות `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink`.
 
 ### הגנה מכפילויות
 
 שני מנגנונים מונעים חיוב כפול כשהמערכת שלכם מבצעת ניסיונות חוזרים:
 
-| מנגנון | איך זה עובד |
+| ‏מנגנון | ‏איך זה עובד |
 | ------ | ----------- |
-| `ApiIdentifier` | המזהה הייחודי שלכם למסמך. אם לא שלחתם, ה-API מייצר `I4U-APIGEN-<guid>`. עם [CreateDocumentWithIdentifierValidation](create-document-with-validation.md) הקריאה נדחית עם `DocumentAlreadyCreated` (134) אם מסמך עם אותו מזהה כבר קיים — המסמך הקיים מוחזר. |
-| `ApiDuplicityTimeValidation` | חלון זמן ב**שניות** (ברירת מחדל `60`). אם מסמך זהה נוצר בתוך החלון, `CreateDocument` נכשל עם `DocumentAlreadyCreated` (134). הגדילו את הערך עבור תורי retry איטיים. |
+| `ApiIdentifier` | ‏המזהה הייחודי שלכם למסמך. אם לא שלחתם, ה-API מייצר `I4U-APIGEN-<guid>`. עם [CreateDocumentWithIdentifierValidation](create-document-with-validation.md) הקריאה נדחית עם `DocumentAlreadyCreated` (134) אם מסמך עם אותו מזהה כבר קיים — המסמך הקיים מוחזר. |
+| `ApiDuplicityTimeValidation` | ‏חלון זמן ב**שניות** (ברירת מחדל `60`). אם מסמך זהה נוצר בתוך החלון, `CreateDocument` נכשל עם `DocumentAlreadyCreated` (134). הגדילו את הערך עבור תורי retry איטיים. |
 
 ### שליחה באימייל וב-SMS
 

@@ -6,8 +6,8 @@
 
 | | |
 | - | - |
-| **מתודה** | `POST` |
-| **נתיב** | `/GetCustomerById` |
+| ‏**מתודה** | `POST` |
+| ‏**נתיב** | `/GetCustomerById` |
 
 ```json
 { "custId": 88231, "token": "<token>" }
@@ -93,12 +93,12 @@
 
 ## שגיאות (כל המתודות)
 
-| שגיאה (ID) | משמעות |
+| ‏שגיאה (ID) | ‏משמעות |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | טוקן לא תקין. |
-| `ClientIDDoesntExists` (37) | לקוח לא נמצא / שייך לארגון אחר. |
-| `CustomerNotFound` (136) | ערך חיפוש לא תקין. |
-| `GeneralError` (0) | שגיאת שרת. |
+| `UnauthorizedUser` (80) | ‏טוקן לא תקין. |
+| `ClientIDDoesntExists` (37) | ‏לקוח לא נמצא / שייך לארגון אחר. |
+| `CustomerNotFound` (136) | ‏ערך חיפוש לא תקין. |
+| `GeneralError` (0) | ‏שגיאת שרת. |
 
 ## נסו את זה
 
