@@ -47,7 +47,7 @@ Content-Type: application/json
 | --- | --- |
 | `DocumentType` | `4` (InvoiceCredit). |
 | `DocumentReffType` | ‫סוג המסמכים המזוכים: `1` (Invoice) או `3` (InvoiceReceipt) **בלבד**. כל דבר אחר ← `DocumentReffTypeNotInRange`.‬ |
-| `Invoices[].ID` | GUID של המסמך לזיכוי (שדה ה-`ID` של המקור, לא `DocumentNumber`). חייב להשתייך לארגון שלכם. |
+| `Invoices[].ID` | ‫GUID של המסמך לזיכוי (שדה ה-`ID` של המקור, לא `DocumentNumber`). חייב להשתייך לארגון שלכם.‬ |
 | `Invoices[].ReceiptAmount` | ‫הסכום לזיכוי כנגד **אותו** מסמך. מספרים חיוביים — **אל** תשלחו שלילי.‬ |
 | `Items` | ‫שורות פריטים המתארות את הזיכוי, במחירים **חיוביים**. השרת מטפל בסימן החשבונאי.‬ |
 | `ClientID` | ‫חייב להתאים ללקוח במסמכים המקושרים.‬ |
@@ -66,7 +66,7 @@ Content-Type: application/json
 
 $$0 < \text{ReceiptAmount} \le \text{Total} - \text{CreditAmount}$$
 
-`CreditAmount` הוא סכום כל הזיכויים שכבר הוחלו על אותו מסמך. חריגה מהיתרה שנותרה (או שליחת `0`/שלילי) ← `DocumentReceiptAmountOutOfRange`.
+‫`CreditAmount` הוא סכום כל הזיכויים שכבר הוחלו על אותו מסמך. חריגה מהיתרה שנותרה (או שליחת `0`/שלילי) ← `DocumentReceiptAmountOutOfRange`.‬
 
 ## ‫מה קורה אחרי זיכוי מוצלח‬
 
@@ -90,12 +90,12 @@ $$0 < \text{ReceiptAmount} \le \text{Total} - \text{CreditAmount}$$
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `InvoiceCreditMustHaveRefDocuments` (57) | ‫לא נשלחו הפניות, פריטים או תשלומים.‬ |
-| `DocumentReffTypeNotInRange` (53) | `DocumentReffType` אינו חשבונית/חשבונית מס קבלה. |
+| `DocumentReffTypeNotInRange` (53) | ‫`DocumentReffType` אינו חשבונית/חשבונית מס קבלה.‬ |
 | `DocumentIDDoesntExists` | ‫ה-GUID המקושר לא נמצא בארגון שלכם.‬ |
 | `ReceiptClientNameDoesntMatchInvoiceClientName` | ‫אי-התאמת לקוח בין הזיכוי למסמך המקושר.‬ |
 | `ReceiptDocumentReffTypeDoesntMatchInvoiceDocumentType` | ‫סוג המסמך המקושר ≠ `DocumentReffType`.‬ |
 | `DocumentStatusInValid` (49) | ‫המסמך המקושר כבר זוכה במלואו.‬ |
-| `DocumentReceiptAmountOutOfRange` (50) | `ReceiptAmount` ≤ 0 או עולה על היתרה הניתנת לזיכוי. |
+| `DocumentReceiptAmountOutOfRange` (50) | ‫`ReceiptAmount` ≤ 0 או עולה על היתרה הניתנת לזיכוי.‬ |
 
 ## ‫נסו את זה‬
 

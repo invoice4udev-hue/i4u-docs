@@ -47,7 +47,7 @@ Content-Type: application/json
 
 ## ‫קשור: בדיקת תוקף החשבון‬
 
-`GetExpDateByApiKey` מחזיר את תאריך תפוגת החשבון עבור המשתמש המאומת.
+‫`GetExpDateByApiKey` מחזיר את תאריך תפוגת החשבון עבור המשתמש המאומת.‬
 
 | | |
 | - | - |

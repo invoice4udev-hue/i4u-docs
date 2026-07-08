@@ -48,7 +48,7 @@
 | --- | ----- | ----- |
 | `ID` | GUID | ‫מזהה המסמך.‬ |
 | `DocumentNumber` | long | ‫המספר הרציף החוקי.‬ |
-| `UniqueID` | GUID | GUID ייחודי של המסמך. |
+| `UniqueID` | GUID | ‫GUID ייחודי של המסמך.‬ |
 | `StatusID` / `Status` | int / string | ‫ראו [סטטוסים](document-types.md#statusid).‬ |
 | `Total`, `TotalWithoutTax`, `TotalTaxAmount`, `TotalTaxExempt` | double | ‫סכומים מחושבים.‬ |
 | `CipherText` / `CipherTextOriginal` | string | ‫צפנים לכתובות צפייה/הדפסה.‬ |

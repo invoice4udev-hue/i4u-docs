@@ -103,12 +103,12 @@ Content-Type: application/json
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
-| `DocumentTypeNotInRange` (33) | `DocumentType` לא מוכר. |
+| `DocumentTypeNotInRange` (33) | ‫`DocumentType` לא מוכר.‬ |
 | `ClientDoesntExists` (7) / `ClientIDDoesntExists` (37) | ‫לקוח חסר/לא מוכר.‬ |
 | `DocumentItemsNotSpecified` (34) / `DocumentItemMissingName` (39) / `DocumentItemQuantityCannotBeZero` (40) / `DocumentItemPriceCannotBeZero` (41) | ‫ולידציית פריטים. `Paramters` מכיל את מספר השורה.‬ |
 | `PaymentsNotSpecified` (45) / `PaymentDateMissing` (46) / `PaymentAmountCannotBeZero` (47) / `PaymentTypeOutOfRange` (51) | ‫ולידציית תשלומים.‬ |
 | `PaymentAmountDoesntMatchItemsAmount` (56) | ‫תשלומים ≠ סכום הפריטים.‬ |
-| `InvalidDateRange` (3) | `IssueDate` עתידי או לפני המסמך האחרון שלכם. |
+| `InvalidDateRange` (3) | ‫`IssueDate` עתידי או לפני המסמך האחרון שלכם.‬ |
 | `DocumentAlreadyCreated` (134) | ‫זוהתה כפילות.‬ |
 | `NotEnoughDocuments` (65) / `NotEnoughCredits` (18) | ‫מכסת המסמכים נגמרה.‬ |
 | `ExpiredAccount` (66) | ‫תוקף מנוי החשבון פג.‬ |

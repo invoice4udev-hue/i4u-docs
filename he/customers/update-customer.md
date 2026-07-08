@@ -55,9 +55,9 @@ Content-Type: application/json
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
-| `ClientDoesntExists` (7) | `ID` הוא `0` או שהלקוח לא קיים בארגון שלכם. |
+| `ClientDoesntExists` (7) | ‫`ID` הוא `0` או שהלקוח לא קיים בארגון שלכם.‬ |
 | `CustomerNameCanNotBeEmpty` (28) | ‫חסר `Name`.‬ |
-| `CustomerUniqueIdNotNumeric` (79) | `UniqueID` מכיל תווים שאינם ספרות. |
+| `CustomerUniqueIdNotNumeric` (79) | ‫`UniqueID` מכיל תווים שאינם ספרות.‬ |
 | `ID = -1 … -4` | ‫כפילות שם / מספר חיצוני / מזהה ייחודי / GUID — ראו [קודי תוצאה](overview.md#createupdate-result-codes).‬ |
 
 ## ‫נסו את זה‬

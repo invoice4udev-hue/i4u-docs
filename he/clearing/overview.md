@@ -26,7 +26,7 @@ Your server                    Invoice4U                        Customer
 
 1. ‫קראו ל-[`ProcessApiRequestV2`](process-api-request-v2.md) עם הסכום, פרטי הלקוח והדגלים.‬
 2. ‫הפנו את הלקוח ל-`ClearingRedirectUrl` המוחזר.‬
-3. Invoice4U מודיע ל-`CallBackUrl` שלכם ומפנה את הלקוח ל-`ReturnUrl` שלכם.
+3. ‫Invoice4U מודיע ל-`CallBackUrl` שלכם ומפנה את הלקוח ל-`ReturnUrl` שלכם.‬
 4. ‫אם `IsDocCreate` היה `true`, המסמך נוצר אוטומטית לאחר חיוב מוצלח.‬
 
 ‫**חיובי טוקן** (`ChargeWithToken`) ו**זיכויים** (`Refund`) הם שרת-לשרת — ללא הפניה; התוצאה מוחזרת סינכרונית.‬
@@ -46,7 +46,7 @@ Your server                    Invoice4U                        Customer
 | ‫שאילתת היסטוריית חיובים‬ | — | ‫[לוגי סליקה](clearing-logs.md)‬ |
 
 {% hint style="warning" %}
-`ProcessApiRequest` (V1) ווריאציות ה-GET ‏`ProcessApiRequestFullContents*` עדיין עובדות אך הן **legacy**. אינטגרציות חדשות צריכות להשתמש ב-`ProcessApiRequestV2` בלבד.
+‫`ProcessApiRequest` (V1) ווריאציות ה-GET ‏`ProcessApiRequestFullContents*` עדיין עובדות אך הן **legacy**. אינטגרציות חדשות צריכות להשתמש ב-`ProcessApiRequestV2` בלבד.‬
 {% endhint %}
 
 ### ‫דרישות מוקדמות‬

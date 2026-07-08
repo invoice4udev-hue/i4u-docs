@@ -21,7 +21,7 @@
 { "name": "Acme Ltd", "token": "<token>" }
 ```
 
-`POST /GetCustomerByName` — חיפוש לפי שם מדויק.
+‫`POST /GetCustomerByName` — חיפוש לפי שם מדויק.‬
 
 ## ‫שליפה לפי אימייל — `GetCustomerByEmail`‬
 
@@ -29,7 +29,7 @@
 { "email": "billing@acme.example", "name": "Acme Ltd", "token": "<token>" }
 ```
 
-`POST /GetCustomerByEmail` — חיפוש לפי אימייל, עם שם אופציונלי להבחנה.
+‫`POST /GetCustomerByEmail` — חיפוש לפי אימייל, עם שם אופציונלי להבחנה.‬
 
 ## ‫שליפה לפי GUID — `GetCustomerByGuid`‬
 
@@ -37,7 +37,7 @@
 { "guid": "d2f1a6b3-...", "token": "<token>" }
 ```
 
-`POST /GetCustomerByGuid` — חיפוש לפי ה-`Guid` החיצוני שהגדרתם ביצירה. `GetCustomerByGuidInnerSearch` מבצע חיפוש רחב יותר (contains).
+‫`POST /GetCustomerByGuid` — חיפוש לפי ה-`Guid` החיצוני שהגדרתם ביצירה. `GetCustomerByGuidInnerSearch` מבצע חיפוש רחב יותר (contains).‬
 
 ## ‫שליפה לפי מספר חיצוני — `GetCustomerByExternalNumber`‬
 
@@ -45,7 +45,7 @@
 { "number": 10045, "token": "<token>" }
 ```
 
-`POST /GetCustomerByExternalNumber` — חיפוש לפי `ExtNumber`. מחזיר `CustomerNotFound` (136) כאשר `number` אינו חיובי.
+‫`POST /GetCustomerByExternalNumber` — חיפוש לפי `ExtNumber`. מחזיר `CustomerNotFound` (136) כאשר `number` אינו חיובי.‬
 
 ## ‫שליפה לפי קוד לקוח — `GetCustomerByClientCode`‬
 
@@ -53,7 +53,7 @@
 { "clientCode": 42, "token": "<token>" }
 ```
 
-`POST /GetCustomerByClientCode` (כינוי נוסף: `/GetByClientCode`).
+‫`POST /GetCustomerByClientCode` (כינוי נוסף: `/GetByClientCode`).‬
 
 ## ‫רשומה מלאה — `GetFullCustomer`‬
 
@@ -61,7 +61,7 @@
 { "id": 88231, "orgID": 0, "token": "<token>" }
 ```
 
-`POST /GetFullCustomer` — מחזיר את רשומת הלקוח המלאה כולל פרטי בנק, אנשי קשר ואימיילים נוספים. שלחו `orgID: 0` כדי להשתמש בארגון של הטוקן.
+‫`POST /GetFullCustomer` — מחזיר את רשומת הלקוח המלאה כולל פרטי בנק, אנשי קשר ואימיילים נוספים. שלחו `orgID: 0` כדי להשתמש בארגון של הטוקן.‬
 
 ## ‫רשימה מלאה — `GetCustomersByOrgId`‬
 
@@ -69,7 +69,7 @@
 { "token": "<token>" }
 ```
 
-`POST /GetCustomersByOrgId` — מחזיר `CommonCollection<Customer[]>`:
+‫`POST /GetCustomersByOrgId` — מחזיר `CommonCollection<Customer[]>`:‬
 
 ```json
 {
@@ -89,7 +89,7 @@
 }
 ```
 
-`POST /GetCustomers` — חיפוש מסונן. מלאו כל תת-קבוצה של שדות `Customer`‏ (`Name`, `Email`, `UniqueID`, …) כפילטר; מוחזר `CommonCollection<Customer[]>` של ההתאמות.
+‫`POST /GetCustomers` — חיפוש מסונן. מלאו כל תת-קבוצה של שדות `Customer`‏ (`Name`, `Email`, `UniqueID`, …) כפילטר; מוחזר `CommonCollection<Customer[]>` של ההתאמות.‬
 
 ## ‫שגיאות (כל המתודות)‬
 

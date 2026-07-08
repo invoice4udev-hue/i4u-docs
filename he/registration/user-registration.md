@@ -36,7 +36,7 @@
 | `EmailExists` (1) / `EmailNotValid` (16) | ‫אימייל כפול/לא תקין.‬ |
 | `UniqueIdExists` (9) / `UniqueIDNotValid` (64) | ‫מספר עסק כפול/לא תקין.‬ |
 | `PasswordNotValid` (17) | ‫סיסמה חלשה.‬ |
-| `InvalidVatPercentage` (77) | `TaxRate` אינו השיעור החוקי או 0. |
+| `InvalidVatPercentage` (77) | ‫`TaxRate` אינו השיעור החוקי או 0.‬ |
 
 ### ‫איך הופכים לשותף‬
 

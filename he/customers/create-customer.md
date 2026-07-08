@@ -72,11 +72,11 @@ Content-Type: application/json
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
 | `CustomerNameCanNotBeEmpty` (28) | ‫חסר `Name`.‬ |
-| `CustomerUniqueIdNotNumeric` (79) | `UniqueID` מכיל תווים שאינם ספרות. |
+| `CustomerUniqueIdNotNumeric` (79) | ‫`UniqueID` מכיל תווים שאינם ספרות.‬ |
 | `CustomerNameExists` (2) / `ID = -1` | ‫שם כפול. קבעו `IsNonUniqueNameCreation: true` כדי לאפשר.‬ |
-| `CustomerExternalNumberExists` (31) / `ID = -2` | `ExtNumber` כפול. |
-| `CustomerUniqueIdExistsForUser` (78) / `ID = -3` | `UniqueID` כפול. |
-| `CustomerGuidExists` (84) / `ID = -4` | `Guid` כפול. |
+| `CustomerExternalNumberExists` (31) / `ID = -2` | ‫`ExtNumber` כפול.‬ |
+| `CustomerUniqueIdExistsForUser` (78) / `ID = -3` | ‫`UniqueID` כפול.‬ |
+| `CustomerGuidExists` (84) / `ID = -4` | ‫`Guid` כפול.‬ |
 | `ClientDoesntExists` (7) | ‫נשלח `ID` אך אין לקוח כזה (מסלול העדכון).‬ |
 
 ## ‫נסו את זה‬

@@ -39,7 +39,7 @@
 | ‫יוצרים‬ | `DocumentReffType` מותר |
 | ------ | ----------------------- |
 | Invoice (1) | InvoiceQuote (7), InvoiceOrder (6), InvoiceShip (8), ProformaInvoice (5) |
-| Receipt (2) | Invoice (1), ProformaInvoice (5); Receipt (2) רק כאשר `CancelDocument` הוא `true` |
+| Receipt (2) | ‫Invoice (1), ProformaInvoice (5); Receipt (2) רק כאשר `CancelDocument` הוא `true`‬ |
 | InvoiceReceipt (3) | ProformaInvoice (5), InvoiceOrder (6), InvoiceQuote (7), InvoiceShip (8) |
 | InvoiceCredit (4) | Invoice (1), InvoiceReceipt (3) |
 | InvoiceOrder (6) | InvoiceQuote (7) |

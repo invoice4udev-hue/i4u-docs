@@ -52,7 +52,7 @@ Content-Type: application/json
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `ApiGooglePayNotAllowedForUser` (316) | Google Pay לא מופעל בחשבון. |
-| `ApiApplePayNotAllowedForUser` (317) | Apple Pay לא מופעל בחשבון. |
+| `ApiGooglePayNotAllowedForUser` (316) | ‫Google Pay לא מופעל בחשבון.‬ |
+| `ApiApplePayNotAllowedForUser` (317) | ‫Apple Pay לא מופעל בחשבון.‬ |
 | `ClearingCompanyUndefined` (8) | ‫אין חשבון סליקה פעיל, או שהמסוף לא תומך באמצעי המבוקש.‬ |
 | `ClearingError` (32) | ‫התשלום נדחה / שגיאת ספק — פרטים ב-`Paramters`.‬ |

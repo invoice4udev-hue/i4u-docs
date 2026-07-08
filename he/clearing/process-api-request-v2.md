@@ -137,7 +137,7 @@ Content-Type: application/json
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫פיצ'רי טוקן לא מופעלים על המסוף.‬ |
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות.‬ |
 | `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | ‫אמצעי הארנק לא מופעל.‬ |
-| `ClientIDDoesntExists` (37) | `CustomerId` לא נמצא. |
+| `ClientIDDoesntExists` (37) | ‫`CustomerId` לא נמצא.‬ |
 | `NumberOfItemsIsNotEqual` (24) | ‫רשימות ה-`DocItem*` באורכים שונים.‬ |
 | `ClearingError` (32) | ‫החיוב נדחה / שגיאת ספק — פרטים ב-`Paramters`.‬ |
 | `ClearingErrorRefundTimeExceeded` (158) | ‫חלון הזיכוי חלף.‬ |

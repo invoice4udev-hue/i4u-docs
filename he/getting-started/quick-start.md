@@ -2,7 +2,7 @@
 
 ‫צרו את המסמך הראשון שלכם בחמישה צעדים. עבדו מול **סביבת ה-QA** (`https://apiqa.invoice4u.co.il/Services/ApiService.svc`) עד שהתהליך שלכם יציב.‬
 
-### 1. השיגו את מפתח ה-API
+### ‫1. השיגו את מפתח ה-API‬
 
 ‫העתיקו את מפתח ה-API של הארגון (GUID) מאפליקציית ה-Invoice4U (הגדרות). תעבירו אותו כ-`token` בכל קריאה — אין שלב התחברות נפרד. אפשר לאמת אותו:‬
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ‫ראו [סקירת אימות](../authentication/overview.md).‬
 
-### 2. צרו לקוח
+### ‫2. צרו לקוח‬
 
 ```http
 POST /Services/ApiService.svc/CreateCustomer HTTP/1.1
@@ -29,7 +29,7 @@ POST /Services/ApiService.svc/CreateCustomer HTTP/1.1
 
 ‫שמרו את ה-`ID` שחוזר. ראו [יצירת לקוח](../customers/create-customer.md).‬
 
-### 3. צרו מסמך
+### ‫3. צרו מסמך‬
 
 ```http
 POST /Services/ApiService.svc/CreateDocument HTTP/1.1
@@ -50,12 +50,12 @@ POST /Services/ApiService.svc/CreateDocument HTTP/1.1
 
 ‫ראו [יצירת מסמך](../documents/create-document.md).‬
 
-### 4. בדקו את התשובה
+### ‫4. בדקו את התשובה‬
 
-* `Errors` ריק ← הצלחה. השתמשו ב-`DocumentNumber`, `ID` ובשדות `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink`.
-* `Errors` לא ריק ← תקנו ונסו שוב עם `ApiIdentifier` **חדש** (או השתמשו ב[יצירה עם ולידציית מזהה](../documents/create-document-with-validation.md) ושמרו על אותו מזהה).
+* ‫`Errors` ריק ← הצלחה. השתמשו ב-`DocumentNumber`, `ID` ובשדות `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink`.‬
+* ‫`Errors` לא ריק ← תקנו ונסו שוב עם `ApiIdentifier` **חדש** (או השתמשו ב[יצירה עם ולידציית מזהה](../documents/create-document-with-validation.md) ושמרו על אותו מזהה).‬
 
-### 5. אמתו באמצעות שליפה
+### ‫5. אמתו באמצעות שליפה‬
 
 ```http
 POST /Services/ApiService.svc/GetDocumentByApiIdentifier HTTP/1.1

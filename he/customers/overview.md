@@ -48,6 +48,6 @@
 | `ID` מוחזר | ‫שגיאה‬ | ‫משמעות‬ |
 | ---------- | ----- | ------- |
 | `-1` | `CustomerNameExists` (2) | ‫השם כבר קיים (ו-`IsNonUniqueNameCreation` הוא false).‬ |
-| `-2` | `CustomerExternalNumberExists` (31) | `ExtNumber` כבר בשימוש. |
-| `-3` | `CustomerUniqueIdExistsForUser` (78) | `UniqueID` כבר בשימוש. |
-| `-4` | `CustomerGuidExists` (84) | `Guid` כבר בשימוש. |
+| `-2` | `CustomerExternalNumberExists` (31) | ‫`ExtNumber` כבר בשימוש.‬ |
+| `-3` | `CustomerUniqueIdExistsForUser` (78) | ‫`UniqueID` כבר בשימוש.‬ |
+| `-4` | `CustomerGuidExists` (84) | ‫`Guid` כבר בשימוש.‬ |

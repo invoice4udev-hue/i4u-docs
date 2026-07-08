@@ -8,19 +8,19 @@
 | --- | ----- | ----- |
 | `Id` | int | ‫מזהה שורת הלוג.‬ |
 | `Date` | datetime | ‫חותמת זמן.‬ |
-| `LogType` | int | `1` בקשה, `2` תשובה. |
+| `LogType` | int | ‫`1` בקשה, `2` תשובה.‬ |
 | `ClientName` | string | ‫שם הלקוח.‬ |
 | `Amount` | double | ‫הסכום שחויב.‬ |
-| `Currency` | int | `1` שקל, `2` דולר, `3` אירו. |
+| `Currency` | int | ‫`1` שקל, `2` דולר, `3` אירו.‬ |
 | `PaymentNumber` | int | ‫מספר תשלומים.‬ |
-| `CreditNumber` | string | 4 ספרות אחרונות של הכרטיס. |
+| `CreditNumber` | string | ‫4 ספרות אחרונות של הכרטיס.‬ |
 | `ClearingCompany` / `ClearingCompanyName` | int / string | ‫ספק הסליקה.‬ |
 | `IsSuccess` | boolean | ‫תוצאת החיוב.‬ |
 | `ErrorMessage` | string | ‫טקסט השגיאה מהספק בכישלון.‬ |
 | `ClearingConfirmationNumber` | string | ‫מספר אישור/אסמכתא מהספק.‬ |
 | `ClearingTraceId` | string | ‫מזהה מעקב המקשר בקשה↔תשובה.‬ |
 | `PaymentId` | string | ‫אסמכתת התשלום אצל הספק — לשימוש ב[זיכויים](process-api-request-v2.md#refunds).‬ |
-| `IsCredit` | boolean | `true` עבור שורות זיכוי. |
+| `IsCredit` | boolean | ‫`true` עבור שורות זיכוי.‬ |
 | `CreditedTransaction` / `CreditAmount` | bool / double | ‫האם/בכמה חיוב זה זוכה מאוחר יותר.‬ |
 | `IsToken` | boolean | ‫חיוב מבוסס טוקן.‬ |
 | `IsBitPayment` / `IsGooglePay` / `IsApplePay` | boolean | ‫דגלי אמצעי תשלום חלופיים.‬ |
