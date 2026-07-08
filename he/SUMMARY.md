@@ -2,14 +2,14 @@
 
 ## תחילת עבודה
 
-* [ברוכים הבאים ל-API של Invoice4U](getting-started/welcome.md)
+* [ברוכים הבאים](getting-started/welcome.md)
 * [התחלה מהירה](getting-started/quick-start.md)
 * [טיפים וחידודים](getting-started/key-tips.md)
 
 ## אימות
 
 * [סקירת אימות](authentication/overview.md)
-* [אימות עם מפתח ה-API](authentication/is-authenticated.md)
+* [אימות עם מפתח הגישה](authentication/is-authenticated.md)
 
 ## לקוחות
 
@@ -38,8 +38,8 @@
 ## סליקה (תשלומים)
 
 * [סקירת מתודות סליקה](clearing/overview.md)
-* [עיבוד בקשת סליקה (V2)](clearing/process-api-request-v2.md)
-* [Bit, Google Pay ו-Apple Pay](clearing/alternative-payment-methods.md)
+* [ביצוע בקשת סליקה (גרסה 2)](clearing/process-api-request-v2.md)
+* [אמצעי תשלום חלופיים](clearing/alternative-payment-methods.md)
 * [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
 * [לוגים של סליקה](clearing/clearing-logs.md)
 
