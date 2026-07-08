@@ -1,0 +1,48 @@
+# Summary
+
+## תחילת עבודה
+
+* [ברוכים הבאים ל-API של Invoice4U](getting-started/welcome.md)
+* [התחלה מהירה](getting-started/quick-start.md)
+* [טיפים וחידודים](getting-started/key-tips.md)
+
+## אימות
+
+* [סקירת אימות](authentication/overview.md)
+* [אימות עם מפתח ה-API](authentication/is-authenticated.md)
+
+## לקוחות
+
+* [סקירת מתודות לקוחות](customers/overview.md)
+* [יצירת לקוח](customers/create-customer.md)
+* [עדכון לקוח](customers/update-customer.md)
+* [שליפת לקוחות](customers/get-customers.md)
+
+## סניפים
+
+* [סקירת מתודות סניפים](branches/overview.md)
+* [שליפת סניפים](branches/get-branches.md)
+
+## מסמכים
+
+* [סקירת מתודות מסמכים](documents/overview.md)
+* [סוגי מסמכים](documents/document-types.md)
+* [אובייקט המסמך](documents/document-object.md)
+* [יצירת מסמך](documents/create-document.md)
+* [יצירת מסמך עם ולידציית מזהה](documents/create-document-with-validation.md)
+* [חשבוניות זיכוי (מלא וחלקי)](documents/credit-invoices.md)
+* [שליפת מסמך בודד](documents/get-document.md)
+* [חיפוש מסמכים](documents/search-documents.md)
+* [מספרי הקצאה (רשות המסים)](documents/allocation-numbers.md)
+
+## סליקה (תשלומים)
+
+* [סקירת מתודות סליקה](clearing/overview.md)
+* [עיבוד בקשת סליקה (V2)](clearing/process-api-request-v2.md)
+* [Bit, Google Pay ו-Apple Pay](clearing/alternative-payment-methods.md)
+* [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
+* [לוגים של סליקה](clearing/clearing-logs.md)
+
+## רישום משתמשים
+
+* [רישום משתמשים (שותפים)](registration/user-registration.md)
