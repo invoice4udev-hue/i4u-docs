@@ -64,7 +64,7 @@ Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key
 
 ### Support
 
-For integration help, contact Invoice4U support through your account. Include the request payload, the response payload, and the environment (QA/Production) with every report.
+For integration help, contact Invoice4U support through your account. Include the endpoint called, the request payload, the response payload, and the environment (QA/Production) with every report.
 
 ### Next pages
 
