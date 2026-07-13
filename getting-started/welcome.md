@@ -4,6 +4,8 @@ The Invoice4U API lets you create tax-compliant documents (invoices, receipts, c
 
 Use it to automate billing flows, sync your CRM or e-commerce store with Invoice4U, and collect payments with hosted clearing pages, saved card tokens, or standing orders.
 
+The clearing service supports four providers — **UPay**, **Meshulam**, **YaadSarig** and **Cardcom** (`ClearingCompanies` values `6`, `7`, `12`, `15`); the one configured on your account is used automatically. See the [clearing overview](../clearing/overview.md).
+
 ### Get access
 
 1. Create an account at [invoice4u.co.il](https://invoice4u.co.il).

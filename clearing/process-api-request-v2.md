@@ -54,6 +54,8 @@ flowchart LR
 Clearing requires an **active clearing account (terminal)** on your organization, and the customer identifiers below (`FullName`, `Phone`, `Email`) — they are used to authenticate the payer at the clearing terminal and for payment-page identification.
 {% endhint %}
 
+The clearing provider is the one configured on your terminal — one of the four supported companies (`ClearingCompanies`): **UPay (6)**, **Meshulam (7)**, **YaadSarig (12)** or **Cardcom (15)**. The request is identical for all of them; the API routes to your provider automatically.
+
 ### Charge details
 
 | Field | Type | Required | Description |
