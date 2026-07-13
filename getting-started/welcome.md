@@ -58,8 +58,8 @@ Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key
 
 ### Machine-readable resources
 
-* [OpenAPI 3.0 spec (JSON)](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) — the full API surface for code generators, Postman, and AI agents.
-* [Postman collection](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — ready-made requests for every documented endpoint.
+* [OpenAPI 3.0 spec (JSON)](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/invoice4u-openapi.json) — the full API surface for code generators, Postman, and AI agents.
+* [Postman collection](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — ready-made requests for every documented endpoint.
 * AI agents: this site serves [llms.txt](https://invoice4u.gitbook.io/invoice4u-docs/llms.txt), and every page is available as Markdown by appending `.md` to its URL.
 
 ### Support

@@ -69,4 +69,4 @@ POST /Services/ApiService.svc/GetDocumentByApiIdentifier HTTP/1.1
 
 * ‫מחייבים כרטיסים? קראו את [סקירת מתודות הסליקה](../clearing/overview.md).‬
 * ‫לפני עלייה לאוויר, קראו את [הטיפים והחידודים](key-tips.md).‬
-* ‫מעדיפים Postman? הורידו את [אוסף ה-Postman המוכן של Invoice4U](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — או הורידו את [מפרט ה-OpenAPI](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) וייבאו אותו ישירות ל-Postman.‬
+* ‫מעדיפים Postman? הורידו את [אוסף ה-Postman המוכן של Invoice4U](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — או הורידו את [מפרט ה-OpenAPI](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/invoice4u-openapi.json) וייבאו אותו ישירות ל-Postman.‬
