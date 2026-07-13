@@ -18,8 +18,8 @@ flowchart LR
     classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
     classDef page fill:#F5F5F5,stroke:#999,color:#333
 
-    A[Your server:<br/>ProcessApiRequestV2]:::step --> B{Request, auth &<br/>account valid?}:::dec
-    B -- ✗ --> E1[EmptyObjectInRequest 146<br/>UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    A[Your server:<br/>ProcessApiRequestV2]:::step --> B{Request, API key &<br/>terminal valid?}:::dec
+    B -- ✗ --> E1[EmptyObjectInRequest 146<br/>ApiKeyNotInCorrectFormat 303 · UnauthorizedUser 80<br/>ClearingTerminalDoesntExists 96]:::err
     B -- ✓ --> C[ClearingRedirectUrl<br/>returned]:::step
     C --> D[🖥 Customer pays on<br/>hosted page]:::page
     D --> F{Charge OK?}:::dec

@@ -22,12 +22,13 @@ flowchart LR
 
     A[ProcessApiRequestV2]:::step --> B{Request body?}:::dec
     B -- ✗ --> E1[EmptyObjectInRequest 146]:::err
-    B -- ✓ --> C{Auth: ApiKey /<br/>email+password}:::dec
-    C -- ✗ --> E2[UnauthorizedUser 80]:::err
-    C -- ✓ --> D{Active clearing<br/>account?}:::dec
-    D -- ✗ --> E3[ClearingCompanyUndefined 8]:::err
+    B -- ✓ --> C{Invoice4UUserApiKey<br/>valid GUID + recognized?}:::dec
+    C -- "bad format" --> E2a[ApiKeyNotInCorrectFormat 303]:::err
+    C -- "unknown key" --> E2[UnauthorizedUser 80]:::err
+    C -- ✓ --> D{Clearing terminal<br/>configured?}:::dec
+    D -- ✗ --> E3[ClearingTerminalDoesntExists 96]:::err
     D -- ✓ --> F{Customer}:::dec
-    F -- "CustomerId not found" --> E4[ClientIDDoesntExists 37]:::err
+    F -- "name/email/phone unresolvable" --> E4[CustomerNotFound 136]:::err
     F -- "CustomerId ✓" --> H[Customer resolved]:::step
     F -- "IsAutoCreateCustomer" --> G[Find by phone → email<br/>→ create if missing]:::step --> H
     F -- "neither" --> G2[General one-off<br/>customer]:::step --> H
@@ -42,12 +43,16 @@ flowchart LR
 
 ## Request schema — `request` (ApiClearingRequest)
 
-### Authentication (one required)
+### Authentication
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `Invoice4UUserApiKey` | string (GUID) | One of | Recommended. |
-| `Invoice4UUserEmail` + `Invoice4UUserPassword` | string | One of | Credential alternative. |
+| `Invoice4UUserApiKey` | string (GUID) | **Yes** | Your organization API key — required for clearing. |
+| `Invoice4UUserEmail` + `Invoice4UUserPassword` | string | Legacy | Credential alternative for older integrations; new integrations must use the API key. |
+
+{% hint style="warning" %}
+Clearing requires an **active clearing account (terminal)** on your organization, and the customer identifiers below (`FullName`, `Phone`, `Email`) — they are used to authenticate the payer at the clearing terminal and for payment-page identification.
+{% endhint %}
 
 ### Charge details
 
@@ -60,7 +65,8 @@ flowchart LR
 | `Description` | string | No | Charge description (shown on page/document). |
 | `IsQaMode` | boolean | No | `true` when testing against QA. |
 | `OrderIdClientUsage` | string | No | Your order reference, echoed back in callbacks. |
-| `CreditCardCompanyType` | int | No | Card company override. |
+| `CreditCardCompanyType` | int | No | Card brand recorded on the charge/document: `1` Visa, `2` Isracard, `3` MasterCard, `4` AmericanExpress, `5` Diners. |
+| `Platform` | string | No | Free-text platform identifier for your integration; recorded with the charge. |
 
 Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `IsApplePay` flags — see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) for enablement, limitations and errors.
 
@@ -69,9 +75,9 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `CustomerId` | int | Conditional | Existing customer. Its name/email/phone are used for the page and notifications. |
-| `FullName` | string | Conditional | Customer full name (required when no `CustomerId`). |
-| `Phone` | string | Conditional | Customer phone (used for payment-page SMS/identification). |
-| `Email` | string | No | Customer email — receives the document. |
+| `FullName` | string | **Yes** (without `CustomerId`) | Customer full name — used to authenticate the payer at the terminal. |
+| `Phone` | string | **Yes** (without `CustomerId`) | Customer phone — payment-page SMS/identification. |
+| `Email` | string | Recommended | Customer email — terminal identification and document delivery. |
 | `IsAutoCreateCustomer` | boolean | No | Find-or-create a real customer record by phone/email; otherwise the charge uses a general customer. |
 | `IsGeneralClient` | boolean | No (default `true`) | Document is issued to a general (one-off) customer. |
 
@@ -99,7 +105,16 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 
 ### Tokens, standing orders, refunds
 
-See [Tokens & Standing Orders](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`.
+See [Tokens & Standing Orders](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
+
+### Response-only fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `ClearingRedirectUrl` | string | Hosted payment page URL — redirect the customer here. |
+| `PaymentId` | string | Provider payment reference — keep it for refunds. |
+| `DocumentId` / `DocumentNumber` | GUID / long | The auto-created document (when `IsDocCreate`). |
+| `CipherText` / `CipherTextOriginal` | string | Ciphers for the document view/print links. |
 
 ## Example request — hosted page + auto document
 
@@ -151,10 +166,13 @@ Set `Refund: true` and identify the original charge:
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `Refund` | boolean | Yes | Refund mode. |
-| `PaymentId` | string | Provider-dependent | Original payment/transaction reference (required for UPay). |
-| `Sum` | double | Yes | Amount to refund — must not exceed the remaining un-refunded balance. |
+| `PaymentId` | string | Yes | Provider payment reference of the original charge — used to locate the clearing log (`PaymentIDDoesntExists`, 60, when not found). For UPay, `OrderIdClientUsage` is used as a fallback when empty. |
+| `Sum` | double | Yes | Amount to refund. |
 
-Refund constraints: Cardcom refunds are validated against the remaining balance; UPay refunds are possible up to 5 months after the charge (`ClearingErrorRefundTimeExceeded`, 158).
+Refund behavior per provider (from the live implementation):
+
+* **Cardcom** — the refund is validated against the remaining un-refunded balance: if `Sum` exceeds it, the refund is **clamped to the balance** (not rejected); if nothing is left to refund, `CreditAmountExceedsTotal` (155) is returned.
+* **UPay** — refunds are possible up to **5 months** after the charge (`ClearingErrorRefundTimeExceeded`, 158).
 
 ```mermaid
 flowchart LR
@@ -164,9 +182,11 @@ flowchart LR
     classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
 
     A[Refund: true<br/>+ Sum + PaymentId]:::step --> B{Original charge<br/>log found?}:::dec
-    B -- ✗ --> E1[ClearingError 32]:::err
+    B -- ✗ --> E1[PaymentIDDoesntExists 60]:::err
     B -- ✓ --> C{Provider rules}:::dec
-    C -- "Cardcom: Sum > remaining balance" --> E2[ClearingError 32<br/>refund rejected]:::err
+    C -- "Cardcom: Sum > balance" --> C2[Refund clamped to<br/>remaining balance]:::step
+    C2 --> D
+    C -- "Cardcom: balance ≤ 0" --> E2[CreditAmountExceedsTotal 155]:::err
     C -- "UPay: > 5 months old" --> E3[ClearingErrorRefundTimeExceeded 158]:::err
     C -- ✓ --> D[Sync refund<br/>at provider]:::step
     D --> F{Success?}:::dec
@@ -180,16 +200,20 @@ flowchart LR
 | Error (ID) | Meaning |
 | ---------- | ------- |
 | `EmptyObjectInRequest` (146) | Request body missing. |
-| `UnauthorizedUser` (80) | Bad API key / credentials. |
-| `ClearingCompanyUndefined` (8) | No active clearing account, or account misconfigured. |
+| `ApiKeyNotInCorrectFormat` (303) | `Invoice4UUserApiKey` is not a valid GUID. |
+| `UnauthorizedUser` (80) | API key not recognized. |
+| `ClearingTerminalDoesntExists` (96) | No clearing account, or the terminal for your provider is misconfigured (missing terminal/username/password). |
+| `CustomerNotFound` (136) | `CustomerId` sent but name/email/phone could not be resolved. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting flags (e.g. `AddTokenAndCharge` + `IsStandingOrderClearance`). |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Token features not enabled on the terminal. |
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | Standing orders not enabled. |
 | `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | Wallet method not enabled. |
 | `ClientIDDoesntExists` (37) | `CustomerId` not found. |
 | `NumberOfItemsIsNotEqual` (24) | `DocItem*` pipe-lists have different lengths. |
+| `PaymentIDDoesntExists` (60) | Refund: original charge log not found for `PaymentId`. |
+| `CreditAmountExceedsTotal` (155) | Refund: nothing left to refund on the original charge. |
 | `ClearingError` (32) | Charge declined / provider error — details in `Paramters`. |
-| `ClearingErrorRefundTimeExceeded` (158) | Refund window exceeded. |
+| `ClearingErrorRefundTimeExceeded` (158) | Refund window exceeded (UPay: 5 months). |
 
 ## Try it
 
