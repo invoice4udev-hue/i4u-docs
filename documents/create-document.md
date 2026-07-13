@@ -98,6 +98,25 @@ On QA the PDF links point to `newviewqa.invoice4u.co.il`; on production to `newv
 * Organizations connected to **2Sign** with signable document flows get the document sent as a signing task instead of a plain email.
 * Duplicate window: identical document within `ApiDuplicityTimeValidation` seconds (default 60) → `DocumentAlreadyCreated` (134).
 
+### Flow — InvoiceReceipt totals & AutoFix
+
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[InvoiceReceipt:<br/>Items + Payments]:::step --> B["paymentsTotal =<br/>Σ Payments + Deduction"]:::step
+    B --> C{"paymentsTotal == itemsTotal?<br/>(2 decimals)"}:::dec
+    C -- ✓ --> D[Create document]:::cb
+    C -- "±0.01 decimal artifact" --> D
+    C -- ✗ --> E{"diff == ±0.01 or<br/>AutoFixPaymentsMismatchItems?"}:::dec
+    E -- ✓ --> F["Adjustment item added<br/>(AutoFixMismatchItemName) → recalc"]:::step
+    F --> C
+    E -- ✗ --> G[PaymentAmountDoesntMatchItemsAmount 56<br/>+ OpenInfo.PaymentMismatchDelta]:::err
+```
+
 ## Common errors
 
 | Error (ID) | Meaning |

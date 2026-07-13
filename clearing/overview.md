@@ -10,18 +10,23 @@ The API works with the clearing provider configured on your account — includin
 
 Most charges use a hosted payment page:
 
-```
-Your server                    Invoice4U                        Customer
-    │  ProcessApiRequestV2         │                               │
-    ├──────────────────────────────►                               │
-    │  ClearingRedirectUrl         │                               │
-    ◄──────────────────────────────┤                               │
-    │  redirect customer ──────────┼──────────────────────────────►│
-    │                              │   customer pays on the page   │
-    │                              ◄────────────────────────────────
-    │   CallBackUrl notification   │                               │
-    ◄──────────────────────────────┤                               │
-    │                              │  (optional) document created  │
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[Your server:<br/>ProcessApiRequestV2]:::step --> B{Request, auth &<br/>account valid?}:::dec
+    B -- ✗ --> E1[EmptyObjectInRequest 146<br/>UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    B -- ✓ --> C[ClearingRedirectUrl<br/>returned]:::step
+    C --> D[🖥 Customer pays on<br/>hosted page]:::page
+    D --> F{Charge OK?}:::dec
+    F -- ✓ --> G[Document created<br/>if IsDocCreate]:::step
+    F -- ✗ --> H
+    G --> H[POST CallBackUrl<br/>server-to-server result]:::cb
+    H --> I[Customer redirected<br/>to ReturnUrl]:::cb
 ```
 
 1. Call [`ProcessApiRequestV2`](process-api-request-v2.md) with the amount, customer details and flags.

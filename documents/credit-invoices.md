@@ -68,6 +68,36 @@ $$0 < \text{ReceiptAmount} \le \text{Total} - \text{CreditAmount}$$
 
 `CreditAmount` is the sum of all credits already applied to that document. Exceeding the remaining balance (or sending `0`/negative) → `DocumentReceiptAmountOutOfRange`.
 
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[DocumentType 4]:::step --> B{Invoices refs<br/>supplied?}:::dec
+    B -- ✗ --> C{Items or<br/>Payments?}:::dec
+    C -- none --> E1[InvoiceCreditMustHaveRefDocuments 57]:::err
+    C -- ✓ --> D[Standalone credit]:::cb
+    B -- ✓ --> F{DocumentReffType<br/>1 or 3?}:::dec
+    F -- ✗ --> E2[DocumentReffTypeNotInRange 53]:::err
+    F -- ✓ --> G[Per referenced row]:::step
+    G --> H{Exists in org?}:::dec
+    H -- ✗ --> E3[DocumentIDDoesntExists 48]:::err
+    H -- ✓ --> I{Customer matches?}:::dec
+    I -- ✗ --> E4[ReceiptClientNameDoesntMatch<br/>InvoiceClientName 52]:::err
+    I -- ✓ --> J{Type matches ReffType?}:::dec
+    J -- ✗ --> E5[ReceiptDocumentReffTypeDoesntMatch<br/>InvoiceDocumentType 54]:::err
+    J -- ✓ --> K{Not fully credited?}:::dec
+    K -- ✗ --> E6[DocumentStatusInValid 49]:::err
+    K -- ✓ --> L{"0 < ReceiptAmount ≤<br/>Total − CreditAmount"}:::dec
+    L -- ✗ --> E7[DocumentReceiptAmountOutOfRange 50]:::err
+    L -- ✓ --> M[Credit created]:::cb
+    M --> N{Running credit<br/>== Total?}:::dec
+    N -- ✓ --> O[Original → FullyCredited 3]:::step
+    N -- ✗ --> P[Original → PartiallyCredited 4]:::step
+```
+
 ## What happens after a successful credit
 
 * The referenced document's `CreditAmount` increases by your `ReceiptAmount`.
@@ -91,9 +121,9 @@ $$0 < \text{ReceiptAmount} \le \text{Total} - \text{CreditAmount}$$
 | ---------- | ------- |
 | `InvoiceCreditMustHaveRefDocuments` (57) | No references, items or payments supplied. |
 | `DocumentReffTypeNotInRange` (53) | `DocumentReffType` is not Invoice/InvoiceReceipt. |
-| `DocumentIDDoesntExists` | Referenced GUID not found in your organization. |
-| `ReceiptClientNameDoesntMatchInvoiceClientName` | Customer mismatch between credit and referenced document. |
-| `ReceiptDocumentReffTypeDoesntMatchInvoiceDocumentType` | Referenced document's type ≠ `DocumentReffType`. |
+| `DocumentIDDoesntExists` (48) | Referenced GUID not found in your organization. |
+| `ReceiptClientNameDoesntMatchInvoiceClientName` (52) | Customer mismatch between credit and referenced document. |
+| `ReceiptDocumentReffTypeDoesntMatchInvoiceDocumentType` (54) | Referenced document's type ≠ `DocumentReffType`. |
 | `DocumentStatusInValid` (49) | Referenced document already fully credited. |
 | `DocumentReceiptAmountOutOfRange` (50) | `ReceiptAmount` ≤ 0 or exceeds the remaining creditable balance. |
 

@@ -27,9 +27,45 @@ Opens a hosted page that captures the card and stores a token, **without chargin
 
 Redirect the customer to the returned `ClearingRedirectUrl`. The token is stored against the customer (`CustomerId` recommended so the token is retrievable later).
 
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2<br/>AddToken]:::step --> B{Tokens enabled<br/>on terminal?}:::dec
+    B -- "✗ / expired" --> E1[ApiTokenizationNotApproved<br/>InClearingTerminal 309]:::err
+    B -- ✓ --> C[🖥 Card capture page<br/>NO charge]:::page
+    C --> D{Capture OK?}:::dec
+    D -- ✓ --> F[Token stored for CustomerId —<br/>replaces previous token]:::step
+    F --> G[CallBackUrl notified]:::cb
+    D -- ✗ --> H[Failure posted<br/>to CallBackUrl]:::err
+```
+
 ## Save + charge — `AddTokenAndCharge`
 
 Same as above but also charges `Sum` immediately. Cannot be combined with `IsStandingOrderClearance` (`ApiBadRequestChargeMethodMustBeSelected`, 319).
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2<br/>AddTokenAndCharge]:::step --> B{Also<br/>IsStandingOrderClearance?}:::dec
+    B -- ✓ --> E1[ApiBadRequestChargeMethod<br/>MustBeSelected 319]:::err
+    B -- ✗ --> C{Tokens enabled?}:::dec
+    C -- ✗ --> E2[ApiTokenizationNotApproved<br/>InClearingTerminal 309]:::err
+    C -- ✓ --> D[🖥 Capture + charge page<br/>Sum charged]:::page
+    D --> F{Result}:::dec
+    F -- "token + charge ✓" --> G[Token stored · CallBackUrl<br/>doc if IsDocCreate]:::cb
+    F -- "token ✓, charge ✗" --> E3[ApiTokenWasCreatedChargeFailed 313<br/>token kept]:::err
+    F -- "capture ✗" --> E4[Failure posted<br/>to CallBackUrl]:::err
+```
 
 ## Charge a saved token — `ChargeWithToken`
 
@@ -49,7 +85,23 @@ Server-to-server, synchronous — no redirect:
 }
 ```
 
-The stored token for the customer is resolved automatically. Exactly one token must exist for the customer — otherwise `ApiTokenDoesntExistForThatCustomer` (304). On success the response carries the confirmation and, with `IsDocCreate`, the created document fields. If the token was created but a follow-up charge failed: `ApiTokenWasCreatedChargeFailed` (313).
+The stored token for the customer is resolved automatically. A stored token must exist for the customer — otherwise `ApiTokenDoesntExistForThatCustomer` (304). Saving a new card for the customer **replaces** the previous token, so at most one token is kept per customer. On success the response carries the confirmation and, with `IsDocCreate`, the created document fields. If the token was created but a follow-up charge failed: `ApiTokenWasCreatedChargeFailed` (313).
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[ProcessApiRequestV2<br/>ChargeWithToken]:::step --> B{Stored token found<br/>for customer?}:::dec
+    B -- ✗ --> E1[ApiTokenDoesntExist<br/>ForThatCustomer 304]:::err
+    B -- ✓ --> C[Sync charge at provider<br/>no redirect]:::step
+    C --> D{Charge OK?}:::dec
+    D -- ✓ --> F[Log + confirmation<br/>+ doc if IsDocCreate]:::step
+    F --> G[Result inline<br/>in response]:::cb
+    D -- ✗ --> H[ClearingError 32<br/>in response]:::err
+```
 
 ## Standing order — `IsStandingOrderClearance`
 
@@ -79,6 +131,29 @@ Sets up a recurring monthly charge via the hosted page:
     "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring"
   }
 }
+```
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2<br/>IsStandingOrderClearance]:::step --> B{Standing-order<br/>request valid?}:::dec
+    B -- ✗ --> E1[ApiStandingOrderDurationNotFilled 301<br/>ApiStandingOrderDocSubjectNotFilled 302<br/>ApiStandingOrderCallbackurlInvalid 318<br/>ApiStandingOrderNotApprovedInClearingTerminal 310]:::err
+    B -- ✓ --> C[🖥 Setup page — card<br/>captured as token]:::page
+    C --> D{First charge OK?<br/>FirstChargeAmount override}:::dec
+    D -- ✗ --> E2[Failure posted<br/>to callback]:::err
+    D -- ✓ --> L
+    subgraph L[🔁 Monthly × StandingOrderDuration]
+        direction LR
+        M[Charge token]:::step --> N{OK?}:::dec
+        N -- ✓ --> O[Create doc]:::step --> P[POST StandingOrder<br/>CallBackUrl]:::cb
+        N -- ✗ --> Q[Failure posted<br/>to callback]:::err
+        P --> R[Next month]:::step --> M
+    end
 ```
 
 ## Errors

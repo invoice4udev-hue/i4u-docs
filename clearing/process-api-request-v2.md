@@ -10,6 +10,36 @@ The main clearing endpoint. Creates a hosted payment page, charges a saved token
 | **Path** | `/ProcessApiRequestV2` |
 | **Response** | The same `ApiClearingRequest` object, enriched with results (`ClearingRedirectUrl`, `PaymentId`, `DocumentNumber`, …) — check `Errors` first |
 
+## Flow — standard charge
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2]:::step --> B{Request body?}:::dec
+    B -- ✗ --> E1[EmptyObjectInRequest 146]:::err
+    B -- ✓ --> C{Auth: ApiKey /<br/>email+password}:::dec
+    C -- ✗ --> E2[UnauthorizedUser 80]:::err
+    C -- ✓ --> D{Active clearing<br/>account?}:::dec
+    D -- ✗ --> E3[ClearingCompanyUndefined 8]:::err
+    D -- ✓ --> F{Customer}:::dec
+    F -- "CustomerId not found" --> E4[ClientIDDoesntExists 37]:::err
+    F -- "CustomerId ✓" --> H[Customer resolved]:::step
+    F -- "IsAutoCreateCustomer" --> G[Find by phone → email<br/>→ create if missing]:::step --> H
+    F -- "neither" --> G2[General one-off<br/>customer]:::step --> H
+    H --> I{IsDocCreate +<br/>manual items valid?}:::dec
+    I -- ✗ --> E5[NumberOfItemsIsNotEqual 24]:::err
+    I -- ✓ --> J[Clearing log<br/>request row]:::step
+    J --> K[🖥 Hosted payment page<br/>ClearingRedirectUrl]:::page
+    K --> L{Charge OK?}:::dec
+    L -- ✓ --> M[Doc if IsDocCreate<br/>+ CallBackUrl + ReturnUrl]:::cb
+    L -- ✗ --> N[ClearingError 32<br/>posted to CallBackUrl]:::err
+```
+
 ## Request schema — `request` (ApiClearingRequest)
 
 ### Authentication (one required)
@@ -125,6 +155,25 @@ Set `Refund: true` and identify the original charge:
 | `Sum` | double | Yes | Amount to refund — must not exceed the remaining un-refunded balance. |
 
 Refund constraints: Cardcom refunds are validated against the remaining balance; UPay refunds are possible up to 5 months after the charge (`ClearingErrorRefundTimeExceeded`, 158).
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[Refund: true<br/>+ Sum + PaymentId]:::step --> B{Original charge<br/>log found?}:::dec
+    B -- ✗ --> E1[ClearingError 32]:::err
+    B -- ✓ --> C{Provider rules}:::dec
+    C -- "Cardcom: Sum > remaining balance" --> E2[ClearingError 32<br/>refund rejected]:::err
+    C -- "UPay: > 5 months old" --> E3[ClearingErrorRefundTimeExceeded 158]:::err
+    C -- ✓ --> D[Sync refund<br/>at provider]:::step
+    D --> F{Success?}:::dec
+    F -- ✓ --> G[Original log marked credited<br/>CreditAmount updated]:::step
+    G --> H[Result inline in response<br/>no redirect]:::cb
+    F -- ✗ --> E4[ClearingError 32<br/>in Errors list]:::err
+```
 
 ## Common errors
 

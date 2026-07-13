@@ -25,6 +25,31 @@ Documents are the core of the Invoice4U API: invoices, receipts, invoice-receipt
 4. `POST /CreateDocument`.
 5. Check `Errors`; on success, use the returned `DocumentNumber`, `ID` and the `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields.
 
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[CreateDocument]:::step --> B{Token valid?}:::dec
+    B -- ✗ --> E1[UnauthorizedUser 80]:::err
+    B -- ✓ --> C[Defaults applied: IssueDate · TaxPercentage ·<br/>Currency · ConversionRate · BranchID · Language]:::step
+    C --> D{Validations}:::dec
+    D -- "type / customer" --> E2[DocumentTypeNotInRange 33<br/>ClientDoesntExists 7 · ClientIDDoesntExists 37]:::err
+    D -- items --> E3[DocumentItemsNotSpecified 34 · DocumentItemMissingName 39<br/>DocumentItemQuantityCannotBeZero 40 · DocumentItemPriceCannotBeZero 41]:::err
+    D -- payments --> E4[PaymentsNotSpecified 45 · PaymentDateMissing 46<br/>PaymentAmountCannotBeZero 47 · PaymentTypeOutOfRange 51]:::err
+    D -- "date / quota" --> E5[InvalidDateRange 3<br/>NotEnoughDocuments 65 · NotEnoughCredits 18]:::err
+    D -- ✓ --> F{Duplicate within<br/>ApiDuplicityTimeValidation?}:::dec
+    F -- ✓ --> E6[DocumentAlreadyCreated 134]:::err
+    F -- ✗ --> G[Created: legal DocumentNumber ·<br/>totals computed server-side]:::step
+    G --> H[Ciphers → PrintOriginalPDFLink /<br/>PrintCertifiedCopyPDFLink]:::step
+    H --> I{Delivery}:::dec
+    I -- AssociatedEmails --> J[Email — or 2Sign<br/>signing task]:::cb
+    I -- SmsMessages --> K[SMS with link]:::cb
+    I --> L[Document in response]:::cb
+```
+
 ### Duplicate protection
 
 Two mechanisms prevent double-billing when your system retries:

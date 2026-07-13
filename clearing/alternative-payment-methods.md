@@ -40,6 +40,48 @@ Content-Type: application/json
 
 The flow is the hosted-page flow: redirect the customer to the returned `ClearingRedirectUrl`, where they complete the payment in the wallet app / payment sheet.
 
+## Flow — Bit
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2<br/>IsBitPayment]:::step --> B{Auth + account OK?}:::dec
+    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    B -- ✓ --> C{Terminal<br/>supports Bit?}:::dec
+    C -- ✗ --> E2[ClearingCompanyUndefined 8]:::err
+    C -- ✓ --> D[🖥 Bit page — QR /<br/>app handoff]:::page
+    D --> F[Customer approves<br/>in Bit app]:::step
+    F --> G{Payment OK?}:::dec
+    G -- ✓ --> H[CallBackUrl + doc if IsDocCreate<br/>log flagged IsBitPayment]:::cb
+    G -- ✗ --> I[ClearingError 32<br/>posted to CallBackUrl]:::err
+```
+
+## Flow — Google Pay / Apple Pay
+
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[ProcessApiRequestV2<br/>IsGooglePay / IsApplePay]:::step --> B{Auth + account OK?}:::dec
+    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    B -- ✓ --> C{Wallet enabled<br/>on account?}:::dec
+    C -- "GPay off" --> E2[ApiGooglePayNotAllowedForUser 316]:::err
+    C -- "APay off" --> E3[ApiApplePayNotAllowedForUser 317]:::err
+    C -- ✓ --> D[🖥 Wallet payment sheet<br/>single payment only]:::page
+    D --> F{Payment OK?}:::dec
+    F -- ✓ --> G[CallBackUrl + doc if IsDocCreate<br/>log flagged IsGooglePay/IsApplePay]:::cb
+    F -- ✗ --> H[ClearingError 32<br/>posted to CallBackUrl]:::err
+```
+
 ## Limitations
 
 * **Account enablement required.** Google Pay and Apple Pay must be activated on your Invoice4U account — otherwise the request is rejected before reaching the provider (`ApiGooglePayNotAllowedForUser` 316 / `ApiApplePayNotAllowedForUser` 317).

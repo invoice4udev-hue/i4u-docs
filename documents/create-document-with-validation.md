@@ -64,6 +64,27 @@ When `ApiIdentifier` already exists, the response is the **existing** document p
 
 Treat error `134` with a returned `DocumentNumber > 0` as success-idempotent: the document already exists, no action needed.
 
+## Retry flow
+
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[Send with your<br/>ApiIdentifier]:::step --> B{Response?}:::dec
+    B -- "Errors empty" --> G[Created ✓]:::cb
+    B -- "DocumentAlreadyCreated 134<br/>+ DocumentNumber > 0" --> E[Already exists —<br/>use it, don't retry]:::cb
+    B -- "timeout / TimeoutDB 147" --> C[GetDocumentByApiIdentifier]:::step
+    C --> D{Document exists?}:::dec
+    D -- ✓ --> E
+    D -- ✗ --> F[Retry CreateDocumentWithIdentifierValidation<br/>SAME ApiIdentifier]:::step
+    F --> B
+    B -- "other error" --> H[Fix request →<br/>retry same identifier]:::err
+    H --> F
+```
+
 ## Errors
 
 All [Create a Document errors](create-document.md#common-errors) apply, plus the duplicate behavior above.

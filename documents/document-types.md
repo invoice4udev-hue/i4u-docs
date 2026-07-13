@@ -32,6 +32,28 @@ The `DocumentType` field on every document is a numeric enum:
 | SupplierInvoiceToInventory (10) | **Required** (inventory items) | — | — |
 | PurchaseOrder (13) | **Required** | — | — |
 
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    subgraph R[Receipt — type 2]
+        A[Payments required —<br/>PaymentsNotSpecified 45]:::step --> B{References to<br/>invoices?}:::dec
+        B -- ✓ --> C{"Σ payments == Σ ReceiptAmount<br/>or CloseReceipt?"}:::dec
+        C -- ✗ --> E1[PaymentAmountDoesntMatch<br/>ReffDocumentsAmount 55]:::err
+        C -- ✓ --> D[Create]:::cb
+        B -- ✗ --> D
+    end
+    subgraph P[Deposits — type 9]
+        F[BankAccount required —<br/>BankAccountMissing 58 · BankAccountDoesntExists 59]:::step --> G[Payments = existing IDs —<br/>PaymentIDDoesntExists 60]:::step
+        G --> H{Same payment type ·<br/>not already deposited?}:::dec
+        H -- ✗ --> E2[CannotCreateDepositWithDifferentPaymentTypes 61<br/>CannotCreateDepositForAPaymentMoreThanOnce 62]:::err
+        H -- ✓ --> I["Create — Total = Σ payments"]:::cb
+    end
+```
+
 ### Referenced-document rules (`DocumentReffType`)
 
 When creating a document against existing documents (`Invoices` array), `DocumentReffType` must be one of the allowed source types:
