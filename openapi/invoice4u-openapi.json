@@ -588,6 +588,265 @@
         }
       }
     },
+    "/CreateOrUpdateDraftDocument": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "CreateOrUpdateDraftDocument",
+        "summary": "Create or update a draft document",
+        "description": "Saves an editable draft: no legal number, no quota usage, relaxed validation. Sending an existing draft ID updates it. IsPreviewDocument targets the organization's single preview slot.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["doc", "token"],
+                "properties": {
+                  "doc": { "$ref": "#/components/schemas/Document" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The saved draft.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CreateOrUpdateDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetDraftDocument": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "GetDraftDocument",
+        "summary": "Get a draft document by GUID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["docId", "token"],
+                "properties": {
+                  "docId": { "type": "string", "format": "uuid" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The draft document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetDraftDocuments": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "GetDraftDocuments",
+        "summary": "Search draft documents",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["dr", "token"],
+                "properties": {
+                  "dr": { "$ref": "#/components/schemas/DocumentsRequest" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Matching drafts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetDraftDocumentsResult": { "$ref": "#/components/schemas/DocumentCollection" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CheckIfDraftExistsByDocumentType": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "CheckIfDraftExistsByDocumentType",
+        "summary": "Check whether a draft exists for a document type",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["docType", "token"],
+                "properties": {
+                  "docType": { "type": "integer" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "True/false; null when the token is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CheckIfDraftExistsByDocumentTypeResult": { "type": "boolean", "nullable": true }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DeleteDraftDocument": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "DeleteDraftDocument",
+        "summary": "Delete a draft document",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["docId", "token"],
+                "properties": {
+                  "docId": { "type": "string", "format": "uuid" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result envelope; DraftDocumentDeleteError (135) on failure.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "DeleteDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DeleteDraftDocuments": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "DeleteDraftDocuments",
+        "summary": "Delete multiple draft documents",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["docIds", "token"],
+                "properties": {
+                  "docIds": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result envelope; DraftDocumentDeleteError (135) per failed id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "DeleteDraftDocumentsResult": { "$ref": "#/components/schemas/Document" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetPreviewDocumentByToken": {
+      "post": {
+        "tags": ["Documents"],
+        "operationId": "GetPreviewDocumentByToken",
+        "summary": "Get the organization's preview document",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The preview document (saved with IsPreviewDocument: true).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetPreviewDocumentByTokenResult": { "$ref": "#/components/schemas/Document" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/FetchAllocationNumber": {
       "post": {
         "tags": ["Documents"],

@@ -33,6 +33,7 @@
 * [חשבוניות זיכוי (מלא וחלקי)](documents/credit-invoices.md)
 * [שליפת מסמך בודד](documents/get-document.md)
 * [חיפוש מסמכים](documents/search-documents.md)
+* [טיוטות מסמכים](documents/draft-documents.md)
 * [מספרי הקצאה (רשות המסים)](documents/allocation-numbers.md)
 
 ## סליקה ותשלומים (Clearing Payments)

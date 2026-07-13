@@ -10,6 +10,7 @@
 | `CreateDocumentWithIdentifierValidation` | ‫[יצירה עם ולידציית מזהה](create-document-with-validation.md)‬ |
 | `GetDocument`, `GetDocumentByNumber`, `GetDocumentByApiIdentifier`, `IsDocumentExistsByApiIdentifier` | ‫[שליפת מסמך בודד](get-document.md)‬ |
 | `GetDocuments` | ‫[חיפוש מסמכים](search-documents.md)‬ |
+| `CreateOrUpdateDraftDocument`, `GetDraftDocument`, `GetDraftDocuments`, `DeleteDraftDocument`, `DeleteDraftDocuments`, `CheckIfDraftExistsByDocumentType`, `GetPreviewDocumentByToken` | ‫[טיוטות מסמכים](draft-documents.md)‬ |
 | `FetchAllocationNumber`, `UpdateAllocationNumber` | ‫[מספרי הקצאה (רשות המסים)](allocation-numbers.md)‬ |
 
 ### ‫עמודי עזר‬

@@ -10,6 +10,7 @@ Documents are the core of the Invoice4U API: invoices, receipts, invoice-receipt
 | `CreateDocumentWithIdentifierValidation` | [Create with Identifier Validation](create-document-with-validation.md) |
 | `GetDocument`, `GetDocumentByNumber`, `GetDocumentByApiIdentifier`, `IsDocumentExistsByApiIdentifier` | [Get a Single Document](get-document.md) |
 | `GetDocuments` | [Search Documents](search-documents.md) |
+| `CreateOrUpdateDraftDocument`, `GetDraftDocument`, `GetDraftDocuments`, `DeleteDraftDocument`, `DeleteDraftDocuments`, `CheckIfDraftExistsByDocumentType`, `GetPreviewDocumentByToken` | [Draft Documents](draft-documents.md) |
 | `FetchAllocationNumber`, `UpdateAllocationNumber` | [Allocation Numbers (Israel Tax)](allocation-numbers.md) |
 
 ### Reference pages
