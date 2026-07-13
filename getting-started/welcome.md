@@ -56,6 +56,12 @@ Most response objects inherit a common envelope. Always check `Errors` before us
 
 Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key-tips.md) (also available [in Hebrew](key-tips-hebrew.md)).
 
+### Machine-readable resources
+
+* [OpenAPI 3.0 spec (JSON)](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) — the full API surface for code generators, Postman, and AI agents.
+* [Postman collection](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — ready-made requests for every documented endpoint.
+* AI agents: this site serves [llms.txt](https://invoice4u.gitbook.io/invoice4u-docs/llms.txt), and every page is available as Markdown by appending `.md` to its URL.
+
 ### Support
 
 For integration help, contact Invoice4U support through your account. Include the request payload, the response payload, and the environment (QA/Production) with every report.

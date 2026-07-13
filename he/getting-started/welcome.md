@@ -56,6 +56,12 @@ Content-Type: application/json
 
 ‫עברו על [ההתחלה המהירה](quick-start.md) ואז קראו את [הטיפים והחידודים](key-tips.md).‬
 
+### ‫משאבים קריאים למכונה‬
+
+* ‫[מפרט OpenAPI 3.0 בפורמט JSON](https://drive.google.com/uc?export=download&id=1lkmSOUi5S1smYy61EVoXObqpV96fBu2F) — כל ממשק ה-API עבור מחוללי קוד, Postman וסוכני AI.‬
+* ‫[אוסף Postman](https://drive.google.com/uc?export=download&id=1qiCp0kNrWvgOGEzrqoCTrnAfoFLdCORp) — בקשות מוכנות לכל מתודה מתועדת.‬
+* ‫סוכני AI: האתר מגיש [llms.txt](https://invoice4u.gitbook.io/invoice4u-docs/llms.txt), וכל עמוד זמין כ-Markdown על ידי הוספת `.md` לכתובת שלו.‬
+
 ### ‫תמיכה‬
 
 ‫לעזרה באינטגרציה, פנו לתמיכת Invoice4U דרך החשבון שלכם. צרפו לכל פנייה את גוף הבקשה, גוף התשובה והסביבה (QA/פרודקשן).‬
