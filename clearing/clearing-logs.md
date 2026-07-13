@@ -14,7 +14,7 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 | `Currency` | int | `1` NIS, `2` USD, `3` EUR. |
 | `PaymentNumber` | int | Number of installments. |
 | `CreditNumber` | string | Last 4 card digits. |
-| `ClearingCompany` / `ClearingCompanyName` | int / string | Clearing provider (`ClearingCompanies`): 1 Tranzilla, 2 ZCredit, 3 Pelecard, 4 ICreditInvoice4U, 5 ICreditUPay, 6 UPay, 7 Meshulam, 8 VisaCal, 9 TranzillaIframe, 10 Payme, 11 Isracard, 12 YaadSarig, 13 Verifone, 14 Paypal, 15 Cardcom. |
+| `ClearingCompany` / `ClearingCompanyName` | int / string | Clearing provider (`ClearingCompanies`): 6 UPay, 7 Meshulam, 12 YaadSarig, 15 Cardcom. |
 | `IsSuccess` | boolean | Charge result. |
 | `ErrorMessage` | string | Provider error text on failure. |
 | `ClearingConfirmationNumber` | string | Provider confirmation/auth number. |
