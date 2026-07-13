@@ -939,6 +939,7 @@
                 "request": {
                   "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
                   "Sum": 117.0,
+                  "CreditCardCompanyType": 7,
                   "Currency": "NIS",
                   "Type": 1,
                   "FullName": "Israel Israeli",
@@ -1368,12 +1369,13 @@
           { "$ref": "#/components/schemas/CommonObject" },
           {
             "type": "object",
-            "required": ["Sum"],
+            "required": ["Sum", "CreditCardCompanyType"],
             "properties": {
               "Invoice4UUserApiKey": { "type": "string", "format": "uuid", "nullable": true, "description": "Your organization API key — the only supported authentication for clearing. Malformed GUID = ApiKeyNotInCorrectFormat (303); unknown key = UnauthorizedUser (80)." },
               "Invoice4UUserEmail": { "type": "string", "nullable": true, "description": "Legacy — disabled. Email+password resolution is no longer performed; authenticate with Invoice4UUserApiKey." },
               "Invoice4UUserPassword": { "type": "string", "format": "password", "nullable": true, "description": "Legacy — disabled." },
               "Sum": { "type": "number", "format": "double", "description": "Amount to charge/refund." },
+              "CreditCardCompanyType": { "type": "integer", "description": "Clearing company type (ClearingCompanies): 6 UPay, 7 Meshulam, 12 YaadSarig, 15 Cardcom — must match the provider configured on your terminal.", "enum": [6, 7, 12, 15] },
               "Currency": { "type": "string", "description": "NIS (default), USD, EUR.", "example": "NIS" },
               "Type": { "type": "integer", "description": "1 Regular (default), 2 Payments, 3 CreditPayments, 4 Refund.", "enum": [1, 2, 3, 4] },
               "PaymentsNum": { "type": "integer", "description": "Installments when Type is 2/3." },

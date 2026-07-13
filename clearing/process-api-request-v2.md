@@ -61,6 +61,7 @@ The clearing provider is the one configured on your terminal — one of the four
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `Sum` | double | **Yes** | Amount to charge. |
+| `CreditCardCompanyType` | int | **Yes** | Your clearing company type (`ClearingCompanies`): `6` UPay, `7` Meshulam, `12` YaadSarig, `15` Cardcom — must match the provider configured on your terminal. |
 | `Currency` | string | No | `"NIS"` (default), `"USD"`, `"EUR"`. |
 | `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments, `4` Refund. |
 | `PaymentsNum` | int | No | Number of installments when `Type` is 2/3. |
