@@ -4,7 +4,22 @@ The clearing API charges credit cards (and Bit / Google Pay / Apple Pay) through
 
 ### Supported clearing companies
 
-The API works with the clearing provider configured on your account — including **Meshulam**, **Cardcom**, **UPay** and **YaadSarig**. The flow is identical from your side; the API routes to your provider.
+The API works with the clearing provider configured on your account. The provider is identified by the `ClearingCompanies` enum — you'll see these values in [clearing logs](clearing-logs.md) (`ClearingCompany`):
+
+| Value | Company | Value | Company |
+| ----- | ------- | ----- | ------- |
+| `1` | Tranzilla | `9` | TranzillaIframe |
+| `2` | ZCredit | `10` | Payme |
+| `3` | Pelecard | `11` | Isracard |
+| `4` | ICreditInvoice4U | `12` | YaadSarig |
+| `5` | ICreditUPay | `13` | Verifone |
+| `6` | UPay | `14` | Paypal |
+| `7` | Meshulam | `15` | Cardcom |
+| `8` | VisaCal | | |
+
+{% hint style="info" %}
+`ProcessApiRequestV2` routes hosted-page/token/standing-order/refund flows for **UPay (6), Meshulam (7), YaadSarig (12) and Cardcom (15)**. Other providers are served through the legacy clearing endpoints. The flow is identical from your side — the API routes to your provider.
+{% endhint %}
 
 ### The hosted-page flow
 

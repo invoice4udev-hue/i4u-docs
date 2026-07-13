@@ -1,77 +1,76 @@
-# ‫ביצוע בקשת סליקה (גרסה 2)‬
+﻿# ג€«׳‘׳™׳¦׳•׳¢ ׳‘׳§׳©׳× ׳¡׳׳™׳§׳” (׳’׳¨׳¡׳” 2)ג€¬
 
-‫מתודת הסליקה המרכזית. יוצרת דף תשלום מתארח, מחייבת טוקן שמור, או מזכה חיוב קודם — ואופציונלית יוצרת את המסמך המתאים.‬
+ג€«׳׳×׳•׳“׳× ׳”׳¡׳׳™׳§׳” ׳”׳׳¨׳›׳–׳™׳×. ׳™׳•׳¦׳¨׳× ׳“׳£ ׳×׳©׳׳•׳ ׳׳×׳׳¨׳—, ׳׳—׳™׳™׳‘׳× ׳˜׳•׳§׳ ׳©׳׳•׳¨, ׳׳• ׳׳–׳›׳” ׳—׳™׳•׳‘ ׳§׳•׳“׳ ג€” ׳•׳׳•׳₪׳¦׳™׳•׳ ׳׳™׳× ׳™׳•׳¦׳¨׳× ׳׳× ׳”׳׳¡׳׳ ׳”׳׳×׳׳™׳.ג€¬
 
-## ‫מתודה‬
+## ג€«׳׳×׳•׳“׳”ג€¬
 
 | | |
 | - | - |
-| ‫**מתודה**‬ | `POST` |
-| ‫**נתיב**‬ | `/ProcessApiRequestV2` |
-| ‫**תשובה**‬ | ‫אותו אובייקט `ApiClearingRequest`, מועשר בתוצאות (`ClearingRedirectUrl`, `PaymentId`, `DocumentNumber`, …) — בדקו את `Errors` תחילה‬ |
+| ג€«**׳׳×׳•׳“׳”**ג€¬ | `POST` |
+| ג€«**׳ ׳×׳™׳‘**ג€¬ | `/ProcessApiRequestV2` |
+| ג€«**׳×׳©׳•׳‘׳”**ג€¬ | ג€«׳׳•׳×׳• ׳׳•׳‘׳™׳™׳§׳˜ `ApiClearingRequest`, ׳׳•׳¢׳©׳¨ ׳‘׳×׳•׳¦׳׳•׳× (`ClearingRedirectUrl`, `PaymentId`, `DocumentNumber`, ג€¦) ג€” ׳‘׳“׳§׳• ׳׳× `Errors` ׳×׳—׳™׳׳”ג€¬ |
 
-## ‫סכימת הבקשה — `request` (ApiClearingRequest)‬
+## ג€«׳¡׳›׳™׳׳× ׳”׳‘׳§׳©׳” ג€” `request` (ApiClearingRequest)ג€¬
 
-### ‫אימות (אחד נדרש)‬
+### ג€«׳׳™׳׳•׳× (׳׳—׳“ ׳ ׳“׳¨׳©)ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `Invoice4UUserApiKey` | string (GUID) | ‫אחד מהם‬ | ‫מומלץ.‬ |
-| `Invoice4UUserEmail` + `Invoice4UUserPassword` | string | ‫אחד מהם‬ | ‫חלופת פרטי גישה.‬ |
+| `Invoice4UUserApiKey` | string (GUID) | ג€«׳׳—׳“ ׳׳”׳ג€¬ | ג€«׳׳•׳׳׳¥.ג€¬ |
+| `Invoice4UUserEmail` + `Invoice4UUserPassword` | string | ג€«׳׳—׳“ ׳׳”׳ג€¬ | ג€«׳—׳׳•׳₪׳× ׳₪׳¨׳˜׳™ ׳’׳™׳©׳”.ג€¬ |
 
-### ‫פרטי החיוב‬
+### ג€«׳₪׳¨׳˜׳™ ׳”׳—׳™׳•׳‘ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `Sum` | double | ‫**כן**‬ | ‫הסכום לחיוב.‬ |
-| `Currency` | string | ‫לא‬ | `"NIS"` (ברירת מחדל), `"USD"`, `"EUR"`. |
-| `Type` | int | ‫לא‬ | `1` רגיל (ברירת מחדל), `2` תשלומים, `3` תשלומי קרדיט, `4` זיכוי. |
-| `PaymentsNum` | int | ‫לא‬ | ‫מספר תשלומים כאשר `Type` הוא 2/3.‬ |
-| `Description` | string | ‫לא‬ | ‫תיאור החיוב (מוצג בדף/במסמך).‬ |
-| `IsQaMode` | boolean | ‫לא‬ | `true` בבדיקות מול QA. |
-| `OrderIdClientUsage` | string | ‫לא‬ | ‫מזהה ההזמנה שלכם, מוחזר בקולבקים.‬ |
-| `CreditCardCompanyType` | int | ‫לא‬ | ‫דריסת חברת האשראי.‬ |
+| `Sum` | double | ג€«**׳›׳**ג€¬ | ג€«׳”׳¡׳›׳•׳ ׳׳—׳™׳•׳‘.ג€¬ |
+| `Currency` | string | ג€«׳׳ג€¬ | `"NIS"` (׳‘׳¨׳™׳¨׳× ׳׳—׳“׳), `"USD"`, `"EUR"`. |
+| `Type` | int | ג€«׳׳ג€¬ | `1` ׳¨׳’׳™׳ (׳‘׳¨׳™׳¨׳× ׳׳—׳“׳), `2` ׳×׳©׳׳•׳׳™׳, `3` ׳×׳©׳׳•׳׳™ ׳§׳¨׳“׳™׳˜, `4` ׳–׳™׳›׳•׳™. |
+| `PaymentsNum` | int | ג€«׳׳ג€¬ | ג€«׳׳¡׳₪׳¨ ׳×׳©׳׳•׳׳™׳ ׳›׳׳©׳¨ `Type` ׳”׳•׳ 2/3.ג€¬ |
+| `Description` | string | ג€«׳׳ג€¬ | ג€«׳×׳™׳׳•׳¨ ׳”׳—׳™׳•׳‘ (׳׳•׳¦׳’ ׳‘׳“׳£/׳‘׳׳¡׳׳).ג€¬ |
+| `IsQaMode` | boolean | ג€«׳׳ג€¬ | `true` ׳‘׳‘׳“׳™׳§׳•׳× ׳׳•׳ QA. |
+| `OrderIdClientUsage` | string | ג€«׳׳ג€¬ | ג€«׳׳–׳”׳” ׳”׳”׳–׳׳ ׳” ׳©׳׳›׳, ׳׳•׳—׳–׳¨ ׳‘׳§׳•׳׳‘׳§׳™׳.ג€¬ |
 
-‫חיובי ביט / Google Pay / Apple Pay משתמשים בדגלים `IsBitPayment` / `IsGooglePay` / `IsApplePay` — ראו [ביט, Google Pay ו-Apple Pay](alternative-payment-methods.md) להפעלה, מגבלות ושגיאות.‬
+ג€«׳—׳™׳•׳‘׳™ ׳‘׳™׳˜ / Google Pay / Apple Pay ׳׳©׳×׳׳©׳™׳ ׳‘׳“׳’׳׳™׳ `IsBitPayment` / `IsGooglePay` / `IsApplePay` ג€” ׳¨׳׳• [׳‘׳™׳˜, Google Pay ׳•-Apple Pay](alternative-payment-methods.md) ׳׳”׳₪׳¢׳׳”, ׳׳’׳‘׳׳•׳× ׳•׳©׳’׳™׳׳•׳×.ג€¬
 
-### ‫לקוח‬
+### ג€«׳׳§׳•׳—ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `CustomerId` | int | ‫מותנה‬ | ‫לקוח קיים. השם/אימייל/טלפון שלו משמשים לדף ולהתראות.‬ |
-| `FullName` | string | ‫מותנה‬ | ‫שם מלא של הלקוח (חובה כשאין `CustomerId`).‬ |
-| `Phone` | string | ‫מותנה‬ | ‫טלפון הלקוח (משמש ל-SMS/זיהוי בדף התשלום).‬ |
-| `Email` | string | ‫לא‬ | ‫אימייל הלקוח — מקבל את המסמך.‬ |
-| `IsAutoCreateCustomer` | boolean | ‫לא‬ | ‫איתור-או-יצירה של רשומת לקוח אמיתית לפי טלפון/אימייל; אחרת החיוב משתמש בלקוח מזדמן.‬ |
-| `IsGeneralClient` | boolean | ‫לא (ברירת מחדל `true`)‬ | ‫המסמך מופק ללקוח מזדמן.‬ |
+| `CustomerId` | int | ג€«׳׳•׳×׳ ׳”ג€¬ | ג€«׳׳§׳•׳— ׳§׳™׳™׳. ׳”׳©׳/׳׳™׳׳™׳™׳/׳˜׳׳₪׳•׳ ׳©׳׳• ׳׳©׳׳©׳™׳ ׳׳“׳£ ׳•׳׳”׳×׳¨׳׳•׳×.ג€¬ |
+| `FullName` | string | ג€«׳׳•׳×׳ ׳”ג€¬ | ג€«׳©׳ ׳׳׳ ׳©׳ ׳”׳׳§׳•׳— (׳—׳•׳‘׳” ׳›׳©׳׳™׳ `CustomerId`).ג€¬ |
+| `Phone` | string | ג€«׳׳•׳×׳ ׳”ג€¬ | ג€«׳˜׳׳₪׳•׳ ׳”׳׳§׳•׳— (׳׳©׳׳© ׳-SMS/׳–׳™׳”׳•׳™ ׳‘׳“׳£ ׳”׳×׳©׳׳•׳).ג€¬ |
+| `Email` | string | ג€«׳׳ג€¬ | ג€«׳׳™׳׳™׳™׳ ׳”׳׳§׳•׳— ג€” ׳׳§׳‘׳ ׳׳× ׳”׳׳¡׳׳.ג€¬ |
+| `IsAutoCreateCustomer` | boolean | ג€«׳׳ג€¬ | ג€«׳׳™׳×׳•׳¨-׳׳•-׳™׳¦׳™׳¨׳” ׳©׳ ׳¨׳©׳•׳׳× ׳׳§׳•׳— ׳׳׳™׳×׳™׳× ׳׳₪׳™ ׳˜׳׳₪׳•׳/׳׳™׳׳™׳™׳; ׳׳—׳¨׳× ׳”׳—׳™׳•׳‘ ׳׳©׳×׳׳© ׳‘׳׳§׳•׳— ׳׳–׳“׳׳.ג€¬ |
+| `IsGeneralClient` | boolean | ג€«׳׳ (׳‘׳¨׳™׳¨׳× ׳׳—׳“׳ `true`)ג€¬ | ג€«׳”׳׳¡׳׳ ׳׳•׳₪׳§ ׳׳׳§׳•׳— ׳׳–׳“׳׳.ג€¬ |
 
-### ‫הפניות וקולבקים‬
+### ג€«׳”׳₪׳ ׳™׳•׳× ׳•׳§׳•׳׳‘׳§׳™׳ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `ReturnUrl` | string | ‫דף מתארח‬ | ‫לאן הלקוח מופנה לאחר התשלום.‬ |
-| `CallBackUrl` | string | ‫מומלץ‬ | ‫כתובת התראה שרת-לשרת.‬ |
+| `ReturnUrl` | string | ג€«׳“׳£ ׳׳×׳׳¨׳—ג€¬ | ג€«׳׳׳ ׳”׳׳§׳•׳— ׳׳•׳₪׳ ׳” ׳׳׳—׳¨ ׳”׳×׳©׳׳•׳.ג€¬ |
+| `CallBackUrl` | string | ג€«׳׳•׳׳׳¥ג€¬ | ג€«׳›׳×׳•׳‘׳× ׳”׳×׳¨׳׳” ׳©׳¨׳×-׳׳©׳¨׳×.ג€¬ |
 
-### ‫יצירת מסמך‬
+### ג€«׳™׳¦׳™׳¨׳× ׳׳¡׳׳ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `IsDocCreate` | boolean | ‫לא‬ | ‫יצירת מסמך אוטומטית לאחר חיוב מוצלח.‬ |
-| `DocHeadline` | string | ‫לא‬ | ‫נושא המסמך (ברירת מחדל: `Description`).‬ |
-| `IsManualDocCreationsWithParams` | boolean | ‫לא‬ | ‫שליחת שורות פריטים מפורשות דרך שדות ה-`DocItem*` המופרדים ב-pipe שלהלן.‬ |
-| `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | ‫עם פריטים ידניים‬ | ‫רשימות מופרדות ב-pipe, באורך שווה, למשל `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`.‬ |
-| `DocItemCode` / `DocItemTaxRate` | string | ‫לא‬ | ‫רשימות אופציונליות של קוד/שיעור מע"מ.‬ |
-| `IsItemsBase64Encoded` | boolean | ‫לא‬ | ‫ערכי `DocItem*` מקודדים ב-Base64 (לתווים מיוחדים).‬ |
-| `DocBranchId` | string | ‫לא‬ | ‫סניף עבור המסמך.‬ |
-| `DocComments` | string | ‫לא‬ | ‫הערות המסמך.‬ |
-| `Language` / `DocLanguage` | string | ‫לא‬ | ‫שפת הדף / המסמך (`"he"` / `"en"`).‬ |
-| `TaxPercentage` | double | ‫לא‬ | ‫דריסת מע"מ למסמך.‬ |
+| `IsDocCreate` | boolean | ג€«׳׳ג€¬ | ג€«׳™׳¦׳™׳¨׳× ׳׳¡׳׳ ׳׳•׳˜׳•׳׳˜׳™׳× ׳׳׳—׳¨ ׳—׳™׳•׳‘ ׳׳•׳¦׳׳—.ג€¬ |
+| `DocHeadline` | string | ג€«׳׳ג€¬ | ג€«׳ ׳•׳©׳ ׳”׳׳¡׳׳ (׳‘׳¨׳™׳¨׳× ׳׳—׳“׳: `Description`).ג€¬ |
+| `IsManualDocCreationsWithParams` | boolean | ג€«׳׳ג€¬ | ג€«׳©׳׳™׳—׳× ׳©׳•׳¨׳•׳× ׳₪׳¨׳™׳˜׳™׳ ׳׳₪׳•׳¨׳©׳•׳× ׳“׳¨׳ ׳©׳“׳•׳× ׳”-`DocItem*` ׳”׳׳•׳₪׳¨׳“׳™׳ ׳‘-pipe ׳©׳׳”׳׳.ג€¬ |
+| `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | ג€«׳¢׳ ׳₪׳¨׳™׳˜׳™׳ ׳™׳“׳ ׳™׳™׳ג€¬ | ג€«׳¨׳©׳™׳׳•׳× ׳׳•׳₪׳¨׳“׳•׳× ׳‘-pipe, ׳‘׳׳•׳¨׳ ׳©׳•׳•׳”, ׳׳׳©׳ `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`.ג€¬ |
+| `DocItemCode` / `DocItemTaxRate` | string | ג€«׳׳ג€¬ | ג€«׳¨׳©׳™׳׳•׳× ׳׳•׳₪׳¦׳™׳•׳ ׳׳™׳•׳× ׳©׳ ׳§׳•׳“/׳©׳™׳¢׳•׳¨ ׳׳¢"׳.ג€¬ |
+| `IsItemsBase64Encoded` | boolean | ג€«׳׳ג€¬ | ג€«׳¢׳¨׳›׳™ `DocItem*` ׳׳§׳•׳“׳“׳™׳ ׳‘-Base64 (׳׳×׳•׳•׳™׳ ׳׳™׳•׳—׳“׳™׳).ג€¬ |
+| `DocBranchId` | string | ג€«׳׳ג€¬ | ג€«׳¡׳ ׳™׳£ ׳¢׳‘׳•׳¨ ׳”׳׳¡׳׳.ג€¬ |
+| `DocComments` | string | ג€«׳׳ג€¬ | ג€«׳”׳¢׳¨׳•׳× ׳”׳׳¡׳׳.ג€¬ |
+| `Language` / `DocLanguage` | string | ג€«׳׳ג€¬ | ג€«׳©׳₪׳× ׳”׳“׳£ / ׳”׳׳¡׳׳ (`"he"` / `"en"`).ג€¬ |
+| `TaxPercentage` | double | ג€«׳׳ג€¬ | ג€«׳“׳¨׳™׳¡׳× ׳׳¢"׳ ׳׳׳¡׳׳.ג€¬ |
 
-### ‫טוקנים, הוראות קבע, זיכויים‬
+### ג€«׳˜׳•׳§׳ ׳™׳, ׳”׳•׳¨׳׳•׳× ׳§׳‘׳¢, ׳–׳™׳›׳•׳™׳™׳ג€¬
 
-‫ראו [טוקנים והוראות קבע](tokens-and-standing-orders.md) עבור `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — ו[זיכויים](#refunds) להלן עבור `Refund` + `PaymentId`.‬
+ג€«׳¨׳׳• [׳˜׳•׳§׳ ׳™׳ ׳•׳”׳•׳¨׳׳•׳× ׳§׳‘׳¢](tokens-and-standing-orders.md) ׳¢׳‘׳•׳¨ `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` ג€” ׳•[׳–׳™׳›׳•׳™׳™׳](#refunds) ׳׳”׳׳ ׳¢׳‘׳•׳¨ `Refund` + `PaymentId`.ג€¬
 
-## ‫דוגמת בקשה — דף מתארח + מסמך אוטומטי‬
+## ג€«׳“׳•׳’׳׳× ׳‘׳§׳©׳” ג€” ׳“׳£ ׳׳×׳׳¨׳— + ׳׳¡׳׳ ׳׳•׳˜׳•׳׳˜׳™ג€¬
 
 ```http
 POST /Services/ApiService.svc/ProcessApiRequestV2 HTTP/1.1
@@ -98,7 +97,7 @@ Content-Type: application/json
 }
 ```
 
-## ‫דוגמת תשובה‬
+## ג€«׳“׳•׳’׳׳× ׳×׳©׳•׳‘׳”ג€¬
 
 ```json
 {
@@ -112,37 +111,37 @@ Content-Type: application/json
 }
 ```
 
-‫הפנו את הלקוח ל-`ClearingRedirectUrl`. לאחר התשלום תקבלו את הקולבק, וכאשר `IsDocCreate` מוגדר, שדות המסמך (`DocumentId`, `DocumentNumber`, `CipherText`) מאוכלסים.‬
+ג€«׳”׳₪׳ ׳• ׳׳× ׳”׳׳§׳•׳— ׳-`ClearingRedirectUrl`. ׳׳׳—׳¨ ׳”׳×׳©׳׳•׳ ׳×׳§׳‘׳׳• ׳׳× ׳”׳§׳•׳׳‘׳§, ׳•׳›׳׳©׳¨ `IsDocCreate` ׳׳•׳’׳“׳¨, ׳©׳“׳•׳× ׳”׳׳¡׳׳ (`DocumentId`, `DocumentNumber`, `CipherText`) ׳׳׳•׳›׳׳¡׳™׳.ג€¬
 
-## ‫זיכויים‬ {#refunds}
+## ג€«׳–׳™׳›׳•׳™׳™׳ג€¬ {#refunds}
 
-‫קבעו `Refund: true` וזהו את החיוב המקורי:‬
+ג€«׳§׳‘׳¢׳• `Refund: true` ׳•׳–׳”׳• ׳׳× ׳”׳—׳™׳•׳‘ ׳”׳׳§׳•׳¨׳™:ג€¬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| ג€«׳©׳“׳”ג€¬ | ג€«׳˜׳™׳₪׳•׳¡ג€¬ | ג€«׳—׳•׳‘׳”ג€¬ | ג€«׳×׳™׳׳•׳¨ג€¬ |
 | --- | ----- | ---- | ----- |
-| `Refund` | boolean | ‫כן‬ | ‫מצב זיכוי.‬ |
-| `PaymentId` | string | ‫תלוי-ספק‬ | ‫אסמכתת התשלום/העסקה המקורית (חובה ב-UPay).‬ |
-| `Sum` | double | ‫כן‬ | ‫הסכום לזיכוי — לא יעלה על היתרה שטרם זוכתה.‬ |
+| `Refund` | boolean | ג€«׳›׳ג€¬ | ג€«׳׳¦׳‘ ׳–׳™׳›׳•׳™.ג€¬ |
+| `PaymentId` | string | ג€«׳×׳׳•׳™-׳¡׳₪׳§ג€¬ | ג€«׳׳¡׳׳›׳×׳× ׳”׳×׳©׳׳•׳/׳”׳¢׳¡׳§׳” ׳”׳׳§׳•׳¨׳™׳× (׳—׳•׳‘׳” ׳‘-UPay).ג€¬ |
+| `Sum` | double | ג€«׳›׳ג€¬ | ג€«׳”׳¡׳›׳•׳ ׳׳–׳™׳›׳•׳™ ג€” ׳׳ ׳™׳¢׳׳” ׳¢׳ ׳”׳™׳×׳¨׳” ׳©׳˜׳¨׳ ׳–׳•׳›׳×׳”.ג€¬ |
 
-‫מגבלות זיכוי: זיכויי קארדקום נבדקים מול היתרה שנותרה; זיכויי UPay אפשריים עד 5 חודשים מהחיוב (`ClearingErrorRefundTimeExceeded`, 158).‬
+ג€«׳׳’׳‘׳׳•׳× ׳–׳™׳›׳•׳™: ׳–׳™׳›׳•׳™׳™ ׳§׳׳¨׳“׳§׳•׳ ׳ ׳‘׳“׳§׳™׳ ׳׳•׳ ׳”׳™׳×׳¨׳” ׳©׳ ׳•׳×׳¨׳”; ׳–׳™׳›׳•׳™׳™ UPay ׳׳₪׳©׳¨׳™׳™׳ ׳¢׳“ 5 ׳—׳•׳“׳©׳™׳ ׳׳”׳—׳™׳•׳‘ (`ClearingErrorRefundTimeExceeded`, 158).ג€¬
 
-## ‫שגיאות נפוצות‬
+## ג€«׳©׳’׳™׳׳•׳× ׳ ׳₪׳•׳¦׳•׳×ג€¬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
+| ג€«׳©׳’׳™׳׳” (ID)ג€¬ | ג€«׳׳©׳׳¢׳•׳×ג€¬ |
 | ---------- | ------- |
-| `EmptyObjectInRequest` (146) | ‫גוף הבקשה חסר.‬ |
-| `UnauthorizedUser` (80) | ‫מפתח API / פרטי גישה שגויים.‬ |
-| `ClearingCompanyUndefined` (8) | ‫אין חשבון סליקה פעיל, או שהחשבון מוגדר שגוי.‬ |
-| `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלים סותרים (למשל `AddTokenAndCharge` + `IsStandingOrderClearance`).‬ |
-| `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫פיצ'רי טוקן לא מופעלים על המסוף.‬ |
-| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות.‬ |
-| `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | ‫אמצעי הארנק לא מופעל.‬ |
-| `ClientIDDoesntExists` (37) | ‫`CustomerId` לא נמצא.‬ |
-| `NumberOfItemsIsNotEqual` (24) | ‫רשימות ה-`DocItem*` באורכים שונים.‬ |
-| `ClearingError` (32) | ‫החיוב נדחה / שגיאת ספק — פרטים ב-`Paramters`.‬ |
-| `ClearingErrorRefundTimeExceeded` (158) | ‫חלון הזיכוי חלף.‬ |
+| `EmptyObjectInRequest` (146) | ג€«׳’׳•׳£ ׳”׳‘׳§׳©׳” ׳—׳¡׳¨.ג€¬ |
+| `UnauthorizedUser` (80) | ג€«׳׳₪׳×׳— API / ׳₪׳¨׳˜׳™ ׳’׳™׳©׳” ׳©׳’׳•׳™׳™׳.ג€¬ |
+| `ClearingCompanyUndefined` (8) | ג€«׳׳™׳ ׳—׳©׳‘׳•׳ ׳¡׳׳™׳§׳” ׳₪׳¢׳™׳, ׳׳• ׳©׳”׳—׳©׳‘׳•׳ ׳׳•׳’׳“׳¨ ׳©׳’׳•׳™.ג€¬ |
+| `ApiBadRequestChargeMethodMustBeSelected` (319) | ג€«׳“׳’׳׳™׳ ׳¡׳•׳×׳¨׳™׳ (׳׳׳©׳ `AddTokenAndCharge` + `IsStandingOrderClearance`).ג€¬ |
+| `ApiTokenizationNotApprovedInClearingTerminal` (309) | ג€«׳₪׳™׳¦'׳¨׳™ ׳˜׳•׳§׳ ׳׳ ׳׳•׳₪׳¢׳׳™׳ ׳¢׳ ׳”׳׳¡׳•׳£.ג€¬ |
+| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ג€«׳”׳•׳¨׳׳•׳× ׳§׳‘׳¢ ׳׳ ׳׳•׳₪׳¢׳׳•׳×.ג€¬ |
+| `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | ג€«׳׳׳¦׳¢׳™ ׳”׳׳¨׳ ׳§ ׳׳ ׳׳•׳₪׳¢׳.ג€¬ |
+| `ClientIDDoesntExists` (37) | ג€«`CustomerId` ׳׳ ׳ ׳׳¦׳.ג€¬ |
+| `NumberOfItemsIsNotEqual` (24) | ג€«׳¨׳©׳™׳׳•׳× ׳”-`DocItem*` ׳‘׳׳•׳¨׳›׳™׳ ׳©׳•׳ ׳™׳.ג€¬ |
+| `ClearingError` (32) | ג€«׳”׳—׳™׳•׳‘ ׳ ׳“׳—׳” / ׳©׳’׳™׳׳× ׳¡׳₪׳§ ג€” ׳₪׳¨׳˜׳™׳ ׳‘-`Paramters`.ג€¬ |
+| `ClearingErrorRefundTimeExceeded` (158) | ג€«׳—׳׳•׳ ׳”׳–׳™׳›׳•׳™ ׳—׳׳£.ג€¬ |
 
-## ‫נסו את זה‬
+## ג€«׳ ׳¡׳• ׳׳× ׳–׳”ג€¬
 
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

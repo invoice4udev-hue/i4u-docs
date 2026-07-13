@@ -65,7 +65,6 @@ Clearing requires an **active clearing account (terminal)** on your organization
 | `Description` | string | No | Charge description (shown on page/document). |
 | `IsQaMode` | boolean | No | `true` when testing against QA. |
 | `OrderIdClientUsage` | string | No | Your order reference, echoed back in callbacks. |
-| `CreditCardCompanyType` | int | No | Card brand recorded on the charge/document: `1` Visa, `2` Isracard, `3` MasterCard, `4` AmericanExpress, `5` Diners. |
 | `Platform` | string | No | Free-text platform identifier for your integration; recorded with the charge. |
 
 Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `IsApplePay` flags — see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) for enablement, limitations and errors.
