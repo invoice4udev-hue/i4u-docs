@@ -935,21 +935,45 @@
                   "request": { "$ref": "#/components/schemas/ApiClearingRequest" }
                 }
               },
-              "example": {
-                "request": {
-                  "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
-                  "Sum": 117.0,
-                  "CreditCardCompanyType": 7,
-                  "Currency": "NIS",
-                  "Type": 1,
-                  "FullName": "Israel Israeli",
-                  "Phone": "0501234567",
-                  "Email": "israel@example.com",
-                  "Description": "Order #10045",
-                  "IsDocCreate": true,
-                  "ReturnUrl": "https://shop.example/thanks",
-                  "CallBackUrl": "https://shop.example/api/i4u-callback",
-                  "IsQaMode": true
+              "examples": {
+                "hosted-page-charge": {
+                  "summary": "Hosted page charge + auto document",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "Sum": 117.0,
+                      "CreditCardCompanyType": 7,
+                      "Currency": "NIS",
+                      "Type": 1,
+                      "FullName": "Israel Israeli",
+                      "Phone": "0501234567",
+                      "Email": "israel@example.com",
+                      "Description": "Order #10045",
+                      "IsDocCreate": true,
+                      "ReturnUrl": "https://shop.example/thanks",
+                      "CallBackUrl": "https://shop.example/api/i4u-callback",
+                      "IsQaMode": true
+                    }
+                  }
+                },
+                "refund": {
+                  "summary": "Refund a previous charge by PaymentId",
+                  "description": "Server-to-server, no redirect. PaymentId locates the original charge in the clearing log (PaymentIDDoesntExists 60 when not found). On success, an InvoiceCredit is created automatically when the original document is traceable via the clearing log.",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "Refund": true,
+                      "Sum": 117.0,
+                      "PaymentId": "100200300",
+                      "CreditCardCompanyType": 7,
+                      "Currency": "NIS",
+                      "FullName": "Israel Israeli",
+                      "Phone": "0501234567",
+                      "Email": "israel@example.com",
+                      "Description": "Refund for order #10045",
+                      "IsQaMode": true
+                    }
+                  }
                 }
               }
             }
