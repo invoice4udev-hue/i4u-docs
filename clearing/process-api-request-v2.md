@@ -228,6 +228,12 @@ Refund behavior per provider (from the live implementation):
 * **Cardcom** — the refund is validated against the remaining un-refunded balance: if `Sum` exceeds it, the refund is **clamped to the balance** (not rejected); if nothing is left to refund, `CreditAmountExceedsTotal` (155) is returned.
 * **UPay** — refunds are possible up to **5 months** after the charge (`ClearingErrorRefundTimeExceeded`, 158).
 
+### Document creation on refunds
+
+After a successful refund, a **credit invoice (InvoiceCredit) is created automatically** — but only when the original charge's document can be located through the clearing log (the charge was made with `IsDocCreate` and produced a document). The credit invoice references the original invoice receipt for the refunded amount and is emailed to the customer on record.
+
+If no original document is found for the charge, **no document is created** — the refund itself still succeeds, and issuing a credit document is up to you (e.g. via [Create Document](../documents/create-document.md)). Check the refunded document's state after the call to confirm.
+
 ```mermaid
 flowchart LR
     classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
@@ -245,7 +251,11 @@ flowchart LR
     C -- ✓ --> D[Sync refund<br/>at provider]:::step
     D --> F{Success?}:::dec
     F -- ✓ --> G[Original log marked credited<br/>CreditAmount updated]:::step
-    G --> H[Result inline in response<br/>no redirect]:::cb
+    G --> I{Original document found<br/>via clearing log?}:::dec
+    I -- ✓ --> J[InvoiceCredit created automatically<br/>referencing original doc]:::step
+    I -- ✗ --> K[No document created<br/>issue credit doc yourself]:::step
+    J --> H[Result inline in response<br/>no redirect]:::cb
+    K --> H
     F -- ✗ --> E4[ClearingError 32<br/>in Errors list]:::err
 ```
 
