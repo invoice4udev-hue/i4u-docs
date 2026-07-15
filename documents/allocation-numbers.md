@@ -18,6 +18,18 @@ Requests an allocation number for a document that doesn't have one yet.
 
 Requires the organization to be connected to the Israel Invoices service (check via your account settings). Documents belonging to another organization are ignored.
 
+## Environments — QA vs ITA sandbox
+
+Which ITA environment (sandbox `tsandbox` or production) serves the allocation number is a **server-side Invoice4U platform setting** — it is **not** controlled by your request:
+
+* Calling the QA base URL (`apiqa.invoice4u.co.il`) does **not** by itself route allocation requests to the ITA sandbox.
+* The `IsQaMode` flag has no effect on the ITA environment.
+* The organization must be connected to the Israel Invoices service (OAuth consent) in the environment you're testing on — without that connection no allocation number is issued.
+
+{% hint style="warning" %}
+If you need to verify which ITA environment your QA organization is wired to, contact Invoice4U support before relying on QA allocation numbers in your tests.
+{% endhint %}
+
 ## Set manually — `UpdateAllocationNumber`
 
 Stores an allocation number obtained outside Invoice4U.
