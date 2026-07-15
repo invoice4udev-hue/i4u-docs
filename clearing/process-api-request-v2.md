@@ -47,8 +47,7 @@ flowchart LR
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `Invoice4UUserApiKey` | string (GUID) | **Yes** | Your organization API key — required for clearing. |
-| `Invoice4UUserEmail` + `Invoice4UUserPassword` | string | Legacy | Credential alternative for older integrations; new integrations must use the API key. |
+| `Invoice4UUserApiKey` | string (GUID) | **Yes** | Your organization API key — the only supported authentication for clearing. |
 
 {% hint style="warning" %}
 Clearing requires an **active clearing account (terminal)** on your organization, and the customer identifiers below (`FullName`, `Phone`, `Email`) — they are used to authenticate the payer at the clearing terminal and for payment-page identification.

@@ -1372,8 +1372,6 @@
             "required": ["Sum", "CreditCardCompanyType"],
             "properties": {
               "Invoice4UUserApiKey": { "type": "string", "format": "uuid", "nullable": true, "description": "Your organization API key — the only supported authentication for clearing. Malformed GUID = ApiKeyNotInCorrectFormat (303); unknown key = UnauthorizedUser (80)." },
-              "Invoice4UUserEmail": { "type": "string", "nullable": true, "description": "Legacy — disabled. Email+password resolution is no longer performed; authenticate with Invoice4UUserApiKey." },
-              "Invoice4UUserPassword": { "type": "string", "format": "password", "nullable": true, "description": "Legacy — disabled." },
               "Sum": { "type": "number", "format": "double", "description": "Amount to charge/refund." },
               "CreditCardCompanyType": { "type": "integer", "description": "Clearing company type (ClearingCompanies): 6 UPay, 7 Meshulam, 12 YaadSarig, 15 Cardcom — must match the provider configured on your terminal.", "enum": [6, 7, 12, 15] },
               "Currency": { "type": "string", "description": "NIS (default), USD, EUR.", "example": "NIS" },
