@@ -238,6 +238,28 @@ After a successful refund, a **credit invoice (InvoiceCredit) is created automat
 
 If no original document is found for the charge, **no document is created** — the refund itself still succeeds, and issuing a credit document is up to you (e.g. via [Create Document](../documents/create-document.md)). Check the refunded document's state after the call to confirm.
 
+### Example request — refund
+
+```json
+{
+  "request": {
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Refund": true,
+    "Sum": 117.0,
+    "PaymentId": "100200300",
+    "CreditCardCompanyType": 7,
+    "Currency": "NIS",
+    "FullName": "Israel Israeli",
+    "Phone": "0501234567",
+    "Email": "israel@example.com",
+    "Description": "Refund for order #10045",
+    "IsQaMode": true
+  }
+}
+```
+
+The refund runs server-to-server — no redirect. Success is returned inline (`Info` contains `SuccessfulAction`); failures appear in `Errors` (`ClearingError` 32).
+
 ```mermaid
 flowchart LR
     classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
