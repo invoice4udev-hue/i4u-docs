@@ -20,14 +20,14 @@ Requires the organization to be connected to the Israel Invoices service (check 
 
 ## Environments — QA vs ITA sandbox
 
-Which ITA environment (sandbox `tsandbox` or production) serves the allocation number is a **server-side Invoice4U platform setting** — it is **not** controlled by your request:
+Allocation numbers are fetched from the **real ITA production API on both environments** — including QA (`apiqa.invoice4u.co.il`). The ITA environment is a single platform-wide server setting, currently set to production; it is **not** controlled by your request:
 
-* Calling the QA base URL (`apiqa.invoice4u.co.il`) does **not** by itself route allocation requests to the ITA sandbox.
+* Calling the QA base URL does **not** route allocation requests to the ITA sandbox.
 * The `IsQaMode` flag has no effect on the ITA environment.
-* The organization must be connected to the Israel Invoices service (OAuth consent) in the environment you're testing on — without that connection no allocation number is issued.
+* The organization must be connected to the Israel Invoices service (OAuth consent) — without that connection no allocation number is issued.
 
 {% hint style="warning" %}
-If you need to verify which ITA environment your QA organization is wired to, contact Invoice4U support before relying on QA allocation numbers in your tests.
+Allocation numbers issued during QA testing are real ITA allocations. Avoid requesting them for throwaway test documents on organizations connected to the Israel Invoices service.
 {% endhint %}
 
 ## Set manually — `UpdateAllocationNumber`
