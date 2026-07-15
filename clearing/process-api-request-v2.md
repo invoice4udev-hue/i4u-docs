@@ -161,6 +161,59 @@ Content-Type: application/json
 
 Redirect the customer to `ClearingRedirectUrl`. After payment you receive the callback and, when `IsDocCreate` is set, the document fields (`DocumentId`, `DocumentNumber`, `CipherText`) are populated.
 
+## Callback payload
+
+After the customer completes the hosted page, Invoice4U POSTs the result to your `CallBackUrl` as a form field named `Data` containing a JSON object. All values are strings (`"True"`/`"False"` for booleans):
+
+```json
+Data={
+  "Success": "True",
+  "TokenCaptureOnly": "False",
+  "TokenCaptureAndCharge": "False",
+  "ErrorMessage": "",
+  "OrderIdClientUsage": "b2f0c9d4-0000-4000-8000-000000000001",
+  "DocCreated": "True",
+  "CardSuffix": "1234",
+  "CardExpirationDate": "0828",
+  "CardBrandName": "Visa",
+  "UniqueId": "012345678",
+  "Amount": "117",
+  "AllPaymentsNum": "1",
+  "CustomerId": "1234567",
+  "CustomerName": "Israel Israeli",
+  "CustomerMail": "israel@example.com",
+  "CustomerPhone": "",
+  "Description": "Order #10045",
+  "AuthNumber": "0123456",
+  "PaymentId": "100200300",
+  "ClearingTraceId": "a1b2c3d4-0000-4000-8000-000000000002",
+  "standingOrderId": "",
+  "DocumentNumber": "70001",
+  "DocumentId": "d4c3b2a1-0000-4000-8000-000000000003",
+  "CipherText": "<url-encoded document view cipher>",
+  "CipherTextOriginal": "<url-encoded original document cipher>"
+}
+```
+
+| Field | Meaning |
+| ----- | ------- |
+| `Success` | `"True"` when the charge succeeded. On failure, `ErrorMessage` is populated. |
+| `TokenCaptureOnly` / `TokenCaptureAndCharge` | Echo of the `AddToken` / `AddTokenAndCharge` flags. |
+| `OrderIdClientUsage` | Your order reference from the request. |
+| `DocCreated` | `"True"` when a document was auto-created (`IsDocCreate`). |
+| `CardSuffix` / `CardExpirationDate` / `CardBrandName` | Charged card details (last 4 digits, `MMYY`, brand). |
+| `UniqueId` | Payer identifier returned by the provider. |
+| `Amount` / `AllPaymentsNum` | Charged amount and number of installments. |
+| `CustomerId` / `CustomerName` / `CustomerMail` / `CustomerPhone` | Resolved customer. |
+| `AuthNumber` | Clearing company approval number (also stored as `ClearingConfirmationNumber` in the clearing log). |
+| `PaymentId` / `ClearingTraceId` | Provider payment ID and trace ID — use for refunds and log lookup. |
+| `standingOrderId` | Populated for standing-order registrations. |
+| `DocumentNumber` / `DocumentId` / `CipherText` / `CipherTextOriginal` | Created document identifiers and URL-encoded view ciphers (build view links per [Create Document](../documents/create-document.md)). |
+
+{% hint style="info" %}
+Validate the callback by looking up `PaymentId` / `ClearingTraceId` in your [clearing logs](clearing-logs.md) before fulfilling the order. If no callback arrives, treat the payment as not completed — the customer may have abandoned the page.
+{% endhint %}
+
 ## Refunds
 
 Set `Refund: true` and identify the original charge:
