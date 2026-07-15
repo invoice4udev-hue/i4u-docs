@@ -37,7 +37,11 @@ flowchart LR
     I -- ✓ --> J[Clearing log<br/>request row]:::step
     J --> K[🖥 Hosted payment page<br/>ClearingRedirectUrl]:::page
     K --> L{Charge OK?}:::dec
-    L -- ✓ --> M[Doc if IsDocCreate<br/>+ CallBackUrl + ReturnUrl]:::cb
+    L -- ✓ --> M{IsDocCreate?}:::dec
+    M -- ✓ --> M1[Document created + emailed to<br/>customer and account owner]:::step
+    M -- ✗ --> M2[Email notice only]:::step
+    M1 --> O[CallBackUrl POST<br/>+ ReturnUrl redirect]:::cb
+    M2 --> O
     L -- ✗ --> N[ClearingError 32<br/>posted to CallBackUrl]:::err
 ```
 
@@ -93,7 +97,7 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `IsDocCreate` | boolean | No | Create a document automatically after a successful charge. |
+| `IsDocCreate` | boolean | No | Create a document automatically after a successful charge. The document is emailed to both the customer and the account owner. |
 | `DocHeadline` | string | No | Document subject (defaults to `Description`). |
 | `IsManualDocCreationsWithParams` | boolean | No | Provide explicit line items via the pipe-separated `DocItem*` fields below. |
 | `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | With manual items | Pipe-separated lists, equal length, e.g. `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`. |
