@@ -117,6 +117,26 @@ flowchart TD
     E -- ✗ --> G[PaymentAmountDoesntMatchItemsAmount 56<br/>+ OpenInfo.PaymentMismatchDelta]:::err
 ```
 
+## Foreign-currency documents
+
+Answers to the questions that come up most often when a document needs to be issued in a foreign currency (e.g. `USD`) instead of the organization's base currency.
+
+**Can I create a document in a foreign currency (e.g. USD, with no conversion to ILS) through the API?**
+Yes. Set `Currency` on the [Document object](document-object.md) to the ISO symbol you want (e.g. `"USD"`). The document is created and stored entirely in that currency — `Items`, `Payments` and the resulting `Total`/`TotalWithoutTax`/`TotalTaxAmount` are all in `USD`, not ILS. The API never silently converts the amounts you send.
+
+**Which fields are required exactly?** (`Currency="USD"`, `ConversionRate=<rate>`, and what value does `ConvertToILS` or another field need?)
+Only `Currency` is required to issue the document in a foreign currency:
+* `Currency` — set to `"USD"` (or any symbol that exists in the currency list; an unrecognized symbol → `CurrencyDoesntExists`, 36).
+* `ConversionRate` — optional, see the next question. It's stored as metadata for reporting/reconciliation against the organization's base currency; it does **not** rescale `Total` or any item/payment amount.
+* `ConvertToILS` — not related to document creation at all. It's a **report/print display flag** used only by the PDF and Excel export services (open-accounts and income reports) to decide whether to additionally show a converted total next to the original-currency total. Leave it unset — `CreateDocument` ignores it.
+
+**Is `ConversionRate` required when the currency isn't ILS, or is sending `0` enough for automatic calculation?**
+Sending `0` (or omitting the field, which defaults to `0`) is enough — the server automatically resolves the rate between the organization's currency and `Currency` from the daily currency table. Only send an explicit non-zero `ConversionRate` if you need to lock in a specific rate yourself (e.g. one already agreed with the customer).
+
+{% hint style="info" %}
+Example: an organization whose base currency is ILS creating a USD invoice just needs `"Currency": "USD"` in the request body — `ConversionRate` can be omitted entirely.
+{% endhint %}
+
 ## Common errors
 
 | Error (ID) | Meaning |
@@ -124,6 +144,7 @@ flowchart TD
 | `UnauthorizedUser` (80) | Invalid token. |
 | `DocumentTypeNotInRange` (33) | Unknown `DocumentType`. |
 | `ClientDoesntExists` (7) / `ClientIDDoesntExists` (37) | Missing/unknown customer. |
+| `CurrencyDoesntExists` (36) | `Currency` symbol isn't in the supported currency list. |
 | `DocumentItemsNotSpecified` (34) / `DocumentItemMissingName` (39) / `DocumentItemQuantityCannotBeZero` (40) / `DocumentItemPriceCannotBeZero` (41) | Item validation. `Paramters` holds the row number. |
 | `PaymentsNotSpecified` (45) / `PaymentDateMissing` (46) / `PaymentAmountCannotBeZero` (47) / `PaymentTypeOutOfRange` (51) | Payment validation. |
 | `PaymentAmountDoesntMatchItemsAmount` (56) | Payments ≠ items total. |

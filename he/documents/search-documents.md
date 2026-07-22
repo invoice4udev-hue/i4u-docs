@@ -15,7 +15,6 @@
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
 | `DocumentType` | int | ‫לא‬ | ‫סינון לפי [סוג מסמך](document-types.md) בודד.‬ |
-| `DocumentTypes` | string | ‫לא‬ | ‫רשימת סוגים מופרדת בפסיקים.‬ |
 | `From` / `To` | datetime | ‫לא‬ | ‫טווח תאריכי הפקה.‬ |
 | `FromActualCreationDate` / `ToActualCreationDate` | datetime | ‫לא‬ | ‫טווח תאריכי יצירה בפועל.‬ |
 | `FromPaymentDueDate` / `ToPaymentDueDate` | datetime | ‫לא‬ | ‫טווח תאריכי פירעון.‬ |
@@ -73,6 +72,10 @@ Content-Type: application/json
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
 | `ClientDoesntExists` (7) | ‫פילטר `CustomerName` לא התאים ללקוח.‬ |
+
+{% hint style="info" %}
+‫המתודה מחזירה **סוג מסמך אחד בלבד לקריאה** — `DocumentType` מקבל ערך יחיד ולא רשימה. כדי לחפש כמה סוגים, בצעו קריאה נפרדת לכל סוג ואחדו את התוצאות בצד הלקוח.‬
+{% endhint %}
 
 {% hint style="info" %}
 ‫שולפים מסמך אחד ידוע? השתמשו ב[שליפות מסמך בודד](get-document.md) — מהיר ופשוט יותר.‬

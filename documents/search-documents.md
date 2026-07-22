@@ -15,7 +15,6 @@ Filtered document search across the authenticated organization.
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `DocumentType` | int | No | Filter by a single [document type](document-types.md). |
-| `DocumentTypes` | string | No | Comma-separated list of types. |
 | `From` / `To` | datetime | No | Issue-date range. |
 | `FromActualCreationDate` / `ToActualCreationDate` | datetime | No | Actual creation-date range. |
 | `FromPaymentDueDate` / `ToPaymentDueDate` | datetime | No | Payment due-date range. |
@@ -73,6 +72,10 @@ Content-Type: application/json
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | Invalid token. |
 | `ClientDoesntExists` (7) | `CustomerName` filter didn't match a customer. |
+
+{% hint style="info" %}
+This endpoint can only retrieve **one document type per call** — `DocumentType` accepts a single value, not a list. To search across several types, issue one call per type and merge the results client-side.
+{% endhint %}
 
 {% hint style="info" %}
 Fetching one known document? Use the [single-document lookups](get-document.md) instead — faster and simpler.
