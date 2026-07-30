@@ -2216,7 +2216,7 @@
       "key": "Invoice4u_ApiKey",
       "value": "",
       "type": "default",
-      "description": "Your Invoice4u API key. Sent as `token` on all business endpoints and as `Invoice4UUserApiKey` on clearing (`ProcessApiRequestV2`) endpoints. Login/session tokens are no longer supported."
+      "description": "Your Invoice4u API key. Sent as `token` on all business endpoints and as `Invoice4UUserApiKey` on clearing (`ProcessApiRequestV2`) endpoints. Email+password login is deprecated — it still works during the migration period, but migrate to the API key."
     },
     {
       "key": "ClientID",

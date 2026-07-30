@@ -31,7 +31,6 @@ Filtered document search across the authenticated organization.
 | `ItemsIncluded`                                   | boolean       | No       | Include full `Items` in results.                                          |
 | `PaymentsIncluded`                                | boolean       | No       | Include full `Payments` in results.                                       |
 | `OnlyGeneralClient` / `GeneralClientName`         | bool / string | No       | General-customer filters.                                                 |
-| `Limit`                                           | int           | No       | Max rows.                                                                 |
 
 ## Example request
 

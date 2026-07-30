@@ -9,7 +9,7 @@ All Invoice4U API calls require your organization **API key** (GUID). There is n
 3. Optionally verify it with [`IsAuthenticated`](is-authenticated.md) during setup.
 
 {% hint style="warning" %}
-Email + password login (`VerifyLogin`) is **no longer supported** — tokens it returns are not accepted by the API. Authenticate with your API key only.
+Email + password login (`VerifyLogin`) is **deprecated**. It still works during the migration period, but it will be removed — migrate your integration to API-key authentication and pass the key as `token`.
 {% endhint %}
 
 ### Token behavior

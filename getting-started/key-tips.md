@@ -16,7 +16,7 @@ Practical notes that save integration time. Read this before going live.
 
 ### Tokens
 
-* Your **API key** (GUID) *is* the token — pass it as `token` in every call; there is no login step ([details](../authentication/is-authenticated.md)). Email+password login is no longer supported.
+* Your **API key** (GUID) *is* the token — pass it as `token` in every call; there is no login step ([details](../authentication/is-authenticated.md)). Email+password login is deprecated — it still works during the migration period, but migrate to the API key.
 * Invalid key → `UnauthorizedUser` (80). Check the key in the Invoice4U web app.
 
 ### Documents

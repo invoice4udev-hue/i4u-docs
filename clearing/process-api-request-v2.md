@@ -80,8 +80,8 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `CustomerId` | int | Conditional | Existing customer. Its name/email/phone are used for the page and notifications. |
-| `FullName` | string | **Yes** (without `CustomerId`) | Customer full name — used to authenticate the payer at the terminal. |
-| `Phone` | string | **Yes** (without `CustomerId`) | Customer phone — payment-page SMS/identification. |
+| `FullName` | string | **Yes** (without `CustomerId`) | Customer full name — used to authenticate the payer at the terminal. Not validated up front by the API; a missing value fails later at the clearing provider. |
+| `Phone` | string | **Yes** (without `CustomerId`) | Customer phone — payment-page SMS/identification. Not validated up front by the API; a missing value fails later at the clearing provider. |
 | `Email` | string | Recommended | Customer email — terminal identification and document delivery. |
 | `IsAutoCreateCustomer` | boolean | No | Find-or-create a real customer record by phone/email; otherwise the charge uses a general customer. |
 | `IsGeneralClient` | boolean | No (default `true`) | Document is issued to a general (one-off) customer. |
@@ -276,7 +276,6 @@ flowchart LR
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Token features not enabled on the terminal. |
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | Standing orders not enabled. |
 | `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | Wallet method not enabled. |
-| `ClientIDDoesntExists` (37) | `CustomerId` not found. |
 | `NumberOfItemsIsNotEqual` (24) | `DocItem*` pipe-lists have different lengths. |
 | `PaymentIDDoesntExists` (60) | Refund: original charge log not found for `PaymentId`. |
 | `CreditAmountExceedsTotal` (155) | Refund: nothing left to refund on the original charge. |

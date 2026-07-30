@@ -1358,8 +1358,9 @@
       },
       "DocumentsRequest": {
         "type": "object",
+        "required": ["DocumentType"],
         "properties": {
-          "DocumentType": { "type": "integer", "nullable": true, "description": "Single document type filter." },
+          "DocumentType": { "type": "integer", "description": "Single document type filter." },
           "DocumentTypes": { "type": "string", "nullable": true, "description": "Comma-separated list of types." },
           "From": { "type": "string", "format": "date-time", "nullable": true },
           "To": { "type": "string", "format": "date-time", "nullable": true },
@@ -1384,8 +1385,7 @@
           "ItemsIncluded": { "type": "boolean", "nullable": true, "description": "Include full Items in results." },
           "PaymentsIncluded": { "type": "boolean", "nullable": true, "description": "Include full Payments in results." },
           "OnlyGeneralClient": { "type": "boolean", "nullable": true },
-          "GeneralClientName": { "type": "string", "nullable": true },
-          "Limit": { "type": "integer" }
+          "GeneralClientName": { "type": "string", "nullable": true }
         }
       },
       "ApiClearingRequest": {
@@ -1477,7 +1477,7 @@
               "IsApplePay": { "type": "boolean", "nullable": true },
               "IsDocumentCreated": { "type": "boolean", "nullable": true },
               "DocId": { "type": "string", "format": "uuid", "nullable": true },
-              "TransactionType": { "type": "integer", "nullable": true, "description": "1 Charge, 2 Credit, 3 PaymentInNumbers, 4 PaymentWithFees, 5 TokenCreation, 6 TokenAndCharge, 7 ChargeByToken." }
+              "TransactionType": { "type": "integer", "nullable": true, "description": "0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers." }
             }
           }
         ]

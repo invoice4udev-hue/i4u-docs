@@ -31,7 +31,6 @@
 | `ItemsIncluded`                                   | boolean       | ‫לא‬   | ‫כלילת `Items` מלאים בתוצאות.‬                                     |
 | `PaymentsIncluded`                                | boolean       | ‫לא‬   | ‫כלילת `Payments` מלאים בתוצאות.‬                                  |
 | `OnlyGeneralClient` / `GeneralClientName`         | bool / string | ‫לא‬   | ‫סינוני לקוח מזדמן.‬                                               |
-| `Limit`                                           | int           | ‫לא‬   | ‫מספר שורות מרבי.‬                                                 |
 
 ## ‫דוגמת בקשה‬
 

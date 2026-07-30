@@ -1,6 +1,6 @@
 # Authenticate with Your API Key
 
-There is no separate login call. Your organization **API key (GUID)** is passed directly as the `token` parameter in every request — each endpoint validates it via `IsAuthenticated`. Email+password login (`VerifyLogin`) has been retired and its tokens are not accepted by the API.
+There is no separate login call. Your organization **API key (GUID)** is passed directly as the `token` parameter in every request — each endpoint validates it via `IsAuthenticated`. Email+password login (`VerifyLogin`) is **deprecated** — it still works during the migration period, but new integrations must use the API key and existing ones should migrate to it.
 
 ```http
 POST /Services/ApiService.svc/CreateDocument HTTP/1.1

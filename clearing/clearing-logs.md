@@ -25,7 +25,7 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 | `IsToken` | boolean | Token-based charge. |
 | `IsBitPayment` / `IsGooglePay` / `IsApplePay` | boolean | Alternative payment method flags. |
 | `IsDocumentCreated` / `DocId` | bool / GUID | Auto-created document reference. |
-| `TransactionType` | int | Unified type: 1 Charge, 2 Credit/refund, 3 PaymentInNumbers, 4 PaymentWithFees, 5 TokenCreation, 6 TokenAndCharge, 7 ChargeByToken. |
+| `TransactionType` | int | Unified type: 0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit/refund, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers. |
 
 ## Get by ID — `GetClearingLogById`
 
