@@ -62,6 +62,8 @@ Content-Type: application/json
         "ID": "7f6a2c1e-...",
         "DocumentNumber": 20260123,
         "Total": 117.0,
+        "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
+        "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
         "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
         "PrintCertifiedCopyPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=..."
       },

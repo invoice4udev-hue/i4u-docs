@@ -56,6 +56,8 @@ All three return the full [Document object](document-object.md):
     "Subject": "Monthly subscription",
     "Total": 117.0,
     "StatusID": 2,
+    "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
+    "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
     "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
     "PrintCertifiedCopyPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
     "Errors": []
