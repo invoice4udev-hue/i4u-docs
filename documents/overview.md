@@ -51,6 +51,10 @@ flowchart TD
     I --> L[Document in response]:::cb
 ```
 
+### Viewing the document (PDF links)
+
+Every endpoint that returns a `Document` — creation, [get-document](get-document.md), [search](search-documents.md), and [drafts](draft-documents.md) — includes `PrintOriginalPDFLink` and `PrintCertifiedCopyPDFLink`. These are pre-signed URLs to the document viewer subdomain: QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. There's no separate Base64/raw-PDF-bytes field; these links are the only way to fetch the rendered PDF.
+
 ### Duplicate protection
 
 Two mechanisms prevent double-billing when your system retries:
