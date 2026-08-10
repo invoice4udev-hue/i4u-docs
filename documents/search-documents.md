@@ -4,33 +4,34 @@ Filtered document search across the authenticated organization.
 
 ## Endpoint
 
-|              |                                                                          |
-| ------------ | ------------------------------------------------------------------------ |
-| **Method**   | `POST`                                                                   |
-| **Path**     | `/GetDocuments`                                                          |
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/GetDocuments` |
 | **Response** | `CommonCollection<Document[]>` — `{ "Response": [ ... ], "Errors": [] }` |
 
 ## Request schema — `dr` (DocumentsRequest)
 
-| Field                                             | Type          | Required | Description                                                               |
-| ------------------------------------------------- | ------------- | -------- | ------------------------------------------------------------------------- |
-| `DocumentType`                                    | int           | Yes      | Filter by a single [document type](document-types.md).                    |
-| `From` / `To`                                     | datetime      | No       | Issue-date range.                                                         |
-| `FromActualCreationDate` / `ToActualCreationDate` | datetime      | No       | Actual creation-date range.                                               |
-| `FromPaymentDueDate` / `ToPaymentDueDate`         | datetime      | No       | Payment due-date range.                                                   |
-| `Status`                                          | int           | No       | [Document status](document-types.md#document-statuses-statusid).          |
-| `CustomerID`                                      | int           | No       | Filter by customer.                                                       |
-| `CustomerName`                                    | string        | No       | Filter by customer name (must exist — otherwise `ClientDoesntExists`, 7). |
-| `BranchID`                                        | int           | No       | Filter by branch.                                                         |
-| `DocumentNumber` / `ExectDocumentNumber`          | int           | No       | Number range prefix / exact number.                                       |
-| `FromNumber` / `ToNumber`                         | int           | No       | Document-number range.                                                    |
-| `FromAmount` / `ToAmount`                         | float         | No       | Total amount range.                                                       |
-| `Currency`                                        | string        | No       | Currency filter.                                                          |
-| `PaymentType`                                     | int           | No       | Filter receipts by payment type.                                          |
-| `ItemCode` / `ItemDescription`                    | string        | No       | Filter by item fields.                                                    |
-| `ItemsIncluded`                                   | boolean       | No       | Include full `Items` in results.                                          |
-| `PaymentsIncluded`                                | boolean       | No       | Include full `Payments` in results.                                       |
-| `OnlyGeneralClient` / `GeneralClientName`         | bool / string | No       | General-customer filters.                                                 |
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `DocumentType` | int | No | Filter by a single [document type](document-types.md). |
+| `From` / `To` | datetime | No | Issue-date range. |
+| `FromActualCreationDate` / `ToActualCreationDate` | datetime | No | Actual creation-date range. |
+| `FromPaymentDueDate` / `ToPaymentDueDate` | datetime | No | Payment due-date range. |
+| `Status` | int | No | [Document status](document-types.md#document-statuses-statusid). |
+| `CustomerID` | int | No | Filter by customer. |
+| `CustomerName` | string | No | Filter by customer name (must exist — otherwise `ClientDoesntExists`, 7). |
+| `BranchID` | int | No | Filter by branch. |
+| `DocumentNumber` / `ExectDocumentNumber` | int | No | Number range prefix / exact number. |
+| `FromNumber` / `ToNumber` | int | No | Document-number range. |
+| `FromAmount` / `ToAmount` | float | No | Total amount range. |
+| `Currency` | string | No | Currency filter. |
+| `PaymentType` | int | No | Filter receipts by payment type. |
+| `ItemCode` / `ItemDescription` | string | No | Filter by item fields. |
+| `ItemsIncluded` | boolean | No | Include full `Items` in results. |
+| `PaymentsIncluded` | boolean | No | Include full `Payments` in results. |
+| `OnlyGeneralClient` / `GeneralClientName` | bool / string | No | General-customer filters. |
+| `Limit` | int | No | Max rows. |
 
 ## Example request
 
@@ -57,7 +58,13 @@ Content-Type: application/json
 {
   "GetDocumentsResult": {
     "Response": [
-      { "ID": "7f6a2c1e-...", "DocumentNumber": 20260123, "Total": 117.0 },
+      {
+        "ID": "7f6a2c1e-...",
+        "DocumentNumber": 20260123,
+        "Total": 117.0,
+        "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
+        "PrintCertifiedCopyPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=..."
+      },
       { "ID": "8a7b3d2f-...", "DocumentNumber": 20260124, "Total": 234.0 }
     ],
     "Errors": []
@@ -65,11 +72,15 @@ Content-Type: application/json
 }
 ```
 
+{% hint style="info" %}
+Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document creation](create-document.md) and [single-document lookup](get-document.md) — QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. There's no separate Base64/raw-PDF-bytes field; these links are the only way to fetch the rendered PDF.
+{% endhint %}
+
 ## Errors
 
-| Error (ID)               | Meaning                                        |
-| ------------------------ | ---------------------------------------------- |
-| `UnauthorizedUser` (80)  | Invalid token.                                 |
+| Error (ID) | Meaning |
+| ---------- | ------- |
+| `UnauthorizedUser` (80) | Invalid token. |
 | `ClientDoesntExists` (7) | `CustomerName` filter didn't match a customer. |
 
 {% hint style="info" %}
@@ -83,5 +94,4 @@ Fetching one known document? Use the [single-document lookups](get-document.md) 
 ## Try it
 
 {% openapi-operation spec="invoice4u-api" path="/GetDocuments" method="post" %}
-[OpenAPI invoice4u-api](https://4401d86825a13bf607936cc3a9f3897a.r2.cloudflarestorage.com/gitbook-x-prod-openapi/raw/00f2f1d4bafc4d89c4d169eccebf65e6b1660dd5d59538b90e243188ebb90e52.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=dce48141f43c0191a2ad043a6888781c%2F20260730%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260730T075111Z&X-Amz-Expires=172800&X-Amz-Signature=b21fe3eb102835498492d8ab74920992676d00976aa257dbb20fac56a878e51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 {% endopenapi-operation %}

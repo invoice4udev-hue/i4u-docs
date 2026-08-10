@@ -56,10 +56,16 @@ All three return the full [Document object](document-object.md):
     "Subject": "Monthly subscription",
     "Total": 117.0,
     "StatusID": 2,
+    "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
+    "PrintCertifiedCopyPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
     "Errors": []
   }
 }
 ```
+
+{% hint style="info" %}
+Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document creation](create-document.md) — QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. There's no separate Base64/raw-PDF-bytes field; these links are the only way to fetch the rendered PDF.
+{% endhint %}
 
 ## Errors
 
