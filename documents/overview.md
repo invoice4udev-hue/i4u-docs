@@ -53,7 +53,7 @@ flowchart TD
 
 ### Viewing the document (PDF links)
 
-Every endpoint that returns a `Document` — creation, [get-document](get-document.md), [search](search-documents.md), and [drafts](draft-documents.md) — includes `PrintOriginalPDFLink` and `PrintCertifiedCopyPDFLink`. These are pre-signed URLs to the document viewer subdomain: QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. There's no separate Base64/raw-PDF-bytes field; these links are the only way to fetch the rendered PDF.
+Every endpoint that returns a `Document` — creation, [get-document](get-document.md), [search](search-documents.md), and [drafts](draft-documents.md) — includes `PrintOriginalPDFLink` and `PrintCertifiedCopyPDFLink`, pre-signed URLs to the document viewer subdomain: QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. The response also carries `CipherText` / `CipherTextOriginal` — Base64-encoded (and URL-encoded) cipher tokens the links are built from: `{baseViewUrl}/Views/PDF.aspx?cipher={CipherTextOriginal|CipherText}`. That's the only Base64 you get — there's no field with the raw rendered PDF bytes, so fetching the `PDF.aspx` URL is still the only way to get the file. On some lookups the `Print*PDFLink` fields come back `null`; when that happens, build the URL yourself from `CipherText`/`CipherTextOriginal`.
 
 ### Duplicate protection
 

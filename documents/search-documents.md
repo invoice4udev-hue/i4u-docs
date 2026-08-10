@@ -73,7 +73,7 @@ Content-Type: application/json
 ```
 
 {% hint style="info" %}
-Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document creation](create-document.md) and [single-document lookup](get-document.md) — QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. There's no separate Base64/raw-PDF-bytes field; these links are the only way to fetch the rendered PDF.
+Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document creation](create-document.md) and [single-document lookup](get-document.md) — QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. `CipherText` / `CipherTextOriginal` (also on the object) are the Base64-encoded cipher tokens behind those links, not the rendered PDF itself — there's no field with the raw file bytes. Both `Print*PDFLink` fields can come back `null` on a lookup; if so, build the URL from `CipherText`/`CipherTextOriginal` yourself.
 {% endhint %}
 
 ## Errors
