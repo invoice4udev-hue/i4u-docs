@@ -100,13 +100,18 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | `IsDocCreate` | boolean | No | Create a document automatically after a successful charge. The document is emailed to both the customer and the account owner. |
 | `DocHeadline` | string | No | Document subject (defaults to `Description`). |
 | `IsManualDocCreationsWithParams` | boolean | No | Provide explicit line items via the pipe-separated `DocItem*` fields below. |
-| `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | With manual items | Pipe-separated lists, equal length, e.g. `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`. |
-| `DocItemCode` / `DocItemTaxRate` | string | No | Optional pipe-separated code/VAT-rate lists. |
+| `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | **With manual items** | Pipe-separated lists, equal length, e.g. `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`. Missing/empty values return a clean API error (`DocumentItemMissingName` 39, `DocumentItemQuantityCannotBeZero` 40, `DocumentItemPriceCannotBeZero` 41). |
+| `DocItemTaxRate` | string | **With manual items** | Pipe-separated VAT-rate list, same length as `DocItemQuantity`/`DocItemPrice` (empty entries per item are fine, e.g. `"|"`). Not validated up front — if the field is **omitted entirely** the request fails with an unhandled server error (500) instead of a clean API error; if the pipe-count doesn't match the other lists, the request fails the same way. Always send it whenever `IsManualDocCreationsWithParams` is `true`. |
+| `DocItemCode` | string | No | Optional pipe-separated code list. |
 | `IsItemsBase64Encoded` | boolean | No | `DocItem*` values are Base64-encoded (for special characters). |
 | `DocBranchId` | string | No | Branch for the document. |
 | `DocComments` | string | No | Document comments. |
 | `Language` / `DocLanguage` | string | No | Page / document language (`"he"` / `"en"`). |
 | `TaxPercentage` | double | No | VAT override for the document. |
+
+{% hint style="warning" %}
+`DocItemTaxRate` is documented as optional but is **not null-checked** in the current implementation when `IsManualDocCreationsWithParams` is `true`. Omitting it, or sending fewer pipe-separated values than `DocItemQuantity`/`DocItemPrice`, throws an unhandled exception rather than returning an entry in `Errors` — always include it, matching the other lists' length, when creating documents with manual items.
+{% endhint %}
 
 ### Tokens, standing orders, refunds
 
@@ -276,7 +281,12 @@ flowchart LR
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Token features not enabled on the terminal. |
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | Standing orders not enabled. |
 | `ApiGooglePayNotAllowedForUser` (316) / `ApiApplePayNotAllowedForUser` (317) | Wallet method not enabled. |
-| `NumberOfItemsIsNotEqual` (24) | `DocItem*` pipe-lists have different lengths. |
+| `DocumentItemMissingName` (39) | Manual items: `DocItemName` is empty. |
+| `DocumentItemQuantityCannotBeZero` (40) | Manual items: `DocItemQuantity` is empty. |
+| `DocumentItemPriceCannotBeZero` (41) | Manual items: `DocItemPrice` is empty. |
+| `ItemsQuantityMustBeNumaric` (26) | Manual items: a `DocItemQuantity` entry isn't numeric. |
+| `ItemsPriceMustBeNumaric` (25) | Manual items: a `DocItemPrice` entry isn't numeric. |
+| `NumberOfItemsIsNotEqual` (24) | `DocItemName`/`DocItemQuantity`/`DocItemPrice` pipe-lists have different lengths. Note: this check does **not** cover `DocItemTaxRate` — a mismatched or missing `DocItemTaxRate` throws an unhandled exception instead (see warning above). |
 | `PaymentIDDoesntExists` (60) | Refund: original charge log not found for `PaymentId`. |
 | `CreditAmountExceedsTotal` (155) | Refund: nothing left to refund on the original charge. |
 | `ClearingError` (32) | Charge declined / provider error — details in `Paramters`. |
