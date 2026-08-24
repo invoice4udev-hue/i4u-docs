@@ -45,6 +45,17 @@
 * [Tokens & Standing Orders](clearing/tokens-and-standing-orders.md)
 * [Clearing Logs](clearing/clearing-logs.md)
 
+## Inventory
+
+* [Inventory Endpoints Overview](inventory/overview.md)
+* [Item Categories](inventory/categories.md)
+* [Suppliers](inventory/suppliers.md)
+* [Warehouses](inventory/warehouses.md)
+* [Price Lists](inventory/pricelists.md)
+* [Inventory Items](inventory/items.md)
+* [Inventory Reports](inventory/reports.md)
+* [Receive to Stock](inventory/receive-to-stock.md)
+
 ## User Registration
 
 * [User Registration (Partners)](registration/user-registration.md)

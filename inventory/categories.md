@@ -1,0 +1,239 @@
+# Item Categories
+
+Manage item categories for organizing inventory items.
+
+## Create a Category
+
+Creates a new inventory category in the authenticated organization.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/CreateInventoryCategory` |
+| **Response** | `ItemCategory` object |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `itemCategory` | ItemCategory | Yes | The category to create. |
+| `token` | string | Yes | Authentication token. |
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/CreateInventoryCategory HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "itemCategory": {
+    "Name": "Electronics",
+    "Description": "Electronic devices and components",
+    "IsActive": true
+  },
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "CreateInventoryCategoryResult": {
+    "Id": 5,
+    "Name": "Electronics",
+    "Description": "Electronic devices and components",
+    "IsActive": true,
+    "Errors": []
+  }
+}
+```
+
+### Errors
+
+| Error (ID) | Meaning |
+| ---------- | ------- |
+| `UnauthorizedUser` (80) | Invalid or missing token. |
+| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+
+---
+
+## Update a Category
+
+Updates an existing inventory category by ID.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/UpdateInventoryCategory` |
+| **Response** | `ItemCategory` object |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `itemCategory` | ItemCategory | Yes | The category to update. Must include `Id`. |
+| `token` | string | Yes | Authentication token. |
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/UpdateInventoryCategory HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "itemCategory": {
+    "Id": 5,
+    "Name": "Electronics",
+    "Description": "Updated: Electronic devices",
+    "IsActive": true
+  },
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "UpdateInventoryCategoryResult": {
+    "Id": 5,
+    "Name": "Electronics",
+    "Description": "Updated: Electronic devices",
+    "IsActive": true,
+    "Errors": []
+  }
+}
+```
+
+### Errors
+
+| Error (ID) | Meaning |
+| ---------- | ------- |
+| `UnauthorizedUser` (80) | Invalid or missing token. |
+| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+
+---
+
+## Get Category by ID
+
+Retrieves a specific inventory category by ID.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/GetInventoryCategoryById` |
+| **Response** | `ItemCategory` object |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `id` | int | Yes | The category ID to retrieve. |
+| `token` | string | Yes | Authentication token. |
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/GetInventoryCategoryById HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "id": 5,
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "GetInventoryCategoryByIdResult": {
+    "Id": 5,
+    "Name": "Electronics",
+    "Description": "Electronic devices and components",
+    "IsActive": true,
+    "Errors": []
+  }
+}
+```
+
+### Errors
+
+| Error (ID) | Meaning |
+| ---------- | ------- |
+| `UnauthorizedUser` (80) | Invalid or missing token. |
+| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+
+---
+
+## Get All Categories
+
+Retrieves all inventory categories for the authenticated organization.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/GetInventoryCategories` |
+| **Response** | `ItemCategory[]` |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `isActive` | bool? | No | Filter by active status. Omit to return all. |
+| `token` | string | Yes | Authentication token. |
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/GetInventoryCategories HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "isActive": true,
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "GetInventoryCategoriesResult": [
+    {
+      "Id": 1,
+      "Name": "Hardware",
+      "Description": "Computer hardware",
+      "IsActive": true,
+      "Errors": []
+    },
+    {
+      "Id": 5,
+      "Name": "Electronics",
+      "Description": "Electronic devices and components",
+      "IsActive": true,
+      "Errors": []
+    }
+  ]
+}
+```
+
+### Errors
+
+| Error (ID) | Meaning |
+| ---------- | ------- |
+| `UnauthorizedUser` (80) | Invalid or missing token. |
+| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |

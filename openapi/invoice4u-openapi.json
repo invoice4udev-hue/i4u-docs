@@ -26,6 +26,7 @@
     { "name": "Customers", "description": "Create, update and retrieve customers." },
     { "name": "Branches", "description": "Organization branches." },
     { "name": "Documents", "description": "Create and retrieve documents (invoices, receipts, etc.)." },
+    { "name": "Inventory", "description": "Manage inventory items, categories, suppliers, warehouses, and pricing." },
     { "name": "Clearing", "description": "Credit-card charges, tokens, standing orders and clearing logs." },
     { "name": "Registration", "description": "Partner-only account registration." }
   ],
@@ -334,6 +335,631 @@
                       "items": { "$ref": "#/components/schemas/Branch" }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreateInventoryCategory": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "CreateInventoryCategory",
+        "summary": "Create an inventory category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["itemCategory", "token"],
+                "properties": {
+                  "itemCategory": { "$ref": "#/components/schemas/ItemCategory" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created category.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "CreateInventoryCategoryResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateInventoryCategory": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "UpdateInventoryCategory",
+        "summary": "Update an inventory category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["itemCategory", "token"],
+                "properties": {
+                  "itemCategory": { "$ref": "#/components/schemas/ItemCategory" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated category.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "UpdateInventoryCategoryResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryCategoryById": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetInventoryCategoryById",
+        "summary": "Get inventory category by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "token"],
+                "properties": {
+                  "id": { "type": "integer" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The category.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "GetInventoryCategoryByIdResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryCategories": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetInventoryCategories",
+        "summary": "Get all inventory categories",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "isActive": { "type": "boolean", "nullable": true },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of categories.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetInventoryCategoriesResult": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/ItemCategory" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreateSupplier": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "CreateSupplier",
+        "summary": "Create a supplier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["supplier", "token"],
+                "properties": {
+                  "supplier": { "$ref": "#/components/schemas/Supplier" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created supplier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "CreateSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateSupplier": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "UpdateSupplier",
+        "summary": "Update a supplier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["supplier", "token"],
+                "properties": {
+                  "supplier": { "$ref": "#/components/schemas/Supplier" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated supplier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "UpdateSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetSupplier": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetSupplier",
+        "summary": "Get supplier by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "token"],
+                "properties": {
+                  "id": { "type": "integer" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The supplier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "GetSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetSuppliers": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetSuppliers",
+        "summary": "Get all suppliers",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "isActive": { "type": "boolean", "nullable": true },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of suppliers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetSuppliersResult": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Supplier" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreateWarehouse": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "CreateWarehouse",
+        "summary": "Create a warehouse",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["warehouse", "token"],
+                "properties": {
+                  "warehouse": { "$ref": "#/components/schemas/Warehouse" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created warehouse.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "CreateWarehouseResult": { "$ref": "#/components/schemas/Warehouse" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateWarehouse": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "UpdateWarehouse",
+        "summary": "Update a warehouse",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["warehouse", "token"],
+                "properties": {
+                  "warehouse": { "$ref": "#/components/schemas/Warehouse" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated warehouse.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "UpdateWarehouseResult": { "$ref": "#/components/schemas/Warehouse" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetWarehouses": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetWarehouses",
+        "summary": "Get all warehouses",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "isActive": { "type": "boolean", "nullable": true },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of warehouses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetWarehousesResult": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Warehouse" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryItems": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetInventoryItems",
+        "summary": "Get inventory items with filtering",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "itemId": { "type": "integer", "nullable": true },
+                  "fromSellingDate": { "type": "string", "format": "date-time", "nullable": true },
+                  "toSellingDate": { "type": "string", "format": "date-time", "nullable": true },
+                  "fromPurchasingDate": { "type": "string", "format": "date-time", "nullable": true },
+                  "toPurchasingDate": { "type": "string", "format": "date-time", "nullable": true },
+                  "isActive": { "type": "boolean", "nullable": true },
+                  "serialNumber": { "type": "integer", "nullable": true },
+                  "batchNumber": { "type": "integer", "nullable": true },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of inventory items.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetInventoryItemsResult": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Item" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetActiveInventoryItems": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetActiveInventoryItems",
+        "summary": "Get active inventory items",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": { "token": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of active inventory items.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "GetActiveInventoryItemsResult": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Item" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryItem": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "GetInventoryItem",
+        "summary": "Get inventory item by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "token"],
+                "properties": {
+                  "id": { "type": "integer" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The inventory item.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "GetInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreateInventoryItem": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "CreateInventoryItem",
+        "summary": "Create an inventory item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["item", "token"],
+                "properties": {
+                  "item": { "$ref": "#/components/schemas/Item" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created inventory item.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "CreateInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateInventoryItem": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "UpdateInventoryItem",
+        "summary": "Update an inventory item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["item", "token"],
+                "properties": {
+                  "item": { "$ref": "#/components/schemas/Item" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated inventory item.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "UpdateInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ReceiveToStock": {
+      "post": {
+        "tags": ["Inventory"],
+        "operationId": "ReceiveToStock",
+        "summary": "Receive items to stock",
+        "description": "Records a receipt document for items received into inventory.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["doc", "token"],
+                "properties": {
+                  "doc": { "$ref": "#/components/schemas/Document" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created receipt document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "ReceiveToStockResult": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1503,6 +2129,136 @@
               "BusinessType": { "type": "integer", "nullable": true, "default": 1 },
               "BundleID": { "type": "integer" },
               "ApiKey": { "type": "string", "format": "uuid", "nullable": true, "description": "Pre-provisioned API key for the new account." }
+            }
+          }
+        ]
+      },
+      "ItemCategory": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "required": ["Name"],
+            "properties": {
+              "Id": { "type": "integer" },
+              "Name": { "type": "string" },
+              "Description": { "type": "string", "nullable": true },
+              "IsActive": { "type": "boolean" }
+            }
+          }
+        ]
+      },
+      "Supplier": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "required": ["Name"],
+            "properties": {
+              "Id": { "type": "integer" },
+              "Name": { "type": "string" },
+              "Email": { "type": "string", "nullable": true },
+              "Phone": { "type": "string", "nullable": true },
+              "Address": { "type": "string", "nullable": true },
+              "City": { "type": "string", "nullable": true },
+              "Country": { "type": "string", "nullable": true },
+              "IsActive": { "type": "boolean" }
+            }
+          }
+        ]
+      },
+      "Warehouse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "required": ["Name"],
+            "properties": {
+              "Id": { "type": "integer" },
+              "Name": { "type": "string" },
+              "Address": { "type": "string", "nullable": true },
+              "City": { "type": "string", "nullable": true },
+              "Phone": { "type": "string", "nullable": true },
+              "IsActive": { "type": "boolean" }
+            }
+          }
+        ]
+      },
+      "ItemInstance": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "properties": {
+              "Id": { "type": "integer" },
+              "SerialNumber": { "type": "string", "nullable": true },
+              "BatchNumber": { "type": "string", "nullable": true }
+            }
+          }
+        ]
+      },
+      "Item": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "required": ["Name"],
+            "properties": {
+              "Id": { "type": "integer" },
+              "Name": { "type": "string" },
+              "CategoryId": { "type": "integer", "nullable": true },
+              "SKU": { "type": "string", "nullable": true },
+              "Description": { "type": "string", "nullable": true },
+              "Price": { "type": "number", "format": "double" },
+              "Cost": { "type": "number", "format": "double", "nullable": true },
+              "ImageUrl": { "type": "string", "nullable": true },
+              "IsActive": { "type": "boolean" },
+              "ItemInstances": {
+                "type": "array",
+                "nullable": true,
+                "items": { "$ref": "#/components/schemas/ItemInstance" }
+              }
+            }
+          }
+        ]
+      },
+      "Pricelist": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "required": ["Name"],
+            "properties": {
+              "Id": { "type": "integer" },
+              "Name": { "type": "string" },
+              "Description": { "type": "string", "nullable": true },
+              "IsActive": { "type": "boolean" }
+            }
+          }
+        ]
+      },
+      "PricelistWithCustomer": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Pricelist" },
+          {
+            "type": "object",
+            "properties": {
+              "CustomerId": { "type": "integer" }
+            }
+          }
+        ]
+      },
+      "ItemBalance": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "properties": {
+              "ItemId": { "type": "integer" },
+              "ItemName": { "type": "string", "nullable": true },
+              "Quantity": { "type": "number", "format": "double" },
+              "Cost": { "type": "number", "format": "double" },
+              "TotalValue": { "type": "number", "format": "double" }
             }
           }
         ]
