@@ -1,6 +1,8 @@
 # Inventory Endpoints Overview
 
-Inventory management APIs provide comprehensive tools to manage product catalogs, stock, suppliers, warehouses, and pricing. These endpoints support creating and managing items, categories, suppliers, warehouses, and price lists.
+Inventory management APIs provide tools to manage inventory items, stock, suppliers, warehouses, and pricing. These endpoints support creating and managing items, categories, suppliers, warehouses, and price lists.
+
+> **Not the item catalog.** These endpoints work on inventory items and require the Inventory module. To read the regular item catalog (available to every account, no Inventory module needed), see [Catalog Items](../catalog/overview.md).
 
 ### Endpoints in this section
 

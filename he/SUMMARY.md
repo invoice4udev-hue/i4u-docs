@@ -23,6 +23,12 @@
 * [סקירת מתודות סניפים](branches/overview.md)
 * [שליפת סניפים](branches/get-branches.md)
 
+## קטלוג פריטים (Catalog Items)
+
+* [סקירת מתודות קטלוג פריטים](catalog/overview.md)
+* [שליפת פריטי קטלוג](catalog/get-catalog-items.md)
+* [שליפת פריט קטלוג לפי קוד](catalog/get-catalog-item-by-code.md)
+
 ## מסמכים (Documents)
 
 * [סקירת מתודות מסמכים](documents/overview.md)

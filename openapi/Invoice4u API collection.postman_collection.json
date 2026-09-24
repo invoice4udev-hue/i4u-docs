@@ -1673,6 +1673,82 @@
       ]
     },
     {
+      "name": "📚 Catalog Items",
+      "description": "Read-only access to the organization's item catalog. Available to all accounts, with or without the Inventory module. The API has no endpoint for creating or updating catalog items.",
+      "item": [
+        {
+          "name": "Get Catalog Items",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"GetAll\": false,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCatalogItems",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCatalogItems"
+              ]
+            },
+            "description": "Returns the organization's catalog. GetAll=false returns active items only; GetAll=true includes inactive items."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Catalog Item by Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"code\": \"SRV-01\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCatalogItemByCode",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCatalogItemByCode"
+              ]
+            },
+            "description": "Returns one catalog item by exact code, or null when not found."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "💳 Clearing & Payments",
       "description": "Credit-card and wallet clearing via `ProcessApiRequestV2`. All scenarios share the same envelope (`request: { ... }`) – the toggles `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `Refund`, `IsStandingOrderClearance`, `IsBitPayment`, `IsGooglePay` and `IsApplePay` switch the behaviour.\n\n### Common fields\n- `Invoice4UUserApiKey` – set to `{{Invoice4u_ApiKey}}` (collection variable).\n- `Sum` – charge amount.\n- `PaymentsNum` – number of instalments (use `1` for a single charge).\n- `IsDocCreate:true` – automatically issue an InvoiceReceipt (Type 3) for the charge.\n- `CallBackUrl` / `ReturnUrl` – where the client is redirected once the hosted page completes.\n- `IsGeneralClient:true` + `IsAutoCreateCustomer:true` – auto-create a one-time customer from the client name.\n\n### Wallet payments (Bit / Google Pay / Apple Pay)\nEach wallet is enabled by a single boolean on the request – **exactly one** wallet flag per call:\n- `IsBitPayment:true` → hosted page opens the Bit flow.\n- `IsGooglePay:true` → hosted page opens the Google Pay sheet.\n- `IsApplePay:true` → hosted page opens the Apple Pay sheet (Safari / iOS only).\n\nAll three require the wallet to be **enabled on your clearing account**. If it's not, the API returns `ApiBitNotAllowedForUser`, `ApiGooglePayNotAllowedForUser` (error 316) or `ApiApplePayNotAllowedForUser` (error 317). Contact support to enable a wallet before running these examples in production.\n\n### Split-tender payments (combining wallets on one order)\n`ProcessApiRequestV2` handles **one** payment method per call. To collect a single order total across multiple wallets (e.g. 60 ILS on card + 40 ILS on Bit), issue **one call per slice** and tie them together by reusing the same `OrderIdClientUsage` GUID – the server stores it as `ClearingTraceId`, so all slices show up under one trace when you query the clearing log. Set `IsDocCreate:true` only on the **last** slice (or on none, and issue a manual Invoice-Receipt afterwards) so you don't create one accounting document per slice.",
       "item": [

@@ -45,6 +45,12 @@
 * [Tokens & Standing Orders](clearing/tokens-and-standing-orders.md)
 * [Clearing Logs](clearing/clearing-logs.md)
 
+## Catalog Items
+
+* [Catalog Item Endpoints Overview](catalog/overview.md)
+* [Get Catalog Items](catalog/get-catalog-items.md)
+* [Get a Catalog Item by Code](catalog/get-catalog-item-by-code.md)
+
 ## Inventory
 
 * [Inventory Endpoints Overview](inventory/overview.md)
