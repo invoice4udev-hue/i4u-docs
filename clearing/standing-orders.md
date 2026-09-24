@@ -111,7 +111,7 @@ The response is the same as for any hosted-page request — check `Errors`, then
 | Following charges | Monthly, on the same day of the month as the first charge. |
 | Short months | A first charge on the 29th–31st falls on the last day of shorter months, and returns to the original day afterwards (e.g. 31 Jan → 28 Feb → 31 Mar → 30 Apr). |
 | Number of charges | `StandingOrderDuration` charge dates, at most 120. |
-| When in the day | The standing-order job processes the charge dates of the current day in one batch. No specific time of day is guaranteed. |
+| When in the day | The standing-order job runs **every day, including weekends, starting at 08:00 Israel time**. On most days it finishes within about an hour; on busy charge days (e.g. the 1st, 10th and 15th of the month) charges can run until around 13:00. Don't depend on an exact time. |
 
 Example: a customer completes the card page on **15 March 2026** with `StandingOrderDuration: 12` → charge dates 16 Mar 2026, 16 Apr, 16 May … 16 Feb 2027.
 
@@ -126,7 +126,7 @@ Example: a customer completes the card page on **15 March 2026** with `StandingO
 On every charge date, the standing-order job:
 
 1. Charges the customer's **current** saved token (looked up by customer and clearing company at charge time — see [Replacing the card](#replacing-the-card)).
-2. On success, creates an **Invoice-Receipt**: subject and line item = `DocHeadline`, at the charged amount, with a credit-card payment line.
+2. On success, creates an **Invoice-Receipt**: subject and line item = `DocHeadline`, at the charged amount, with a credit-card payment line. The charge also appears in your [clearing logs](clearing-logs.md), and the document is linked to that clearing-log entry.
 3. Emails the document to the customer's email address(es) on the customer card. The account owner is not copied by default; this can be switched on per standing order (**Send the invoices to my email**) in the Invoice4U web app.
 4. Records the result (success or failure) in the standing order's charge history.
 5. Posts the [recurring-charge callback](#recurring-charge-callback-standingordercallbackurl), if a callback URL is stored on the standing order.
@@ -253,7 +253,7 @@ A failed charge has the same shape, with `isSuccessClearing: "false"`, `isSucces
 | `standingOrderId` | The standing order this charge belongs to — match it to the ID saved from the setup callback. |
 | `isSuccessClearing` | `"true"` when the card was charged. This is the field that decides whether the month was paid. |
 | `isSuccessDocCreation` | `"true"` when the Invoice-Receipt was created. Can be `"false"` even after a successful charge — the money was collected but the document needs attention (see `failureDocCreationMessage`). |
-| `failureClearingMessage` | Decline / error reason when `isSuccessClearing` is `"false"`. Free text from the clearing company or Invoice4U, often in **Hebrew** — log it, don't parse it. When the customer has no saved token it is `לא מוגדר טוקן עבור הלקוח - לא התבצע נסיון חיוב` ("no token defined for the customer — no charge attempted"). |
+| `failureClearingMessage` | Decline / error reason when `isSuccessClearing` is `"false"`. Free text from the clearing company or Invoice4U, usually in **Hebrew** (for example `חברת האשראי לא אשרה את העסקה`, `כרטיס פג תוקף.`, `כרטיס חסום - עסקה לא מאושרת`) — log it, don't parse it. When the customer has no saved token it is `לא מוגדר טוקן עבור הלקוח - לא התבצע נסיון חיוב` ("no token defined for the customer — no charge attempted"). |
 | `failureDocCreationMessage` | Reason the document was not created. Free text, often Hebrew. After a failed charge it is `המסמך לא הופק עקב כישלון בסליקה` ("document not issued because the charge failed"). |
 | `sum` | The standing order's regular monthly amount (`Sum`). On a first charge with `StandingOrderFirstChargeAmount`, the amount actually charged differs from this value. |
 | `paymentsNum` | Currently carries the same value as `sum` — don't rely on it. Each scheduled charge is a single payment. |
@@ -374,7 +374,7 @@ No. The sign-up page only saves the card. The first charge is on the next day's 
 Not on the standing-order page — `AddTokenAndCharge` can't be combined with `IsStandingOrderClearance`. The first scheduled charge is always the day after sign-up.
 
 **How do I know a month was paid?**
-From the recurring-charge callback (`isSuccessClearing`), or from the customer's documents ([Search Documents](../documents/search-documents.md)).
+From the recurring-charge callback (`isSuccessClearing`), the customer's documents ([Search Documents](../documents/search-documents.md)), or your [clearing logs](clearing-logs.md).
 
 **I didn't receive a recurring-charge callback.**
 Check that the callback URL was set (on UPay: `CallBackUrl`), that the endpoint was reachable at the time (there's no retry), and that it doesn't depend on query-string parameters. Then check the customer's documents or the charge history in the web app.
