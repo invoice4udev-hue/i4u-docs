@@ -23,12 +23,6 @@
 * [סקירת מתודות סניפים](branches/overview.md)
 * [שליפת סניפים](branches/get-branches.md)
 
-## קטלוג פריטים (Catalog Items)
-
-* [סקירת מתודות קטלוג פריטים](catalog/overview.md)
-* [שליפת פריטי קטלוג](catalog/get-catalog-items.md)
-* [שליפת פריט קטלוג לפי קוד](catalog/get-catalog-item-by-code.md)
-
 ## מסמכים (Documents)
 
 * [סקירת מתודות מסמכים](documents/overview.md)
@@ -50,6 +44,23 @@
 * [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
 * [הוראות קבע (חיובים חוזרים)](clearing/standing-orders.md)
 * [לוגים של סליקה](clearing/clearing-logs.md)
+
+## קטלוג פריטים (Catalog Items)
+
+* [סקירת מתודות קטלוג פריטים](catalog/overview.md)
+* [שליפת פריטי קטלוג](catalog/get-catalog-items.md)
+* [שליפת פריט קטלוג לפי קוד](catalog/get-catalog-item-by-code.md)
+
+## מלאי (Inventory)
+
+* [סקירת מתודות מלאי](inventory/overview.md)
+* [קטגוריות פריטים](inventory/categories.md)
+* [ספקים](inventory/suppliers.md)
+* [מחסנים](inventory/warehouses.md)
+* [מחירונים](inventory/pricelists.md)
+* [פריטי מלאי](inventory/items.md)
+* [דוחות מלאי](inventory/reports.md)
+* [קליטה למלאי](inventory/receive-to-stock.md)
 
 ## רישום משתמשים (User Registration)
 

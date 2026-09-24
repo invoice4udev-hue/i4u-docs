@@ -11,7 +11,7 @@
 
 * ‫**קריאה בלבד.** אין ב-API מתודה ליצירה, עדכון או מחיקה של פריטי קטלוג. ניהול הקטלוג מתבצע באתר Invoice4U.‬
 * ‫**אין חיפוש חופשי.** `GetCatalogItems` מחזירה את הרשימה המלאה (סננו בצד שלכם); `GetCatalogItemByCode` מחפשת לפי התאמה מדויקת של קוד.‬
-* ‫**מתודות המלאי נפרדות.** `GetInventoryItems`, `GetInventoryItem`, `CreateInventoryItem`, `UpdateInventoryItem` ושאר מתודות ה-`*Inventory*` עובדות על פריטי מלאי, לא על הקטלוג, ודורשות רכיב מלאי פעיל. בלעדיו הן מחזירות `UnauthorizedInventoryAttempt` (403).‬
+* ‫**מתודות המלאי נפרדות.** `GetInventoryItems`, `GetInventoryItem`, `CreateInventoryItem`, `UpdateInventoryItem` ושאר מתודות ה-`*Inventory*` עובדות על פריטי מלאי, לא על הקטלוג, ודורשות רכיב מלאי פעיל. בלעדיו הן מחזירות `UnauthorizedInventoryAttempt` (403). ראו [סקירת מתודות מלאי](../inventory/overview.md).‬
 
 ### ‫אובייקט ה-CatalogItem‬
 
