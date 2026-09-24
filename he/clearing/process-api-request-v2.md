@@ -67,7 +67,7 @@
 
 ### ‫טוקנים, הוראות קבע, זיכויים‬
 
-‫ראו [טוקנים והוראות קבע](tokens-and-standing-orders.md) עבור `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — ו[זיכויים](#refunds) להלן עבור `Refund` + `PaymentId`.‬
+‫ראו [טוקנים והוראות קבע](tokens-and-standing-orders.md) עבור `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, ו[הוראות קבע](standing-orders.md) עבור `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — ו[זיכויים](#refunds) להלן עבור `Refund` + `PaymentId`.‬
 
 ## ‫דוגמת בקשה — דף מתארח + מסמך אוטומטי‬
 

@@ -55,7 +55,7 @@ flowchart LR
 | Save card token only | `AddToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
 | Save token + charge | `AddTokenAndCharge` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
 | Charge saved token | `ChargeWithToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
-| Standing order (recurring) | `IsStandingOrderClearance` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
+| Standing order (recurring) | `IsStandingOrderClearance` | [Standing Orders (Recurring Charges)](standing-orders.md) |
 | Refund | `Refund` | [Process a Clearing Request (V2)](process-api-request-v2.md#refunds) |
 | Query charge history | — | [Clearing Logs](clearing-logs.md) |
 

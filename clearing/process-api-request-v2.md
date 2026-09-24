@@ -115,7 +115,7 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 
 ### Tokens, standing orders, refunds
 
-See [Tokens & Standing Orders](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
+See [Tokens & Standing Orders](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, and [Standing Orders](standing-orders.md) for `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
 
 ### Response-only fields
 
@@ -215,7 +215,7 @@ Data={
 | `CustomerId` / `CustomerName` / `CustomerMail` / `CustomerPhone` | Resolved customer. |
 | `AuthNumber` | Clearing company approval number (also stored as `ClearingConfirmationNumber` in the clearing log). |
 | `PaymentId` / `ClearingTraceId` | Provider payment ID and trace ID — use for refunds and log lookup. |
-| `standingOrderId` | Populated for standing-order registrations. |
+| `standingOrderId` | Populated for standing-order registrations — the new standing order's ID. Recurring charges use a different callback and format — see [Standing Orders](standing-orders.md#callbacks-which-one-when-and-what). |
 | `DocumentNumber` / `DocumentId` / `CipherText` / `CipherTextOriginal` | Created document identifiers and URL-encoded view ciphers (build view links per [Create Document](../documents/create-document.md)). |
 
 {% hint style="info" %}

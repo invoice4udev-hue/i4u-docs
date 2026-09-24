@@ -105,56 +105,9 @@ flowchart LR
 
 ## Standing order — `IsStandingOrderClearance`
 
-Sets up a recurring monthly charge via the hosted page:
+Sets up a recurring monthly charge: the hosted page saves the card (no charge), and Invoice4U charges it monthly from the next day, for `StandingOrderDuration` months. Failed monthly charges are **not retried**.
 
-| Field | Type | Required | Description |
-| ----- | ---- | -------- | ----------- |
-| `IsStandingOrderClearance` | boolean | Yes | Standing-order mode. |
-| `StandingOrderDuration` | int | **Yes** | Number of monthly charges (`ApiStandingOrderDurationNotFilled`, 301). |
-| `DocHeadline` | string | **Yes** | Subject for the recurring documents (`ApiStandingOrderDocSubjectNotFilled`, 302). |
-| `Sum` | double | Yes | Monthly amount. |
-| `StandingOrderFirstChargeAmount` | double | No | Different amount for the first charge. |
-| `StandingOrderCallBackUrl` | string | No | Called on every recurring charge. Must be a well-formed absolute URL (`ApiStandingOrderCallbackurlInvalid`, 318). |
-
-```json
-{
-  "request": {
-    "Invoice4UUserApiKey": "<api-key>",
-    "IsStandingOrderClearance": true,
-    "StandingOrderDuration": 12,
-    "Sum": 99.0,
-    "DocHeadline": "Pro plan subscription",
-    "FullName": "Israel Israeli",
-    "Phone": "0501234567",
-    "Email": "israel@example.com",
-    "ReturnUrl": "https://shop.example/subscribed",
-    "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring"
-  }
-}
-```
-
-```mermaid
-flowchart LR
-    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
-    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
-    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
-    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
-    classDef page fill:#F5F5F5,stroke:#999,color:#333
-
-    A[ProcessApiRequestV2<br/>IsStandingOrderClearance]:::step --> B{Standing-order<br/>request valid?}:::dec
-    B -- ✗ --> E1[ApiStandingOrderDurationNotFilled 301<br/>ApiStandingOrderDocSubjectNotFilled 302<br/>ApiStandingOrderCallbackurlInvalid 318<br/>ApiStandingOrderNotApprovedInClearingTerminal 310]:::err
-    B -- ✓ --> C[🖥 Setup page — card<br/>captured as token]:::page
-    C --> D{First charge OK?<br/>FirstChargeAmount override}:::dec
-    D -- ✗ --> E2[Failure posted<br/>to callback]:::err
-    D -- ✓ --> L
-    subgraph L[🔁 Monthly × StandingOrderDuration]
-        direction LR
-        M[Charge token]:::step --> N{OK?}:::dec
-        N -- ✓ --> O[Create doc]:::step --> P[POST StandingOrder<br/>CallBackUrl]:::cb
-        N -- ✗ --> Q[Failure posted<br/>to callback]:::err
-        P --> R[Next month]:::step --> M
-    end
-```
+See **[Standing Orders (Recurring Charges)](standing-orders.md)** for the request fields, charge schedule, both callback formats (setup vs. recurring), failure handling and FAQ.
 
 ## Errors
 

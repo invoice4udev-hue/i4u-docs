@@ -48,6 +48,7 @@
 * [ביצוע בקשת סליקה (גרסה 2)](clearing/process-api-request-v2.md)
 * [אמצעי תשלום חלופיים](clearing/alternative-payment-methods.md)
 * [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
+* [הוראות קבע (חיובים חוזרים)](clearing/standing-orders.md)
 * [לוגים של סליקה](clearing/clearing-logs.md)
 
 ## רישום משתמשים (User Registration)

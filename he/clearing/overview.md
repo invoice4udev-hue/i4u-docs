@@ -41,7 +41,7 @@ Your server                    Invoice4U                        Customer
 | ‫שמירת טוקן כרטיס בלבד‬ | `AddToken` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
 | ‫שמירת טוקן + חיוב‬ | `AddTokenAndCharge` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
 | ‫חיוב טוקן שמור‬ | `ChargeWithToken` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
-| ‫הוראת קבע (חיוב חוזר)‬ | `IsStandingOrderClearance` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
+| ‫הוראת קבע (חיוב חוזר)‬ | `IsStandingOrderClearance` | ‫[הוראות קבע (חיובים חוזרים)](standing-orders.md)‬ |
 | ‫זיכוי‬ | `Refund` | ‫[ביצוע בקשת סליקה (V2)](process-api-request-v2.md#refunds)‬ |
 | ‫שאילתת היסטוריית חיובים‬ | — | ‫[לוגי סליקה](clearing-logs.md)‬ |
 

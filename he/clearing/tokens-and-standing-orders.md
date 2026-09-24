@@ -53,33 +53,9 @@
 
 ## ‫הוראת קבע — `IsStandingOrderClearance`‬
 
-‫מקים חיוב חודשי חוזר דרך הדף המתארח:‬
+‫מקים חיוב חודשי חוזר: הדף המתארח שומר את הכרטיס (ללא חיוב), ו-Invoice4U מחייבת אותו מדי חודש החל ממחרת, למשך `StandingOrderDuration` חודשים. חיובים חודשיים שנכשלו **לא מנוסים שוב**.‬
 
-| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
-| --- | ----- | ---- | ----- |
-| `IsStandingOrderClearance` | boolean | ‫כן‬ | ‫מצב הוראת קבע.‬ |
-| `StandingOrderDuration` | int | ‫**כן**‬ | ‫מספר החיובים החודשיים (`ApiStandingOrderDurationNotFilled`, 301).‬ |
-| `DocHeadline` | string | ‫**כן**‬ | ‫נושא המסמכים החוזרים (`ApiStandingOrderDocSubjectNotFilled`, 302).‬ |
-| `Sum` | double | ‫כן‬ | ‫הסכום החודשי.‬ |
-| `StandingOrderFirstChargeAmount` | double | ‫לא‬ | ‫סכום שונה לחיוב הראשון.‬ |
-| `StandingOrderCallBackUrl` | string | ‫לא‬ | ‫נקרא בכל חיוב חוזר. חייב להיות URL אבסולוטי תקין (`ApiStandingOrderCallbackurlInvalid`, 318).‬ |
-
-```json
-{
-  "request": {
-    "Invoice4UUserApiKey": "<api-key>",
-    "IsStandingOrderClearance": true,
-    "StandingOrderDuration": 12,
-    "Sum": 99.0,
-    "DocHeadline": "Pro plan subscription",
-    "FullName": "Israel Israeli",
-    "Phone": "0501234567",
-    "Email": "israel@example.com",
-    "ReturnUrl": "https://shop.example/subscribed",
-    "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring"
-  }
-}
-```
+‫ראו **[הוראות קבע (חיובים חוזרים)](standing-orders.md)** עבור שדות הבקשה, לוח החיובים, שני פורמטי הקולבק (הקמה מול חיוב חוזר), טיפול בכישלונות ושאלות נפוצות.‬
 
 ## ‫שגיאות‬
 

@@ -43,6 +43,7 @@
 * [Process a Clearing Request (V2)](clearing/process-api-request-v2.md)
 * [Bit, Google Pay & Apple Pay](clearing/alternative-payment-methods.md)
 * [Tokens & Standing Orders](clearing/tokens-and-standing-orders.md)
+* [Standing Orders (Recurring Charges)](clearing/standing-orders.md)
 * [Clearing Logs](clearing/clearing-logs.md)
 
 ## Catalog Items
