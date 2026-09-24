@@ -359,10 +359,11 @@ The public API creates standing orders but does not expose update or cancel oper
 
 ## UPay differences
 
-On **UPay** terminals standing orders differ from Cardcom / Meshulam in two ways:
+On **UPay** terminals standing orders differ from Cardcom / Meshulam in three ways:
 
-* **Recurring-charge callbacks go to `CallBackUrl`.** `StandingOrderCallBackUrl` is not stored on UPay standing orders; the request's `CallBackUrl` is stored instead. Your `CallBackUrl` endpoint therefore receives **both** formats — the one-time `Data=` setup callback and the monthly raw-Base64 callbacks — and must tell them apart (a body starting with `Data=` is the setup callback).
+* **Recurring-charge callbacks go to `CallBackUrl`.** `StandingOrderCallBackUrl` is not stored on UPay standing orders; the request's `CallBackUrl` is stored instead. Your `CallBackUrl` endpoint therefore receives **both** formats — the one-time `Data=` setup callback and the monthly raw-Base64 callbacks — and must tell them apart (a body starting with `Data=` is the setup callback). Without a `CallBackUrl`, no recurring-charge callbacks are sent at all.
 * **The setup callback has no `standingOrderId`.** Match the recurring callbacks' `standingOrderId` to your subscription by customer (`clientEmail` / `clientPhone` / `clientName`) on the first recurring callback, then store it.
+* **A successful clearing-log entry is written at sign-up.** It carries the monthly `Sum` as `Amount` and `IsToken: true`, although nothing was charged. Don't count it as a payment in your reconciliation — the first real charge is the next day.
 
 ## FAQ
 
