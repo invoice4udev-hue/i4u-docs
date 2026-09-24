@@ -163,6 +163,7 @@ Content-Type: application/json
 * ‫`standingOrderId` — מזהה הוראת הקבע החדשה. **שמרו אותו.**‬
 * ‫`DocCreated` — `"False"`; בהקמה לא מופק מסמך.‬
 * ‫`CardSuffix` / `CardExpirationDate` / `CardBrandName` — הכרטיס שנשמר.‬
+* ‫דגלי הטוקן (`TokenCaptureOnly` / `TokenCaptureAndCharge`) שונים בין חברות הסליקה — אל תשתמשו בהם כדי לזהות הרשמה להוראת קבע.‬
 
 ```text
 POST /api/i4u-callback HTTP/1.1
@@ -171,7 +172,7 @@ Content-Type: application/x-www-form-urlencoded
 
 Data={
   "Success": "True",
-  "TokenCaptureOnly": "False",
+  "TokenCaptureOnly": "<True|False>",
   "TokenCaptureAndCharge": "False",
   "ErrorMessage": "",
   "OrderIdClientUsage": "sub-10045",
@@ -362,7 +363,33 @@ curl -X POST "https://shop.example/api/i4u-recurring" \
 ‫במסופי **UPay** הוראות הקבע שונות מקארדקום / משולם בשלושה דברים:‬
 
 * ‫**קולבקי החיוב החוזר נשלחים ל-`CallBackUrl`.** ‏`StandingOrderCallBackUrl` לא נשמר על הוראות קבע של UPay; במקומו נשמר ה-`CallBackUrl` של הבקשה. לכן ה-endpoint של `CallBackUrl` מקבל **את שני** הפורמטים — קולבק ההקמה החד-פעמי ב-`Data=` והקולבקים החודשיים ב-Base64 גולמי — וצריך להבחין ביניהם (גוף שמתחיל ב-`Data=` הוא קולבק ההקמה). בלי `CallBackUrl` לא נשלחים קולבקי חיוב חוזר בכלל.‬
-* ‫**בקולבק ההקמה אין `standingOrderId`.** התאימו את `standingOrderId` של קולבקי החיוב החוזר למנוי שלכם לפי הלקוח (`clientEmail` / `clientPhone` / `clientName`) בקולבק החוזר הראשון, ואז שמרו אותו.‬
+* ‫**בקולבק ההקמה אין `standingOrderId`.** התאימו את `standingOrderId` של קולבקי החיוב החוזר למנוי שלכם לפי הלקוח (`clientEmail` / `clientPhone` / `clientName`) בקולבק החוזר הראשון, ואז שמרו אותו. קולבק הקמה של UPay נראה כך (`TokenCaptureOnly` הוא `"True"`, ‏`standingOrderId` ריק):‬
+
+  ```text
+  Data={
+    "Success": "True",
+    "TokenCaptureOnly": "True",
+    "TokenCaptureAndCharge": "False",
+    "ErrorMessage": "",
+    "OrderIdClientUsage": "sub-10045",
+    "DocCreated": "False",
+    "CardSuffix": "1234",
+    "CardExpirationDate": "0828",
+    "CardBrandName": "",
+    "UniqueId": "012345678",
+    "Amount": "1",
+    "AllPaymentsNum": "1",
+    "CustomerId": "88231",
+    "CustomerName": "Client Name",
+    "CustomerMail": "client@acme.test",
+    "CustomerPhone": "0500000000",
+    "Description": "",
+    "AuthNumber": "",
+    "PaymentId": "",
+    "ClearingTraceId": "a1b2c3d4-0000-4000-8000-000000000002",
+    "standingOrderId": ""
+  }
+  ```
 * ‫**בהרשמה נרשמת שורת לוג סליקה מוצלחת.** היא נושאת את ה-`Sum` החודשי כ-`Amount` ו-`IsToken: true`, למרות שלא בוצע חיוב. אל תספרו אותה כתשלום בהתאמות שלכם — החיוב האמיתי הראשון הוא למחרת.‬
 
 ## ‫שאלות נפוצות‬

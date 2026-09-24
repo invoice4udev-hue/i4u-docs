@@ -163,6 +163,7 @@ Sent once, only after the standing order was created. It uses the regular [clear
 * `standingOrderId` — the new standing order's ID. **Save it.**
 * `DocCreated` — `"False"`; no document is created at setup.
 * `CardSuffix` / `CardExpirationDate` / `CardBrandName` — the saved card.
+* The token flags (`TokenCaptureOnly` / `TokenCaptureAndCharge`) differ by provider — don't use them to recognize a standing-order sign-up.
 
 ```text
 POST /api/i4u-callback HTTP/1.1
@@ -171,7 +172,7 @@ Content-Type: application/x-www-form-urlencoded
 
 Data={
   "Success": "True",
-  "TokenCaptureOnly": "False",
+  "TokenCaptureOnly": "<True|False>",
   "TokenCaptureAndCharge": "False",
   "ErrorMessage": "",
   "OrderIdClientUsage": "sub-10045",
@@ -362,7 +363,33 @@ The public API creates standing orders but does not expose update or cancel oper
 On **UPay** terminals standing orders differ from Cardcom / Meshulam in three ways:
 
 * **Recurring-charge callbacks go to `CallBackUrl`.** `StandingOrderCallBackUrl` is not stored on UPay standing orders; the request's `CallBackUrl` is stored instead. Your `CallBackUrl` endpoint therefore receives **both** formats — the one-time `Data=` setup callback and the monthly raw-Base64 callbacks — and must tell them apart (a body starting with `Data=` is the setup callback). Without a `CallBackUrl`, no recurring-charge callbacks are sent at all.
-* **The setup callback has no `standingOrderId`.** Match the recurring callbacks' `standingOrderId` to your subscription by customer (`clientEmail` / `clientPhone` / `clientName`) on the first recurring callback, then store it.
+* **The setup callback has no `standingOrderId`.** Match the recurring callbacks' `standingOrderId` to your subscription by customer (`clientEmail` / `clientPhone` / `clientName`) on the first recurring callback, then store it. A UPay setup callback looks like this (`TokenCaptureOnly` is `"True"`, `standingOrderId` is empty):
+
+  ```text
+  Data={
+    "Success": "True",
+    "TokenCaptureOnly": "True",
+    "TokenCaptureAndCharge": "False",
+    "ErrorMessage": "",
+    "OrderIdClientUsage": "sub-10045",
+    "DocCreated": "False",
+    "CardSuffix": "1234",
+    "CardExpirationDate": "0828",
+    "CardBrandName": "",
+    "UniqueId": "012345678",
+    "Amount": "1",
+    "AllPaymentsNum": "1",
+    "CustomerId": "88231",
+    "CustomerName": "Client Name",
+    "CustomerMail": "client@acme.test",
+    "CustomerPhone": "0500000000",
+    "Description": "",
+    "AuthNumber": "",
+    "PaymentId": "",
+    "ClearingTraceId": "a1b2c3d4-0000-4000-8000-000000000002",
+    "standingOrderId": ""
+  }
+  ```
 * **A successful clearing-log entry is written at sign-up.** It carries the monthly `Sum` as `Amount` and `IsToken: true`, although nothing was charged. Don't count it as a payment in your reconciliation — the first real charge is the next day.
 
 ## FAQ
