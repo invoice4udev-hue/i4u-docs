@@ -69,7 +69,7 @@
 ## ‫שליפה לפי קוד לקוח — `GetCustomerByClientCode`‬
 
 ```json
-{ "clientCode": 42, "token": "<token>" }
+{ "clientCode": 1045, "token": "<token>" }
 ```
 
 ‫`POST /GetCustomerByClientCode` (כינוי נוסף: `/GetByClientCode`). מחזיר `null` כאשר לא נמצא לקוח מתאים. טוקן לא תקין או שפג תוקפו **אינו** נתפס: הבדיקה מתבצעת לפני בלוק ה-try של המתודה, ולכן מתקבלת שגיאת שרת לא מטופלת (HTTP 500) במקום תגובת שגיאה רגילה.‬
@@ -112,7 +112,10 @@
 ```json
 {
   "d": {
-    "Response": [ { "ID": 88231, "Name": "Acme Ltd" }, ... ],
+    "Response": [
+      { "ID": 88231, "Name": "Acme Ltd" },
+      { "ID": 88232, "Name": "Beta Corp" }
+    ],
     "Errors": []
   }
 }

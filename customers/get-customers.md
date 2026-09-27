@@ -69,7 +69,7 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 ## Get by client code — `GetCustomerByClientCode`
 
 ```json
-{ "clientCode": 42, "token": "<token>" }
+{ "clientCode": 1045, "token": "<token>" }
 ```
 
 `POST /GetCustomerByClientCode` (alias: `/GetByClientCode`). Returns `null` when no customer matches. An invalid or expired token is **not** caught: the check runs before the method's try block, so it raises an unhandled server error (HTTP 500) instead of a normal error response.
@@ -112,7 +112,10 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 ```json
 {
   "d": {
-    "Response": [ { "ID": 88231, "Name": "Acme Ltd" }, ... ],
+    "Response": [
+      { "ID": 88231, "Name": "Acme Ltd" },
+      { "ID": 88232, "Name": "Beta Corp" }
+    ],
     "Errors": []
   }
 }
