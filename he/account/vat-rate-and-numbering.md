@@ -140,8 +140,8 @@ Content-Type: application/json
     "GeneralCustomer": 1018,
     "RegisterPurchase": 1019,
     "RegisterVATInputs": 1020,
-    "LawyerExpenses": null,
-    "LawyerDeposit": null,
+    "LawyerExpenses": 1021,
+    "LawyerDeposit": 1022,
     "BankDetails": {
       "ClientId": 0,
       "AccountNumber": "123456",
@@ -191,7 +191,7 @@ Content-Type: application/json
 
 ‫**מספרי חשבון הנהלת חשבונות** — מספרי חשבון/כרטיס הנהלת חשבונות של הארגון, אחד לכל אמצעי תשלום או סוג הכנסה, המשמשים בעת ייצוא מסמכים למערכת הנהלת חשבונות חיצונית.‬
 
-‫`Register`, `RegisterCreditCard`, `RegisterCash`, `RegisterCheck`, `RegisterBankTransfer`, `RegisterBankTransferUSD`, `RegisterBankTransferEUR`, `RegisterBankTransferGBP`, `RegisterBankTransferJPY`, `RegisterOther`, `RegisterPaypal`, `RegisterBit`, `RegisterPeper`, `RegisterCredit`, `TaxCredit`, `Income`, `ExemptIncome`, `Deal`, `GeneralCustomer`, `RegisterPurchase`, `RegisterVATInputs`. ‏`LawyerExpenses` / `LawyerDeposit` הם שדות nullable ורלוונטיים רק לארגונים במצב משרד עורכי דין.‬
+‫`Register`, `RegisterCreditCard`, `RegisterCash`, `RegisterCheck`, `RegisterBankTransfer`, `RegisterBankTransferUSD`, `RegisterBankTransferEUR`, `RegisterBankTransferGBP`, `RegisterBankTransferJPY`, `RegisterOther`, `RegisterPaypal`, `RegisterBit`, `RegisterPeper`, `RegisterCredit`, `TaxCredit`, `Income`, `ExemptIncome`, `Deal`, `GeneralCustomer`, `RegisterPurchase`, `RegisterVATInputs`. ‏`LawyerExpenses` / `LawyerDeposit` מוצהרים כ-nullable (`long?`) במודל, אך הממפה (mapper) הופך DB `NULL` ל-`0` — מתודה זו לעולם לא מחזירה `null` בפועל עבור שני שדות אלו. הם רלוונטיים רק לארגונים במצב משרד עורכי דין.‬
 
 ‫**פרטי בנק** — ‏`BankDetails` (בעברית) ו-`EnglishBankDetails` (באנגלית) נושאים את אותו חשבון בנק, המודפס על מסמכים המציגים הוראות תשלום. ‏`IsBankDetails` / `IsEnglishBankDetails` מדווחים האם הארגון מילא כל צד. ‏`ClientId` בתוך `BankDetails` הוא תמיד `0` בתשובה זו.‬
 
@@ -203,7 +203,7 @@ Content-Type: application/json
 | ---- | -------- |
 | ‫טוקן לא תקין‬ | ‫אובייקט `NumberingDefinition` עם `Errors: [{ "ID": 80, "Error": "UnauthorizedUser" }]` בלבד ממולא — כל שדה אחר הוא ברירת המחדל של ה-CLR שלו (‏`0` / `false` / `null`).‬ |
 | ‫חשבון שפג תוקפו (יותר מ-4 ימים לאחר פקיעתו)‬ | ‫תשובה זהה למקרה של טוקן לא תקין — `UnauthorizedUser` (80) בלבד; השגיאה `ExpiredAccount` (66) שנוספה פנימית על ידי [`IsAuthenticated`](../authentication/is-authenticated.md) אינה מועברת.‬ |
-| ‫שגיאת שרת/מסד נתונים בלתי צפויה‬ | ‫התשובה היא `null`. השגיאה נרשמת ביומן בצד השרת בלבד, ואינה מוחזרת לקורא.‬ |
+| ‫שגיאת שרת/מסד נתונים בלתי צפויה‬ | ‫התשובה היא `{ "d": null }`. השגיאה נרשמת ביומן בצד השרת בלבד, ואינה מוחזרת לקורא.‬ |
 
 ## ‫נסו את זה‬
 

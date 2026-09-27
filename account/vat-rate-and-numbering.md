@@ -140,8 +140,8 @@ Content-Type: application/json
     "GeneralCustomer": 1018,
     "RegisterPurchase": 1019,
     "RegisterVATInputs": 1020,
-    "LawyerExpenses": null,
-    "LawyerDeposit": null,
+    "LawyerExpenses": 1021,
+    "LawyerDeposit": 1022,
     "BankDetails": {
       "ClientId": 0,
       "AccountNumber": "123456",
@@ -191,7 +191,7 @@ Content-Type: application/json
 
 **Accounting ledger numbers** — the organization's bookkeeping account/ledger numbers, one per payment method or income type, used when exporting documents to an external accounting system.
 
-`Register`, `RegisterCreditCard`, `RegisterCash`, `RegisterCheck`, `RegisterBankTransfer`, `RegisterBankTransferUSD`, `RegisterBankTransferEUR`, `RegisterBankTransferGBP`, `RegisterBankTransferJPY`, `RegisterOther`, `RegisterPaypal`, `RegisterBit`, `RegisterPeper`, `RegisterCredit`, `TaxCredit`, `Income`, `ExemptIncome`, `Deal`, `GeneralCustomer`, `RegisterPurchase`, `RegisterVATInputs`. `LawyerExpenses` / `LawyerDeposit` are nullable and only meaningful for law-firm-mode organizations.
+`Register`, `RegisterCreditCard`, `RegisterCash`, `RegisterCheck`, `RegisterBankTransfer`, `RegisterBankTransferUSD`, `RegisterBankTransferEUR`, `RegisterBankTransferGBP`, `RegisterBankTransferJPY`, `RegisterOther`, `RegisterPaypal`, `RegisterBit`, `RegisterPeper`, `RegisterCredit`, `TaxCredit`, `Income`, `ExemptIncome`, `Deal`, `GeneralCustomer`, `RegisterPurchase`, `RegisterVATInputs`. `LawyerExpenses` / `LawyerDeposit` are declared as nullable (`long?`) on the model, but the mapper turns a DB `NULL` into `0` — this endpoint never actually returns `null` for these two fields. They are only meaningful for law-firm-mode organizations.
 
 **Bank details** — `BankDetails` (Hebrew) and `EnglishBankDetails` (English) carry the same bank account, printed on documents that show payment instructions. `IsBankDetails` / `IsEnglishBankDetails` report whether the organization has filled in each side. `ClientId` inside `BankDetails` is always `0` in this response.
 
@@ -203,7 +203,7 @@ Members **not** populated by this endpoint — always returned as their CLR defa
 | ---- | -------- |
 | Invalid token | A `NumberingDefinition` object with only `Errors: [{ "ID": 80, "Error": "UnauthorizedUser" }]` populated — every other field is its CLR default (`0` / `false` / `null`). |
 | Expired account (more than 4 days past expiry) | Identical response to an invalid token — only `UnauthorizedUser` (80); the `ExpiredAccount` (66) error that [`IsAuthenticated`](../authentication/is-authenticated.md) added internally is not carried over. |
-| Unexpected server/database error | The response is `null`. The error is logged server-side only, not returned to the caller. |
+| Unexpected server/database error | The response is `{ "d": null }`. The error is logged server-side only, not returned to the caller. |
 
 ## Try it
 
