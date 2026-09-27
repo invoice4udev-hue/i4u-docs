@@ -29,7 +29,8 @@
     { "name": "Catalog Items", "description": "Read the organization's item catalog. Available to all accounts; does not require the Inventory module." },
     { "name": "Inventory", "description": "Manage inventory items, categories, suppliers, warehouses, and pricing." },
     { "name": "Clearing", "description": "Credit-card charges, tokens, standing orders and clearing logs." },
-    { "name": "Registration", "description": "Partner-only account registration." }
+    { "name": "Registration", "description": "Partner-only account registration." },
+    { "name": "Account", "description": "Account-level reference data: VAT rate and document numbering." }
   ],
   "paths": {
     "/GetExpDateByApiKey": {
@@ -1818,6 +1819,1585 @@
           }
         }
       }
+    },
+    "/GetItemsMovementReport": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetItemsMovementReport",
+        "summary": "Get stock movements",
+        "description": "Stock movement rows (date, quantity, entry, exit, opening) for one inventory item — or all items when itemId is omitted — within an optional date range. Requires an active Inventory module.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "itemId": {
+                    "type": "integer",
+                    "nullable": true,
+                    "description": "Inventory item ID. Omit or null for all items."
+                  },
+                  "fromDate": {
+                    "$ref": "#/components/schemas/WcfDate"
+                  },
+                  "toDate": {
+                    "$ref": "#/components/schemas/WcfDate"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "itemId": 1001,
+                "fromDate": "/Date(1788210000000+0300)/",
+                "toDate": "/Date(1790801999000+0300)/",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ItemsMovement. {\"d\":null} on a fully invalid/missing token. On an expired account: an ItemsMovement object with Errors [UnauthorizedUser (80)] and Item/ItemsBalance both null. On an inactive Inventory module: same shape with Errors [UnauthorizedInventoryAttempt (403)].",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/ItemsMovement"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetTotalMovementReport": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetTotalMovementReport",
+        "summary": "Get stock movement totals",
+        "description": "Movement totals per inventory item (entry, exit, opening, balance, price) within an optional date range. Requires an active Inventory module.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "fromDate": {
+                    "$ref": "#/components/schemas/WcfDate"
+                  },
+                  "toDate": {
+                    "$ref": "#/components/schemas/WcfDate"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "fromDate": "/Date(1788210000000+0300)/",
+                "toDate": "/Date(1790801999000+0300)/",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Array of ItemBalance. Empty array ({\"d\":[]}) on an invalid/missing token. One-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ItemBalance"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SendDocumentByMail": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "SendDocumentByMail",
+        "summary": "Email a document",
+        "description": "Emails an existing document to the customer's email — or to the addresses in AssociatedEmails. Sends a real email.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "doc",
+                  "token"
+                ],
+                "properties": {
+                  "doc": {
+                    "type": "object",
+                    "required": [
+                      "ID"
+                    ],
+                    "properties": {
+                      "ID": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Document ID (GUID) returned by CreateDocument. The server reloads the document from the database by this ID — every other doc field you send is ignored."
+                      },
+                      "AssociatedEmails": {
+                        "type": "array",
+                        "nullable": true,
+                        "description": "Recipients. Omit to send to the customer's email.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "Mail": {
+                              "type": "string",
+                              "format": "email"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "doc": {
+                  "ID": "3f2b9c1e-7a4d-4e8b-9c1a-2b3c4d5e6f70",
+                  "AssociatedEmails": [
+                    {
+                      "Mail": "billing@acme.example"
+                    }
+                  ]
+                },
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Info [SuccessfulAction (2)] on success. Errors [UnauthorizedUser (80)] on an expired account, or when the document belongs to another organization; Errors [GeneralError (0)] on an invalid/undecodable token or any other failure while sending the email.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/CommonObject"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetTaxRate": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "GetTaxRate",
+        "summary": "Get the VAT rate",
+        "description": "Returns the Israeli VAT rate for today, or for the given date.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  },
+                  "date": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Optional date as yyyy-MM-dd (e.g. 2024-12-31), parsed with DateTime.TryParse. Omit it to get the organization's current configured rate regardless of today's date. An unparseable value causes an HTTP 500 fault (uncaught ArgumentException)."
+                  }
+                }
+              },
+              "example": {
+                "token": "<token>",
+                "date": "2024-12-31"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tax. TaxRate is 17 for dates before 2025-01-01, otherwise the organization's current configured rate. Invalid token or expired account: TaxRate -1 with Errors [UnauthorizedUser (80)] (the ExpiredAccount (66) error from IsAuthenticated is not carried over).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Tax"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DocumentsNumberingGet": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "DocumentsNumberingGet",
+        "summary": "Get document numbering",
+        "description": "Returns the organization's document numbering definition: starting number per document type, whether each type already has documents, accounting ledger numbers, and bank details.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "NumberingDefinition object with only Errors [UnauthorizedUser (80)] populated (every other field is its CLR default 0/false/null) on an invalid token or an expired account — the ExpiredAccount (66) error from IsAuthenticated is not carried over. {\"d\":null} on an unexpected server/database error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/NumberingDefinition"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/IsDocumentExistsByApiIdentifier": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "IsDocumentExistsByApiIdentifier",
+        "summary": "Check whether a document exists by ApiIdentifier",
+        "description": "GET with query-string parameters. true when a document with this ApiIdentifier exists in your organization. Also returns false when the token is invalid or expired — verify the token first with IsAuthenticated.",
+        "parameters": [
+          {
+            "name": "apiIdentifier",
+            "in": "query",
+            "required": true,
+            "description": "The ApiIdentifier you sent when creating the document.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "Your organization API key.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "true / false.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByGuidInnerSearch": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByGuidInnerSearch",
+        "summary": "Get a customer by GUID (with inner search)",
+        "description": "Like GetCustomerByGuid, with the lookup's inner search enabled (AlsoInnerSearch). Returns null when not found and when the token is invalid or expired — the two cases are indistinguishable.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "guid",
+                  "token"
+                ],
+                "properties": {
+                  "guid": {
+                    "type": "string",
+                    "description": "The customer GUID."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "guid": "b1e2c3d4-0000-4a5b-8c9d-001122334455",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer, or null.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetByClientCode": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetByClientCode",
+        "summary": "Get a customer by client code (alias)",
+        "description": "Alias of GetCustomerByClientCode — same lookup and response. Returns null when not found. An invalid or expired token raises an unhandled server error (HTTP 500) rather than a normal error response.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientCode",
+                  "token"
+                ],
+                "properties": {
+                  "clientCode": {
+                    "type": "integer",
+                    "description": "The customer's client code."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "clientCode": 1045,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer, or null.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerReport": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "GetCustomerReport",
+        "summary": "Get a customer report",
+        "description": "The documents of one customer in a date range. Only From, To, CustomerID, Status and DocumentType are used; other DocumentsRequest fields are ignored. An invalid token returns an empty envelope (no Response, no Errors).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "dr",
+                  "token"
+                ],
+                "properties": {
+                  "dr": {
+                    "type": "object",
+                    "properties": {
+                      "From": {
+                        "$ref": "#/components/schemas/WcfDate"
+                      },
+                      "To": {
+                        "$ref": "#/components/schemas/WcfDate"
+                      },
+                      "CustomerID": {
+                        "type": "integer",
+                        "description": "Customer ID."
+                      },
+                      "Status": {
+                        "type": "integer",
+                        "description": "Document status filter; 0 = all."
+                      },
+                      "DocumentType": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "Document type filter; omit or 0 = all types."
+                      }
+                    }
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "dr": {
+                  "From": "/Date(1767218400000+0200)/",
+                  "To": "/Date(1782853199000+0300)/",
+                  "CustomerID": 88231,
+                  "Status": 0
+                },
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documents in Response. Errors [UnauthorizedUser (80)] on an expired account. An invalid/undecodable token returns an empty envelope — neither Response nor Errors populated; treat that the same as a failure.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/DocumentCollection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UserIsraelInvoicesStatus": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "operationId": "UserIsraelInvoicesStatus",
+        "summary": "Get Israel Invoices connection status",
+        "description": "Whether the organization is connected to Israel Invoices (allocation numbers), and since when.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "IsraelInvoicesStatus. Errors [UnauthorizedUser (80)] when the token is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/IsraelInvoicesStatus"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateAKU": {
+      "post": {
+        "tags": [
+          "Registration"
+        ],
+        "operationId": "UpdateAKU",
+        "summary": "Set a new API key (partners)",
+        "description": "Partner-only (User Registration API). Replaces the organization's API key with the GUID you supply. The old key stops working immediately.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "newAkU",
+                  "token"
+                ],
+                "properties": {
+                  "newAkU": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The new API key (GUID)."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Current API key of the organization whose key is replaced."
+                  }
+                }
+              },
+              "example": {
+                "newAkU": "0f9e8d7c-6b5a-4c3d-2e1f-a0b1c2d3e4f5",
+                "token": "<current-api-key>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User object — only Errors and Info are meaningful. Success: Info [{ ID: 0, Info: \"success\" }]. Errors: UnauthorizedUser (80) when the token itself is invalid; ExpiredAccount (66) when the token is valid but the account expired more than 4 days ago (the key is left unchanged) — note this is NOT UnauthorizedUser (80); ApiKeyNotInCorrectFormat (303) when newAkU isn't a valid GUID; ApiKeyWasntGenerated (144) when the new key couldn't be saved; GeneralError (0) on an unexpected server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/CommonObject"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetFullCustomer": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetFullCustomer",
+        "summary": "Get a customer with full details",
+        "description": "Returns the full customer record, including bank details, contacts and additional emails.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "orgID",
+                  "token"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "Customer ID."
+                  },
+                  "orgID": {
+                    "type": "integer",
+                    "description": "Send 0 — uses your organization."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "id": 88231,
+                "orgID": 0,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer. Errors [UnauthorizedUser (80)] when the token is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByName": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByName",
+        "summary": "Get a customer by name",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "token"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "name": "Acme Ltd",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByEmail": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByEmail",
+        "summary": "Get a customer by email",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "token"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Customer name, passed to the lookup together with email."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "email": "billing@acme.example",
+                "name": "Acme Ltd",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer. Errors [GeneralError (0)] on server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByClientCode": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByClientCode",
+        "summary": "Get a customer by client code",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientCode",
+                  "token"
+                ],
+                "properties": {
+                  "clientCode": {
+                    "type": "integer"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "clientCode": 1045,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer, or null when not found. An invalid or expired token is not caught by a try block, so it raises an unhandled server error (HTTP 500) instead of a normal error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByGuid": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByGuid",
+        "summary": "Get a customer by GUID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "guid",
+                  "token"
+                ],
+                "properties": {
+                  "guid": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "guid": "b1e2c3d4-0000-4a5b-8c9d-001122334455",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer, or null when not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetCustomerByExternalNumber": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "GetCustomerByExternalNumber",
+        "summary": "Get a customer by external number",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "number",
+                  "token"
+                ],
+                "properties": {
+                  "number": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The customer's external number. 0 or negative returns CustomerNotFound (136)."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "number": 500123,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AddInventoryPricelist": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "AddInventoryPricelist",
+        "summary": "Create a price list",
+        "description": "Creates a new price list in the authenticated organization. IsActive is a required (non-nullable) field on the wire, so omitting it deserializes as false and the price list is created inactive with no warning. OrganizationID is ignored if sent — the server always overwrites it with the authenticated organization.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pricelist",
+                  "token"
+                ],
+                "properties": {
+                  "pricelist": {
+                    "$ref": "#/components/schemas/Pricelist"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "pricelist": {
+                  "Id": 0,
+                  "Name": "Wholesale",
+                  "Discount": 10,
+                  "DiscountType": 0,
+                  "IsActive": true
+                },
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created price list. null on an invalid/missing token; a Pricelist object carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Pricelist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryPricelists": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetInventoryPricelists",
+        "summary": "List price lists",
+        "description": "Retrieves all price lists for the authenticated organization.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "isActive": {
+                    "type": "boolean",
+                    "nullable": true,
+                    "description": "true = active only, false = inactive only, omit/null = all."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "isActive": true,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Price lists. null on an invalid/missing token; a one-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Pricelist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryPricelistByCustomerId": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetInventoryPricelistByCustomerId",
+        "summary": "Price lists of a customer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customerId",
+                  "token"
+                ],
+                "properties": {
+                  "customerId": {
+                    "type": "integer"
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "customerId": 88231,
+                "isActive": true,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Price lists. null on an invalid/missing token; a one-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Pricelist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryPricelistByCustomerIds": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetInventoryPricelistByCustomerIds",
+        "summary": "Price lists of several customers",
+        "description": "Retrieves price lists for multiple customers at once.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customerIds",
+                  "token"
+                ],
+                "properties": {
+                  "customerIds": {
+                    "type": "string",
+                    "description": "Comma-separated customer IDs, e.g. \"88231,88232\"."
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "customerIds": "88231,88232",
+                "isActive": true,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Price lists with their CustomerId. null on an invalid/missing token; a one-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PricelistWithCustomer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UpdateInventoryPricelist": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "UpdateInventoryPricelist",
+        "summary": "Update a price list",
+        "description": "Updates an existing price list; pricelist must include Id. OrganizationID is ignored if sent — the server always overwrites it with the authenticated organization.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pricelist",
+                  "token"
+                ],
+                "properties": {
+                  "pricelist": {
+                    "$ref": "#/components/schemas/Pricelist"
+                  },
+                  "customerID": {
+                    "type": "integer",
+                    "nullable": true,
+                    "description": "Optional customer to link; used only when > 0."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "pricelist": {
+                  "Id": 12,
+                  "Name": "Wholesale",
+                  "Discount": 12,
+                  "DiscountType": 1,
+                  "IsActive": true
+                },
+                "customerID": 88231,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated price list. null on an invalid/missing token; a Pricelist object carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/Pricelist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RemoveCustomerFromInventoryPricelist": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "RemoveCustomerFromInventoryPricelist",
+        "summary": "Unlink customers from price lists",
+        "description": "Removes customers from price list assignments.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customerIDs",
+                  "token"
+                ],
+                "properties": {
+                  "customerIDs": {
+                    "type": "string",
+                    "description": "Comma-separated customer IDs, e.g. \"88231,88232\"."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "customerIDs": "88231",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "true on success. This endpoint never returns an error object — it also returns false on an invalid/missing token, an expired account, an inactive Inventory module, or any server error; the cases are indistinguishable from the response alone.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetInventoryCostReport": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetInventoryCostReport",
+        "summary": "Inventory cost report",
+        "description": "Retrieves the inventory cost report for a specific date, showing all items and their valuations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "token"
+                ],
+                "properties": {
+                  "date": {
+                    "$ref": "#/components/schemas/WcfDate"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "date": "/Date(1790801999000+0300)/",
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cost per item (InventoryId, ItemName, ItemCode, UnitType, Cost, Price, TotalPrice, Qty). Empty array ({\"d\":[]}) on an invalid/missing token (this method's backing list is initialized to an empty List<ItemBalance> instead of null); a one-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ItemBalance"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetTopSoldItems": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetTopSoldItems",
+        "summary": "Top sold items",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "filterType",
+                  "type",
+                  "token"
+                ],
+                "properties": {
+                  "filterType": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      1,
+                      2,
+                      3
+                    ],
+                    "description": "Period: 0 all time, 1 this month, 2 last month, 3 the past week (EInventoryReportFilterTypes.LastWeek). There is no quarter/year option."
+                  },
+                  "type": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      1
+                    ],
+                    "description": "Metric: 0 quantity, 1 sales value."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "filterType": 1,
+                "type": 0,
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Items with Id, Name and QuantityToNotify (holds the quantity sold when type is 0, the sales value when type is 1 — no other item fields are populated). null on an invalid/missing token; a one-element array carrying Errors [UnauthorizedUser (80)] on an expired account, or [UnauthorizedInventoryAttempt (403)] when the Inventory module is inactive.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Item"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetHighestByValue": {
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "operationId": "GetHighestByValue",
+        "summary": "Highest-value items",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Your organization API key."
+                  }
+                }
+              },
+              "example": {
+                "token": "<token>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Items with Name and QuantityToNotify (= total inventory value; no Id, Code, Quantity, Cost or TotalValue field). null in all three cases — invalid/missing token, expired account, or inactive Inventory module — a null-reference bug means no error object is ever returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Item"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProcessApiRequestClearingLogInsertREST_V2": {
+      "get": {
+        "tags": [
+          "Clearing"
+        ],
+        "operationId": "ProcessApiRequestClearingLogInsertREST_V2",
+        "summary": "Record an external charge in the clearing log",
+        "description": "GET with query-string parameters. clearingLog is a URL-encoded JSON ClearingLog object.",
+        "parameters": [
+          {
+            "name": "clearingLog",
+            "in": "query",
+            "required": true,
+            "description": "URL-encoded JSON, e.g. {\"ClientName\":\"Acme Ltd\",\"Amount\":117,\"PaymentNumber\":1,\"Currency\":1,\"CreditNumber\":\"4580\",\"IsSuccess\":true,\"ClearingConfirmationNumber\":\"0123456\"}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "Your organization API key.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The inserted ClearingLog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/ClearingLog"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2270,13 +3850,19 @@
             "required": ["Name"],
             "properties": {
               "Id": { "type": "integer" },
+              "IsActive": { "type": "boolean" },
               "Name": { "type": "string" },
-              "Email": { "type": "string", "nullable": true },
-              "Phone": { "type": "string", "nullable": true },
-              "Address": { "type": "string", "nullable": true },
-              "City": { "type": "string", "nullable": true },
+              "UniqueId": { "type": "string", "nullable": true },
+              "PaymentTerms": { "type": "integer" },
+              "ExternalNumber": { "type": "integer", "format": "int64", "nullable": true },
               "Country": { "type": "string", "nullable": true },
-              "IsActive": { "type": "boolean" }
+              "City": { "type": "string", "nullable": true },
+              "Street": { "type": "string", "nullable": true },
+              "ZipCode": { "type": "string", "nullable": true },
+              "ContactName": { "type": "string", "nullable": true },
+              "ContactEmail": { "type": "string", "nullable": true },
+              "ContactPhone": { "type": "string", "nullable": true },
+              "InternalNote": { "type": "string", "nullable": true }
             }
           }
         ]
@@ -2289,48 +3875,198 @@
             "required": ["Name"],
             "properties": {
               "Id": { "type": "integer" },
+              "IsActive": { "type": "boolean" },
+              "Code": { "type": "string", "nullable": true },
               "Name": { "type": "string" },
-              "Address": { "type": "string", "nullable": true },
+              "Country": { "type": "string", "nullable": true },
               "City": { "type": "string", "nullable": true },
-              "Phone": { "type": "string", "nullable": true },
-              "IsActive": { "type": "boolean" }
+              "Street": { "type": "string", "nullable": true },
+              "ZipCode": { "type": "string", "nullable": true },
+              "ContactName": { "type": "string", "nullable": true },
+              "ContactEmail": { "type": "string", "nullable": true },
+              "ContactPhone": { "type": "string", "nullable": true },
+              "HasItems": { "type": "boolean", "nullable": true }
             }
           }
         ]
       },
       "ItemInstance": {
         "allOf": [
-          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
           {
             "type": "object",
             "properties": {
-              "Id": { "type": "integer" },
-              "SerialNumber": { "type": "string", "nullable": true },
-              "BatchNumber": { "type": "string", "nullable": true }
+              "Id": {
+                "type": "integer"
+              },
+              "ItemStatusId": {
+                "type": "integer"
+              },
+              "ManufacturerId": {
+                "type": "integer",
+                "nullable": true
+              },
+              "WarehouseId": {
+                "type": "integer",
+                "nullable": true
+              },
+              "TotalQuantity": {
+                "type": "number",
+                "nullable": true
+              },
+              "SellingDetailsList": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "PurchaseDetailsList": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "object"
+                }
+              }
             }
           }
         ]
       },
       "Item": {
         "allOf": [
-          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
           {
             "type": "object",
-            "required": ["Name"],
             "properties": {
-              "Id": { "type": "integer" },
-              "Name": { "type": "string" },
-              "CategoryId": { "type": "integer", "nullable": true },
-              "SKU": { "type": "string", "nullable": true },
-              "Description": { "type": "string", "nullable": true },
-              "Price": { "type": "number", "format": "double" },
-              "Cost": { "type": "number", "format": "double", "nullable": true },
-              "ImageUrl": { "type": "string", "nullable": true },
-              "IsActive": { "type": "boolean" },
+              "Id": {
+                "type": "integer"
+              },
+              "IsActive": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "Code": {
+                "type": "string",
+                "nullable": true,
+                "description": "Item code (SKU)."
+              },
+              "Name": {
+                "type": "string"
+              },
+              "EnglishName": {
+                "type": "string",
+                "nullable": true
+              },
+              "Description": {
+                "type": "string",
+                "nullable": true
+              },
+              "EnglishDescription": {
+                "type": "string",
+                "nullable": true
+              },
+              "ItemCategoryId": {
+                "type": "integer"
+              },
+              "UnitType": {
+                "type": "integer",
+                "description": "Unit type (EItemUnitTypes)."
+              },
               "ItemInstances": {
                 "type": "array",
                 "nullable": true,
-                "items": { "$ref": "#/components/schemas/ItemInstance" }
+                "items": {
+                  "$ref": "#/components/schemas/ItemInstance"
+                }
+              },
+              "QuantityToNotify": {
+                "type": "number",
+                "nullable": true,
+                "description": "Low-stock alert threshold. GetTopSoldItems / GetHighestByValue reuse this field for the reported total quantity or value."
+              },
+              "SellingPrice": {
+                "type": "number",
+                "nullable": true
+              },
+              "PurchasePrice": {
+                "type": "number",
+                "nullable": true
+              },
+              "SellingCurrency": {
+                "type": "string",
+                "nullable": true
+              },
+              "PurchaseCurrency": {
+                "type": "string",
+                "nullable": true
+              },
+              "SellingDetailsList": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "PurchaseDetailsList": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "PurchaseTotal": {
+                "type": "number",
+                "nullable": true,
+                "readOnly": true
+              },
+              "PurchaseTotalWithoutTax": {
+                "type": "number",
+                "nullable": true,
+                "readOnly": true
+              },
+              "PurchaseTotalQuantity": {
+                "type": "number",
+                "nullable": true,
+                "readOnly": true
+              },
+              "PurchaseTotalAVG": {
+                "type": "number",
+                "nullable": true,
+                "readOnly": true
+              },
+              "PurchaseTotalWithoutTaxAVG": {
+                "type": "number",
+                "nullable": true,
+                "readOnly": true
+              },
+              "SellingDate": {
+                "$ref": "#/components/schemas/WcfDate"
+              },
+              "PurchasingDate": {
+                "$ref": "#/components/schemas/WcfDate"
+              },
+              "ImageUrl": {
+                "type": "string",
+                "nullable": true
+              },
+              "IsNonStockItem": {
+                "type": "boolean"
+              },
+              "SerialNumber": {
+                "type": "integer",
+                "nullable": true
+              },
+              "BatchNumber": {
+                "type": "integer",
+                "nullable": true
+              },
+              "Comment": {
+                "type": "string",
+                "nullable": true
               }
             }
           }
@@ -2338,41 +4074,124 @@
       },
       "Pricelist": {
         "allOf": [
-          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
           {
             "type": "object",
-            "required": ["Name"],
             "properties": {
-              "Id": { "type": "integer" },
-              "Name": { "type": "string" },
-              "Description": { "type": "string", "nullable": true },
-              "IsActive": { "type": "boolean" }
+              "Id": {
+                "type": "integer",
+                "description": "0 when creating."
+              },
+              "OrganizationID": {
+                "type": "integer",
+                "readOnly": true,
+                "description": "Set by the server from the token."
+              },
+              "Name": {
+                "type": "string"
+              },
+              "Discount": {
+                "type": "number",
+                "nullable": true
+              },
+              "DiscountType": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1
+                ],
+                "description": "0 = Discount is a percentage, 1 = Discount is a fixed amount in the organization currency."
+              },
+              "LinkedCustomers": {
+                "type": "string",
+                "nullable": true,
+                "description": "Comma-separated customer IDs linked to the price list (e.g. \"88231\"). Sent on create/update and echoed back by the server."
+              },
+              "IsActive": {
+                "type": "boolean",
+                "description": "Send true for an active price list — omitted means false."
+              }
             }
           }
         ]
       },
       "PricelistWithCustomer": {
         "allOf": [
-          { "$ref": "#/components/schemas/Pricelist" },
+          {
+            "$ref": "#/components/schemas/Pricelist"
+          },
           {
             "type": "object",
             "properties": {
-              "CustomerId": { "type": "integer" }
+              "CustomerId": {
+                "type": "integer"
+              }
             }
           }
         ]
       },
       "ItemBalance": {
         "allOf": [
-          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
           {
             "type": "object",
             "properties": {
-              "ItemId": { "type": "integer" },
-              "ItemName": { "type": "string", "nullable": true },
-              "Quantity": { "type": "number", "format": "double" },
-              "Cost": { "type": "number", "format": "double" },
-              "TotalValue": { "type": "number", "format": "double" }
+              "InventoryId": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Inventory item ID."
+              },
+              "ItemName": {
+                "type": "string",
+                "nullable": true
+              },
+              "ItemCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "Cost": {
+                "type": "number",
+                "nullable": true
+              },
+              "Price": {
+                "type": "number",
+                "nullable": true
+              },
+              "TotalPrice": {
+                "type": "number",
+                "nullable": true
+              },
+              "Date": {
+                "$ref": "#/components/schemas/WcfDate"
+              },
+              "Qty": {
+                "type": "number",
+                "nullable": true,
+                "description": "Quantity (balance)."
+              },
+              "Entry": {
+                "type": "number",
+                "nullable": true,
+                "description": "Quantity received."
+              },
+              "Exit": {
+                "type": "number",
+                "nullable": true,
+                "description": "Quantity issued."
+              },
+              "Op": {
+                "type": "number",
+                "nullable": true,
+                "description": "Opening quantity."
+              },
+              "UnitType": {
+                "type": "integer",
+                "description": "Unit type (EItemUnitTypes)."
+              }
             }
           }
         ]
@@ -2381,7 +4200,272 @@
         "type": "string",
         "pattern": "^/Date\\(-?\\d+([+-]\\d{4})?\\)/$",
         "example": "/Date(1788210000000+0300)/",
-        "description": "WCF JSON date: /Date(<milliseconds since 1970-01-01 UTC><Â±hhmm>)/. Also accepted with escaped slashes (\\/Date(...)\\/). ISO-8601 strings are NOT accepted."
+        "description": "WCF JSON date: /Date(<milliseconds since 1970-01-01 UTC><±hhmm>)/. Also accepted with escaped slashes (\\/Date(...)\\/). ISO-8601 strings are NOT accepted."
+      },
+      "Tax": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "TaxRate": {
+                "type": "number",
+                "format": "double",
+                "description": "VAT percentage (e.g. 18). 17 for dates before 2025-01-01, otherwise the organization's current configured rate. -1 when the token is invalid or the account has expired (the ExpiredAccount (66) error from IsAuthenticated is not carried over — only UnauthorizedUser (80) is set)."
+              }
+            }
+          }
+        ]
+      },
+      "NumberingDefinition": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
+          {
+            "type": "object",
+            "description": "Document numbering definition of the organization. Other serialized members (ID, Deposit, *Current, *DocMin, IsAdvancedSearchDocumentReferences, OrganizationID) are not populated by DocumentsNumberingGet.",
+            "properties": {
+              "Invoice": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for Invoice (1)."
+              },
+              "Receipt": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for Receipt (2)."
+              },
+              "InvoiceReceipt": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for InvoiceReceipt (3)."
+              },
+              "InvoiceCredit": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for InvoiceCredit (4)."
+              },
+              "ProformaInvoice": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for ProformaInvoice (5)."
+              },
+              "InvoiceOrder": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for InvoiceOrder (6)."
+              },
+              "InvoiceQuote": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for InvoiceQuote (7)."
+              },
+              "InvoiceShip": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for InvoiceShip (8)."
+              },
+              "PurchaseOrder": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Starting number for PurchaseOrder (13)."
+              },
+              "InvoiceCreated": {
+                "type": "boolean",
+                "description": "true once a document of this type exists (the starting number can no longer change). Same for the other *Created flags."
+              },
+              "ReceiptCreated": {
+                "type": "boolean"
+              },
+              "InvoiceReceiptCreated": {
+                "type": "boolean"
+              },
+              "InvoiceCreditCreated": {
+                "type": "boolean"
+              },
+              "ProformaInvoiceCreated": {
+                "type": "boolean"
+              },
+              "InvoiceOrderCreated": {
+                "type": "boolean"
+              },
+              "InvoiceQuoteCreated": {
+                "type": "boolean"
+              },
+              "InvoiceShipCreated": {
+                "type": "boolean"
+              },
+              "PurchaseOrderCreated": {
+                "type": "boolean"
+              },
+              "Register": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Accounting ledger (card) number used for accounting export. Same for the other Register*/TaxCredit/Income/ExemptIncome/Deal/GeneralCustomer/Lawyer* members."
+              },
+              "RegisterCash": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterCheck": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterCreditCard": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBankTransfer": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBankTransferUSD": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBankTransferEUR": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBankTransferGBP": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBankTransferJPY": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterOther": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterPaypal": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterBit": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterPeper": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterCredit": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "TaxCredit": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "Income": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ExemptIncome": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "Deal": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "GeneralCustomer": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterPurchase": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "RegisterVATInputs": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "LawyerExpenses": {
+                "type": "integer",
+                "format": "int64",
+                "description": "0 when not set — declared as long? on the model, but the mapper turns a DB NULL into 0, so this endpoint never actually returns null here. Only meaningful for law-firm-mode organizations."
+              },
+              "LawyerDeposit": {
+                "type": "integer",
+                "format": "int64",
+                "description": "0 when not set, same as LawyerExpenses."
+              },
+              "BankDetails": {
+                "type": "object",
+                "nullable": true,
+                "description": "Bank details printed on documents (AccountNumber, BankName, BranchName, AccountOwner, BIC)."
+              },
+              "EnglishBankDetails": {
+                "type": "object",
+                "nullable": true,
+                "description": "English bank details printed on documents (ABA, AccountNumberEnglish, ...)."
+              },
+              "IsBankDetails": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Whether the organization has filled in Hebrew bank details."
+              },
+              "IsEnglishBankDetails": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Whether the organization has filled in English bank details."
+              }
+            }
+          }
+        ]
+      },
+      "IsraelInvoicesStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
+          {
+            "type": "object",
+            "description": "Organization projection returned by UserIsraelInvoicesStatus. The JSON also contains every other Organization member with default values (0/false/null) — ignore them.",
+            "properties": {
+              "ID": {
+                "type": "integer",
+                "description": "Organization ID."
+              },
+              "IsraelInvoicesConnected": {
+                "type": "boolean",
+                "description": "true when the organization is connected to Israel Invoices (allocation numbers)."
+              },
+              "IsraelInvoicesTokenRegisterDate": {
+                "$ref": "#/components/schemas/WcfDate"
+              }
+            }
+          }
+        ]
+      },
+      "ItemsMovement": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "Item": {
+                "$ref": "#/components/schemas/Item"
+              },
+              "ItemsBalance": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/ItemBalance"
+                },
+                "description": "Movement rows (Date, Qty, Entry, Exit, Op)."
+              }
+            }
+          }
+        ]
       }
     }
   }
