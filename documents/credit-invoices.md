@@ -1,4 +1,4 @@
-# Credit Invoices (Full & Partial Credits)
+# Credit Invoices (Full & Partial)
 
 A **credit invoice** (`DocumentType: 4`) reverses all or part of a previously issued invoice or invoice-receipt. It is created with the regular [Create a Document](create-document.md) endpoint — what makes it special is the `Invoices` reference array and the validation rules around it.
 

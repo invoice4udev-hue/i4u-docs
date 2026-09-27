@@ -1,9 +1,9 @@
-# Tokens & Standing Orders
+# Saved-Card Tokens
 
-Save a customer's card as a **token** for later server-side charges, or set up a **standing order** (recurring monthly charge). All flows go through [`ProcessApiRequestV2`](process-api-request-v2.md) with the flags below.
+Save a customer's card as a **token** and charge it later, server-to-server. All flows go through [`ProcessApiRequestV2`](process-api-request-v2.md) with the flags below. For recurring monthly charges, see [Standing Orders (Recurring Charges)](standing-orders.md).
 
 {% hint style="info" %}
-Tokens and standing orders must be enabled on your clearing terminal. Otherwise you get `ApiTokenizationNotApprovedInClearingTerminal` (309) / `ApiStandingOrderNotApprovedInClearingTerminal` (310).
+Tokenization must be enabled on your clearing terminal. Otherwise you get `ApiTokenizationNotApprovedInClearingTerminal` (309).
 {% endhint %}
 
 ## Save a token — `AddToken`
@@ -103,19 +103,15 @@ flowchart LR
     D -- ✗ --> H[ClearingError 32<br/>in response]:::err
 ```
 
-## Standing order — `IsStandingOrderClearance`
+## Related
 
-Sets up a recurring monthly charge: the hosted page saves the card (no charge), and Invoice4U charges it monthly from the next day, for `StandingOrderDuration` months. Failed monthly charges are **not retried**.
-
-See **[Standing Orders (Recurring Charges)](standing-orders.md)** for the request fields, charge schedule, both callback formats (setup vs. recurring), failure handling and FAQ.
+* **Standing orders** (`IsStandingOrderClearance`) also save the card and charge it monthly — see [Standing Orders (Recurring Charges)](standing-orders.md).
 
 ## Errors
 
 | Error (ID) | Meaning |
 | ---------- | ------- |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Tokens not enabled on the terminal (or token feature expired). |
-| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | Standing orders not enabled. |
 | `ApiTokenDoesntExistForThatCustomer` (304) | No (or multiple) stored token for the customer. |
 | `ApiTokenWasCreatedChargeFailed` (313) | Token stored, charge declined. |
-| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | Standing-order validation. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting mode flags. |

@@ -41,4 +41,4 @@ Practical notes that save integration time. Read this before going live.
 * QA and Production are **separate accounts and data** — a QA token doesn't work on Production.
 * PDF links point to `newviewqa.invoice4u.co.il` on QA and `newview.invoice4u.co.il` on Production.
 
-This page is also available [in Hebrew](key-tips-hebrew.md).
+This page is also available [in Hebrew](https://invoice4u.gitbook.io/invoice4u-docs/he/getting-started/key-tips).

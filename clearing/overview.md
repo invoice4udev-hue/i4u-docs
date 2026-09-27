@@ -52,9 +52,9 @@ flowchart LR
 | Regular charge (hosted page) | — | [Process a Clearing Request (V2)](process-api-request-v2.md) |
 | Charge with installments / credit | `Type` = 2/3 | [Process a Clearing Request (V2)](process-api-request-v2.md) |
 | Bit / Google Pay / Apple Pay | `IsBitPayment` / `IsGooglePay` / `IsApplePay` | [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) |
-| Save card token only | `AddToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
-| Save token + charge | `AddTokenAndCharge` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
-| Charge saved token | `ChargeWithToken` | [Tokens & Standing Orders](tokens-and-standing-orders.md) |
+| Save card token only | `AddToken` | [Saved-Card Tokens](tokens-and-standing-orders.md) |
+| Save token + charge | `AddTokenAndCharge` | [Saved-Card Tokens](tokens-and-standing-orders.md) |
+| Charge saved token | `ChargeWithToken` | [Saved-Card Tokens](tokens-and-standing-orders.md) |
 | Standing order (recurring) | `IsStandingOrderClearance` | [Standing Orders (Recurring Charges)](standing-orders.md) |
 | Refund | `Refund` | [Process a Clearing Request (V2)](process-api-request-v2.md#refunds) |
 | Query charge history | — | [Clearing Logs](clearing-logs.md) |

@@ -10,7 +10,7 @@
 ## Authentication
 
 * [Authentication Overview](authentication/overview.md)
-* [Authenticate with Your API Key](authentication/is-authenticated.md)
+* [Verify Your API Key & Account Expiry](authentication/is-authenticated.md)
 
 ## Customers
 
@@ -35,14 +35,14 @@
 * [Get a Single Document](documents/get-document.md)
 * [Search Documents](documents/search-documents.md)
 * [Draft Documents](documents/draft-documents.md)
-* [Allocation Numbers (Israel Tax)](documents/allocation-numbers.md)
+* [Allocation Numbers (Israel Tax Authority)](documents/allocation-numbers.md)
 
 ## Clearing (Payments)
 
 * [Clearing Endpoints Overview](clearing/overview.md)
 * [Process a Clearing Request (V2)](clearing/process-api-request-v2.md)
 * [Bit, Google Pay & Apple Pay](clearing/alternative-payment-methods.md)
-* [Tokens & Standing Orders](clearing/tokens-and-standing-orders.md)
+* [Saved-Card Tokens](clearing/tokens-and-standing-orders.md)
 * [Standing Orders (Recurring Charges)](clearing/standing-orders.md)
 * [Clearing Logs](clearing/clearing-logs.md)
 

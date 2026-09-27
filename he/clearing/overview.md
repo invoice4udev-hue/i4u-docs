@@ -38,9 +38,9 @@ Your server                    Invoice4U                        Customer
 | ‫חיוב רגיל (דף מתארח)‬ | — | ‫[ביצוע בקשת סליקה (V2)](process-api-request-v2.md)‬ |
 | ‫חיוב בתשלומים / קרדיט‬ | `Type` = 2/3 | ‫[ביצוע בקשת סליקה (V2)](process-api-request-v2.md)‬ |
 | ‫ביט / Google Pay / Apple Pay‬ | `IsBitPayment` / `IsGooglePay` / `IsApplePay` | ‫[ביט, Google Pay ו-Apple Pay](alternative-payment-methods.md)‬ |
-| ‫שמירת טוקן כרטיס בלבד‬ | `AddToken` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
-| ‫שמירת טוקן + חיוב‬ | `AddTokenAndCharge` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
-| ‫חיוב טוקן שמור‬ | `ChargeWithToken` | ‫[טוקנים והוראות קבע](tokens-and-standing-orders.md)‬ |
+| ‫שמירת טוקן כרטיס בלבד‬ | `AddToken` | ‫[טוקנים (כרטיסים שמורים)](tokens-and-standing-orders.md)‬ |
+| ‫שמירת טוקן + חיוב‬ | `AddTokenAndCharge` | ‫[טוקנים (כרטיסים שמורים)](tokens-and-standing-orders.md)‬ |
+| ‫חיוב טוקן שמור‬ | `ChargeWithToken` | ‫[טוקנים (כרטיסים שמורים)](tokens-and-standing-orders.md)‬ |
 | ‫הוראת קבע (חיוב חוזר)‬ | `IsStandingOrderClearance` | ‫[הוראות קבע (חיובים חוזרים)](standing-orders.md)‬ |
 | ‫זיכוי‬ | `Refund` | ‫[ביצוע בקשת סליקה (V2)](process-api-request-v2.md#refunds)‬ |
 | ‫שאילתת היסטוריית חיובים‬ | — | ‫[לוגי סליקה](clearing-logs.md)‬ |

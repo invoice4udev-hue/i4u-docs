@@ -1,9 +1,9 @@
-# ‫טוקנים והוראות קבע‬
+# ‫טוקנים (כרטיסים שמורים)‬
 
-‫שמרו את כרטיס הלקוח כ**טוקן** לחיובים עתידיים מצד השרת, או הקימו **הוראת קבע** (חיוב חודשי חוזר). כל התהליכים עוברים דרך [`ProcessApiRequestV2`](process-api-request-v2.md) עם הדגלים שלהלן.‬
+‫שמרו את כרטיס הלקוח כ**טוקן** וחייבו אותו מאוחר יותר, שרת-לשרת. כל התהליכים עוברים דרך [`ProcessApiRequestV2`](process-api-request-v2.md) עם הדגלים שלהלן. לחיובים חודשיים חוזרים, ראו [הוראות קבע (חיובים חוזרים)](standing-orders.md).‬
 
 {% hint style="info" %}
-‫טוקנים והוראות קבע חייבים להיות מופעלים על מסוף הסליקה שלכם. אחרת תקבלו `ApiTokenizationNotApprovedInClearingTerminal` ‏(309) / `ApiStandingOrderNotApprovedInClearingTerminal` ‏(310).‬
+‫הטוקניזציה חייבת להיות מופעלת על מסוף הסליקה שלכם. אחרת תקבלו `ApiTokenizationNotApprovedInClearingTerminal` ‏(309).‬
 {% endhint %}
 
 ## ‫שמירת טוקן — `AddToken`‬
@@ -51,19 +51,15 @@
 
 ‫הטוקן השמור של הלקוח מזוהה אוטומטית. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).‬
 
-## ‫הוראת קבע — `IsStandingOrderClearance`‬
+## ‫קשור‬
 
-‫מקים חיוב חודשי חוזר: הדף המתארח שומר את הכרטיס (ללא חיוב), ו-Invoice4U מחייבת אותו מדי חודש החל ממחרת, למשך `StandingOrderDuration` חודשים. חיובים חודשיים שנכשלו **לא מנוסים שוב**.‬
-
-‫ראו **[הוראות קבע (חיובים חוזרים)](standing-orders.md)** עבור שדות הבקשה, לוח החיובים, שני פורמטי הקולבק (הקמה מול חיוב חוזר), טיפול בכישלונות ושאלות נפוצות.‬
+* ‫**הוראות קבע** (`IsStandingOrderClearance`) גם הן שומרות את הכרטיס ומחייבות אותו מדי חודש — ראו [הוראות קבע (חיובים חוזרים)](standing-orders.md).‬
 
 ## ‫שגיאות‬
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג).‬ |
-| `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות.‬ |
 | `ApiTokenDoesntExistForThatCustomer` (304) | ‫אין טוקן שמור (או שיש כמה) עבור הלקוח.‬ |
 | `ApiTokenWasCreatedChargeFailed` (313) | ‫הטוקן נשמר, החיוב נדחה.‬ |
-| `ApiStandingOrderDurationNotFilled` (301) / `ApiStandingOrderDocSubjectNotFilled` (302) / `ApiStandingOrderCallbackurlInvalid` (318) | ‫ולידציית הוראת קבע.‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלי מצב סותרים.‬ |

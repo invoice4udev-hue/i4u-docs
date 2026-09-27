@@ -115,7 +115,7 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 
 ### Tokens, standing orders, refunds
 
-See [Tokens & Standing Orders](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, and [Standing Orders](standing-orders.md) for `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
+See [Saved-Card Tokens](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, and [Standing Orders](standing-orders.md) for `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
 
 ### Response-only fields
 

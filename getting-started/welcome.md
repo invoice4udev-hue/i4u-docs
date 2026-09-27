@@ -84,7 +84,7 @@ To build a value, take the Unix time in milliseconds (JavaScript `date.getTime()
 
 ### First steps
 
-Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key-tips.md) (also available [in Hebrew](key-tips-hebrew.md)).
+Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key-tips.md) (also available [in Hebrew](https://invoice4u.gitbook.io/invoice4u-docs/he/getting-started/key-tips)).
 
 ### Machine-readable resources
 

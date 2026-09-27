@@ -24,6 +24,6 @@ Treat the API key like a password. Send it only over HTTPS and never embed it in
 
 ### Pages in this section
 
-* [Authenticate with Your API Key](is-authenticated.md)
+* [Verify Your API Key & Account Expiry](is-authenticated.md)
 
 To rotate your API key or change account credentials, use the Invoice4U web application (Settings) — these operations are not exposed through the public API.

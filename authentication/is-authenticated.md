@@ -1,4 +1,4 @@
-# Authenticate with Your API Key
+# Verify Your API Key & Account Expiry
 
 There is no separate login call. Your organization **API key (GUID)** is passed directly as the `token` parameter in every request — each endpoint validates it via `IsAuthenticated`. Email+password login (`VerifyLogin`) is **deprecated** — it still works during the migration period, but new integrations must use the API key and existing ones should migrate to it.
 

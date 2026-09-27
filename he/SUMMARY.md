@@ -9,7 +9,7 @@
 ## אימות (Authentication)
 
 * [סקירת אימות](authentication/overview.md)
-* [אימות עם מפתח הגישה](authentication/is-authenticated.md)
+* [אימות מפתח הגישה ותוקף החשבון](authentication/is-authenticated.md)
 
 ## לקוחות (Customers)
 
@@ -41,9 +41,9 @@
 * [סקירת מתודות סליקה](clearing/overview.md)
 * [ביצוע בקשת סליקה (גרסה 2)](clearing/process-api-request-v2.md)
 * [אמצעי תשלום חלופיים](clearing/alternative-payment-methods.md)
-* [טוקנים והוראות קבע](clearing/tokens-and-standing-orders.md)
+* [טוקנים (כרטיסים שמורים)](clearing/tokens-and-standing-orders.md)
 * [הוראות קבע (חיובים חוזרים)](clearing/standing-orders.md)
-* [לוגים של סליקה](clearing/clearing-logs.md)
+* [לוגי סליקה](clearing/clearing-logs.md)
 
 ## קטלוג פריטים (Catalog Items)
 
