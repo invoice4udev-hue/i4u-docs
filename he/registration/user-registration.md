@@ -46,7 +46,7 @@
 | - | - |
 | ‫**מתודה**‬ | `POST` |
 | ‫**נתיב**‬ | `/UpdateAKU` |
-| ‫**גוף**‬ | `{ "newAkU": "<מפתח API חדש (GUID)>", "token": "<מפתח API נוכחי>" }` |
+| ‫**גוף**‬ | `{ "newAkU": "<new API key (GUID)>", "token": "<current API key>" }` |
 | ‫**תשובה**‬ | ‫אובייקט `User`; רק `Errors` ו-`Info` משמעותיים‬ |
 
 ### ‫דוגמת בקשה‬
@@ -81,7 +81,8 @@ Content-Type: application/json
 | ---------- | ------- |
 | `ApiKeyNotInCorrectFormat` (303) | ‫`newAkU` אינו GUID תקין.‬ |
 | `ApiKeyWasntGenerated` (144) | ‫השמירה של המפתח החדש נכשלה.‬ |
-| `UnauthorizedUser` (80) | ‫`token` אינו תקין או פג תוקף.‬ |
+| `UnauthorizedUser` (80) | ‫`token` אינו תקין.‬ |
+| `ExpiredAccount` (66) | ‫`token` תקין אך תוקף החשבון פג לפני יותר מ-4 ימים; המפתח נשאר ללא שינוי.‬ |
 | `GeneralError` (0) | ‫שגיאת שרת בלתי צפויה.‬ |
 
 ### ‫איך הופכים לשותף‬

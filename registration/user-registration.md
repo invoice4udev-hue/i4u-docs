@@ -81,7 +81,8 @@ Content-Type: application/json
 | ---------- | ------- |
 | `ApiKeyNotInCorrectFormat` (303) | `newAkU` isn't a valid GUID. |
 | `ApiKeyWasntGenerated` (144) | The new key couldn't be saved. |
-| `UnauthorizedUser` (80) | `token` is invalid or expired. |
+| `UnauthorizedUser` (80) | `token` is invalid. |
+| `ExpiredAccount` (66) | `token` is valid but the account expired more than 4 days ago; the key is left unchanged. |
 | `GeneralError` (0) | Unexpected server error. |
 
 ### Becoming a partner
