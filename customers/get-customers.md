@@ -37,7 +37,26 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 { "guid": "d2f1a6b3-...", "token": "<token>" }
 ```
 
-`POST /GetCustomerByGuid` — lookup by the external `Guid` you set on creation. `GetCustomerByGuidInnerSearch` performs a broader (contains) search.
+`POST /GetCustomerByGuid` — lookup by the external `Guid` you set on creation. If it returns nothing, try `GetCustomerByGuidInnerSearch` below.
+
+## Get by GUID (inner search) — `GetCustomerByGuidInnerSearch`
+
+```json
+{ "guid": "d2f1a6b3-...", "token": "<token>" }
+```
+
+```json
+{
+  "d": {
+    "ID": 88231,
+    "Name": "Acme Ltd",
+    "Guid": "d2f1a6b3-...",
+    "Errors": []
+  }
+}
+```
+
+`POST /GetCustomerByGuidInnerSearch` — also searches additional customer identifiers (the lookup's inner-search option); use it when `GetCustomerByGuid` returns nothing. Returns `null` both when no customer matches and when the token is invalid or expired — the two cases are indistinguishable from the response alone.
 
 ## Get by external number — `GetCustomerByExternalNumber`
 
@@ -53,7 +72,26 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 { "clientCode": 42, "token": "<token>" }
 ```
 
-`POST /GetCustomerByClientCode` (alias: `/GetByClientCode`).
+`POST /GetCustomerByClientCode` (alias: `/GetByClientCode`). Returns `null` when no customer matches. An invalid or expired token is **not** caught: the check runs before the method's try block, so it raises an unhandled server error (HTTP 500) instead of a normal error response.
+
+## Get by client code (alias) — `GetByClientCode`
+
+```json
+{ "clientCode": 1045, "token": "<token>" }
+```
+
+```json
+{
+  "d": {
+    "ID": 88231,
+    "Name": "Acme Ltd",
+    "ClientCode": 1045,
+    "Errors": []
+  }
+}
+```
+
+`POST /GetByClientCode` — identical implementation to `GetCustomerByClientCode` (same lookup, same organization scoping). Returns `null` when no customer matches. As with `GetCustomerByClientCode`, an invalid or expired token raises an unhandled server error (HTTP 500) rather than a normal error response.
 
 ## Full record — `GetFullCustomer`
 
@@ -61,7 +99,7 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 { "id": 88231, "orgID": 0, "token": "<token>" }
 ```
 
-`POST /GetFullCustomer` — returns the full customer record including bank details, contacts and additional emails. Pass `orgID: 0` to use the token's organization.
+`POST /GetFullCustomer` — returns the full customer record including bank details, contacts and additional emails. Send `orgID` as `0` to use the token's own organization.
 
 ## List all — `GetCustomersByOrgId`
 
@@ -103,6 +141,30 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 ## Try it
 
 {% openapi-operation spec="invoice4u-api" path="/GetCustomerById" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByName" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByEmail" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByGuid" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByGuidInnerSearch" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByExternalNumber" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetCustomerByClientCode" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetByClientCode" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetFullCustomer" method="post" %}
 {% endopenapi-operation %}
 
 {% openapi-operation spec="invoice4u-api" path="/GetCustomersByOrgId" method="post" %}
