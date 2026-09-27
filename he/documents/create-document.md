@@ -52,7 +52,7 @@ Content-Type: application/json
       {
         "PaymentType": 1,
         "Amount": 117.00,
-        "Date": "2026-07-05T00:00:00",
+        "Date": "/Date(1783198800000+0300)/",
         "NumberOfPayments": 1,
         "PaymentNumber": "4242"
       }
@@ -69,7 +69,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateDocumentResult": {
+  "d": {
     "ID": "7f6a2c1e-8b4d-4f2a-9c3e-0d1e2f3a4b5c",
     "DocumentNumber": 20260123,
     "DocumentType": 3,
@@ -93,7 +93,7 @@ Content-Type: application/json
 ## ‫הערות התנהגות‬
 
 * ‫**הסכומים מחושבים בצד השרת** מתוך `Items` (סוגים מבוססי פריטים) או `Payments` (+`Deduction`) — אתם לא שולחים `Total`.‬
-* ‫ב**חשבונית מס קבלה**, סכום התשלומים חייב להיות שווה לסכום הפריטים (פער עיגול של ±0.01 ניתן לתיקון אוטומטי — ראו `AutoFixPaymentsMismatchItems` ב[אובייקט המסמך](document-object.md)). אי-התאמה ← `PaymentAmountDoesntMatchItemsAmount` (56) עם `OpenInfo.PaymentMismatchDelta`.‬
+* ‫ב**חשבונית מס קבלה**, סכום התשלומים חייב להיות שווה לסכום הפריטים (פער עיגול של ±0.01 ניתן לתיקון אוטומטי — ראו `AutoFixPaymentsMismatchItems` ב[אובייקט המסמך](document-object.md)). אי-התאמה ← `PaymentAmountDoesntMatchItemsAmount` (56) ובנוסף רשומת `OpenInfo` מהצורה `{ "Key": "PaymentMismatchDelta", "Value": "<הפרש>" }`.‬
 * ‫**משלוח אימייל** מתבצע אוטומטית כאשר `AssociatedEmails` מוגדר; **משלוח SMS** כאשר `SmsMessages` מוגדר.‬
 * ‫ארגונים המחוברים ל-**2Sign** עם תהליכי מסמכים לחתימה מקבלים את המסמך כמשימת חתימה במקום אימייל רגיל.‬
 * ‫חלון כפילויות: מסמך זהה בתוך `ApiDuplicityTimeValidation` שניות (ברירת מחדל 60) ← `DocumentAlreadyCreated` (134).‬

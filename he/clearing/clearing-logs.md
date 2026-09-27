@@ -50,8 +50,8 @@
 ```json
 {
   "searchParams": {
-    "FromDate": "2026-06-01T00:00:00",
-    "ToDate": "2026-06-30T23:59:59",
+    "FromDate": "/Date(1780261200000+0300)/",
+    "ToDate": "/Date(1782853199000+0300)/",
     "IsSuccess": true
   },
   "token": "<token>"

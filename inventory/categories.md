@@ -42,7 +42,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateInventoryCategoryResult": {
+  "d": {
     "Id": 5,
     "Name": "Electronics",
     "Description": "Electronic devices and components",
@@ -102,7 +102,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateInventoryCategoryResult": {
+  "d": {
     "Id": 5,
     "Name": "Electronics",
     "Description": "Updated: Electronic devices",
@@ -157,7 +157,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryCategoryByIdResult": {
+  "d": {
     "Id": 5,
     "Name": "Electronics",
     "Description": "Electronic devices and components",
@@ -212,7 +212,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryCategoriesResult": [
+  "d": [
     {
       "Id": 1,
       "Name": "Hardware",

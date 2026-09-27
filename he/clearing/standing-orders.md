@@ -94,7 +94,7 @@ Content-Type: application/json
 
 ```json
 {
-  "ProcessApiRequestV2Result": {
+  "d": {
     "Sum": 99.0,
     "OrderIdClientUsage": "sub-10045",
     "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",

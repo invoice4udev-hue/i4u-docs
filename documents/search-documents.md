@@ -43,8 +43,8 @@ Content-Type: application/json
 {
   "dr": {
     "DocumentType": 3,
-    "From": "2026-06-01T00:00:00",
-    "To": "2026-06-30T23:59:59",
+    "From": "/Date(1780261200000+0300)/",
+    "To": "/Date(1782853199000+0300)/",
     "CustomerID": 88231,
     "ItemsIncluded": true
   },
@@ -56,7 +56,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetDocumentsResult": {
+  "d": {
     "Response": [
       {
         "ID": "7f6a2c1e-...",

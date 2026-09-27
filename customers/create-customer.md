@@ -53,7 +53,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateCustomerResult": {
+  "d": {
     "ID": 88231,
     "Name": "Acme Ltd",
     "UniqueID": "512345678",

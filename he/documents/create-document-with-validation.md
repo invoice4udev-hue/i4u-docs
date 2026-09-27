@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateDocumentWithIdentifierValidationResult": {
+  "d": {
     "ID": "7f6a2c1e-8b4d-4f2a-9c3e-0d1e2f3a4b5c",
     "DocumentNumber": 20260119,
     "ApiIdentifier": "order-10045-invoice",

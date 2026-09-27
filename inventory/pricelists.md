@@ -42,7 +42,7 @@ Content-Type: application/json
 
 ```json
 {
-  "AddInventoryPricelistResult": {
+  "d": {
     "Id": 25,
     "Name": "Wholesale Pricing",
     "Description": "Bulk discount pricing tier",
@@ -104,7 +104,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateInventoryPricelistResult": {
+  "d": {
     "Id": 25,
     "Name": "Wholesale Pricing",
     "Description": "Updated bulk discount tier",
@@ -159,7 +159,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryPricelistsResult": [
+  "d": [
     {
       "Id": 25,
       "Name": "Wholesale Pricing",
@@ -225,7 +225,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryPricelistByCustomerIdResult": [
+  "d": [
     {
       "Id": 25,
       "Name": "Wholesale Pricing",
@@ -284,7 +284,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryPricelistByCustomerIdsResult": [
+  "d": [
     {
       "CustomerId": 88231,
       "Id": 25,
@@ -350,7 +350,7 @@ Content-Type: application/json
 
 ```json
 {
-  "RemoveCustomerFromInventoryPricelistResult": true
+  "d": true
 }
 ```
 

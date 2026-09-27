@@ -94,7 +94,7 @@ The response is the same as for any hosted-page request — check `Errors`, then
 
 ```json
 {
-  "ProcessApiRequestV2Result": {
+  "d": {
     "Sum": 99.0,
     "OrderIdClientUsage": "sub-10045",
     "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",

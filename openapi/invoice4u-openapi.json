@@ -3,7 +3,7 @@
   "x-enable-proxy": true,
   "info": {
     "title": "Invoice4U API",
-    "description": "The Invoice4U API lets you create tax-compliant documents (invoices, receipts, credit invoices and more), manage customers and branches, and charge credit cards through the Invoice4U clearing service.\n\nAll endpoints are POST with a JSON body that wraps the operation parameters by name (WCF wrapped-request style). Responses wrap the result in a `<Operation>Result` property. Most endpoints require a `token` obtained from a login endpoint.",
+    "description": "The Invoice4U API lets you create tax-compliant documents (invoices, receipts, credit invoices and more), manage customers and branches, and charge credit cards through the Invoice4U clearing service.\n\nUnless marked GET (query-string parameters), endpoints are POST with a JSON body that wraps the operation parameters by name (WCF wrapped-request style). Responses wrap the result in a single `d` property: `{ \"d\": ... }`. Dates use the WCF format `\"/Date(1788210000000+0300)/\"` (milliseconds since 1970-01-01 UTC plus offset); ISO strings are not accepted. Almost every endpoint takes your organization API key as `token`.",
     "version": "1.0.0",
     "contact": {
       "name": "Invoice4U Support",
@@ -56,7 +56,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetExpDateByApiKeyResult": { "type": "string" } }
+                  "properties": { "d": { "type": "string" } }
                 }
               }
             }
@@ -92,7 +92,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "IsAuthenticatedResult": {
+                    "d": {
                       "type": "object",
                       "description": "Authenticated user details.",
                       "properties": {
@@ -153,7 +153,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateCustomerResult": { "$ref": "#/components/schemas/Customer" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Customer" } }
                 }
               }
             }
@@ -189,7 +189,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateCustomerResult": { "$ref": "#/components/schemas/Customer" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Customer" } }
                 }
               }
             }
@@ -224,7 +224,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetCustomerByIdResult": { "$ref": "#/components/schemas/Customer" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Customer" } }
                 }
               }
             }
@@ -257,7 +257,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetCustomersByOrgIdResult": { "$ref": "#/components/schemas/CustomerCollection" }
+                    "d": { "$ref": "#/components/schemas/CustomerCollection" }
                   }
                 }
               }
@@ -295,7 +295,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetCustomersResult": { "$ref": "#/components/schemas/CustomerCollection" }
+                    "d": { "$ref": "#/components/schemas/CustomerCollection" }
                   }
                 }
               }
@@ -330,7 +330,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetBranchesResult": {
+                    "d": {
                       "type": "array",
                       "nullable": true,
                       "items": { "$ref": "#/components/schemas/Branch" }
@@ -373,7 +373,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetCatalogItemsResult": { "$ref": "#/components/schemas/CatalogItemCollection" }
+                    "d": { "$ref": "#/components/schemas/CatalogItemCollection" }
                   }
                 }
               }
@@ -412,7 +412,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetCatalogItemByCodeResult": { "$ref": "#/components/schemas/CatalogItem" }
+                    "d": { "$ref": "#/components/schemas/CatalogItem" }
                   }
                 }
               }
@@ -448,7 +448,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateInventoryCategoryResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/ItemCategory" } }
                 }
               }
             }
@@ -483,7 +483,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateInventoryCategoryResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/ItemCategory" } }
                 }
               }
             }
@@ -518,7 +518,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetInventoryCategoryByIdResult": { "$ref": "#/components/schemas/ItemCategory" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/ItemCategory" } }
                 }
               }
             }
@@ -554,7 +554,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetInventoryCategoriesResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/ItemCategory" }
                     }
@@ -593,7 +593,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Supplier" } }
                 }
               }
             }
@@ -628,7 +628,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Supplier" } }
                 }
               }
             }
@@ -663,7 +663,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetSupplierResult": { "$ref": "#/components/schemas/Supplier" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Supplier" } }
                 }
               }
             }
@@ -699,7 +699,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetSuppliersResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/Supplier" }
                     }
@@ -738,7 +738,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateWarehouseResult": { "$ref": "#/components/schemas/Warehouse" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Warehouse" } }
                 }
               }
             }
@@ -773,7 +773,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateWarehouseResult": { "$ref": "#/components/schemas/Warehouse" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Warehouse" } }
                 }
               }
             }
@@ -809,7 +809,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetWarehousesResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/Warehouse" }
                     }
@@ -835,10 +835,10 @@
                 "required": ["token"],
                 "properties": {
                   "itemId": { "type": "integer", "nullable": true },
-                  "fromSellingDate": { "type": "string", "format": "date-time", "nullable": true },
-                  "toSellingDate": { "type": "string", "format": "date-time", "nullable": true },
-                  "fromPurchasingDate": { "type": "string", "format": "date-time", "nullable": true },
-                  "toPurchasingDate": { "type": "string", "format": "date-time", "nullable": true },
+                  "fromSellingDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+                  "toSellingDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+                  "fromPurchasingDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+                  "toPurchasingDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
                   "isActive": { "type": "boolean", "nullable": true },
                   "serialNumber": { "type": "integer", "nullable": true },
                   "batchNumber": { "type": "integer", "nullable": true },
@@ -856,7 +856,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetInventoryItemsResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/Item" }
                     }
@@ -893,7 +893,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetActiveInventoryItemsResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/Item" }
                     }
@@ -932,7 +932,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Item" } }
                 }
               }
             }
@@ -967,7 +967,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Item" } }
                 }
               }
             }
@@ -1002,7 +1002,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateInventoryItemResult": { "$ref": "#/components/schemas/Item" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Item" } }
                 }
               }
             }
@@ -1038,7 +1038,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "ReceiveToStockResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1094,7 +1094,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateDocumentResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1130,7 +1130,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "CreateDocumentWithIdentifierValidationResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1165,7 +1165,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetDocumentResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1202,7 +1202,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetDocumentByNumberResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1239,7 +1239,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetDocumentByApiIdentifierResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1284,7 +1284,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetDocumentsResult": { "$ref": "#/components/schemas/DocumentCollection" }
+                    "d": { "$ref": "#/components/schemas/DocumentCollection" }
                   }
                 }
               }
@@ -1322,7 +1322,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "CreateOrUpdateDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                    "d": { "$ref": "#/components/schemas/Document" }
                   }
                 }
               }
@@ -1359,7 +1359,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                    "d": { "$ref": "#/components/schemas/Document" }
                   }
                 }
               }
@@ -1396,7 +1396,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetDraftDocumentsResult": { "$ref": "#/components/schemas/DocumentCollection" }
+                    "d": { "$ref": "#/components/schemas/DocumentCollection" }
                   }
                 }
               }
@@ -1433,7 +1433,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "CheckIfDraftExistsByDocumentTypeResult": { "type": "boolean", "nullable": true }
+                    "d": { "type": "boolean", "nullable": true }
                   }
                 }
               }
@@ -1470,7 +1470,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "DeleteDraftDocumentResult": { "$ref": "#/components/schemas/Document" }
+                    "d": { "$ref": "#/components/schemas/Document" }
                   }
                 }
               }
@@ -1507,7 +1507,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "DeleteDraftDocumentsResult": { "$ref": "#/components/schemas/Document" }
+                    "d": { "$ref": "#/components/schemas/Document" }
                   }
                 }
               }
@@ -1543,7 +1543,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetPreviewDocumentByTokenResult": { "$ref": "#/components/schemas/Document" }
+                    "d": { "$ref": "#/components/schemas/Document" }
                   }
                 }
               }
@@ -1579,7 +1579,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "FetchAllocationNumberResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1615,7 +1615,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UpdateAllocationNumberResult": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
                 }
               }
             }
@@ -1691,7 +1691,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "ProcessApiRequestV2Result": { "$ref": "#/components/schemas/ApiClearingRequest" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/ApiClearingRequest" } }
                 }
               }
             }
@@ -1726,7 +1726,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "GetClearingLogByIdResult": { "$ref": "#/components/schemas/ClearingLog" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/ClearingLog" } }
                 }
               }
             }
@@ -1751,8 +1751,8 @@
                     "type": "object",
                     "description": "Filter object (date range, success flag, etc.).",
                     "properties": {
-                      "FromDate": { "type": "string", "format": "date-time" },
-                      "ToDate": { "type": "string", "format": "date-time" },
+                      "FromDate": { "$ref": "#/components/schemas/WcfDate" },
+                      "ToDate": { "$ref": "#/components/schemas/WcfDate" },
                       "IsSuccess": { "type": "boolean" }
                     }
                   },
@@ -1770,7 +1770,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "GetClearingLogByParamsResult": {
+                    "d": {
                       "type": "array",
                       "items": { "$ref": "#/components/schemas/ClearingLog" }
                     }
@@ -1811,7 +1811,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "UserRegistrationApiResult": { "$ref": "#/components/schemas/UserRegApiObject" } }
+                  "properties": { "d": { "$ref": "#/components/schemas/UserRegApiObject" } }
                 }
               }
             }
@@ -1907,7 +1907,7 @@
             "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9]
           },
           "Amount": { "type": "number", "format": "double" },
-          "Date": { "type": "string", "format": "date-time", "nullable": true },
+          "Date": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
           "DateStr": { "type": "string", "nullable": true, "description": "Alternative string date when Date is not set." },
           "NumberOfPayments": { "type": "integer", "description": "Credit-card installments." },
           "CreditCardName": { "type": "string", "nullable": true, "description": "Card brand name; resolved against configured credit companies." },
@@ -1948,7 +1948,7 @@
                 "items": { "type": "object", "properties": { "ID": { "type": "string", "format": "uuid" }, "ReceiptAmount": { "type": "number", "format": "double" } } }
               },
               "DocumentReffType": { "type": "integer", "description": "Type of the referenced documents." },
-              "IssueDate": { "type": "string", "format": "date-time", "nullable": true, "description": "Defaults to today. Not in the future; not before your latest document of the type." },
+              "IssueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true, "description": "Defaults to today. Not in the future; not before your latest document of the type." },
               "Currency": { "type": "string", "nullable": true, "example": "ILS" },
               "ConversionRate": { "type": "number", "format": "double", "description": "Auto-resolved when 0." },
               "TaxPercentage": { "type": "number", "format": "double", "nullable": true },
@@ -1962,7 +1962,7 @@
               "EmailCustomComment": { "type": "string", "nullable": true },
               "ApiIdentifier": { "type": "string", "nullable": true, "description": "Idempotency key. Auto-generated if missing." },
               "ApiDuplicityTimeValidation": { "type": "integer", "description": "Duplicate-detection window in seconds. Default 60." },
-              "PaymentDueDate": { "type": "string", "format": "date-time", "nullable": true },
+              "PaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
               "Deduction": { "type": "number", "format": "double", "description": "Withholding-tax deduction (receipts)." },
               "CloseReceipt": { "type": "boolean" },
               "IsSelfInvoice": { "type": "boolean" },
@@ -2067,12 +2067,12 @@
         "properties": {
           "DocumentType": { "type": "integer", "description": "Single document type filter." },
           "DocumentTypes": { "type": "string", "nullable": true, "description": "Comma-separated list of types." },
-          "From": { "type": "string", "format": "date-time", "nullable": true },
-          "To": { "type": "string", "format": "date-time", "nullable": true },
-          "FromActualCreationDate": { "type": "string", "format": "date-time", "nullable": true },
-          "ToActualCreationDate": { "type": "string", "format": "date-time", "nullable": true },
-          "FromPaymentDueDate": { "type": "string", "format": "date-time", "nullable": true },
-          "ToPaymentDueDate": { "type": "string", "format": "date-time", "nullable": true },
+          "From": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "To": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "FromActualCreationDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "ToActualCreationDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "FromPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "ToPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
           "Status": { "type": "integer", "description": "Document status filter." },
           "CustomerID": { "type": "integer", "nullable": true },
           "CustomerName": { "type": "string", "nullable": true },
@@ -2159,7 +2159,7 @@
             "type": "object",
             "properties": {
               "Id": { "type": "integer" },
-              "Date": { "type": "string", "format": "date-time" },
+              "Date": { "$ref": "#/components/schemas/WcfDate" },
               "LogType": { "type": "integer", "nullable": true, "description": "1 Request, 2 Response." },
               "ClientName": { "type": "string", "nullable": true },
               "Amount": { "type": "number", "format": "double" },
@@ -2376,6 +2376,12 @@
             }
           }
         ]
+      },
+      "WcfDate": {
+        "type": "string",
+        "pattern": "^/Date\\(-?\\d+([+-]\\d{4})?\\)/$",
+        "example": "/Date(1788210000000+0300)/",
+        "description": "WCF JSON date: /Date(<milliseconds since 1970-01-01 UTC><Â±hhmm>)/. Also accepted with escaped slashes (\\/Date(...)\\/). ISO-8601 strings are NOT accepted."
       }
     }
   }

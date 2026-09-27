@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateCustomerResult": {
+  "d": {
     "ID": 88231,
     "Name": "Acme Ltd",
     "Email": "accounts@acme.example",

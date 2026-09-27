@@ -10,7 +10,7 @@ The clearing service supports four providers — **UPay**, **Meshulam**, **YaadS
 
 1. Create an account at [invoice4u.co.il](https://invoice4u.co.il).
 2. Enable API access for your organization (Settings → API, or contact support).
-3. Authenticate with your credentials or API key and use the returned token in your API requests.
+3. Pass your organization API key as `token` in every call — there is no separate login step.
 
 ### Base URLs
 
@@ -46,13 +46,41 @@ Almost every endpoint takes a `token` parameter — this is your organization **
 
 ### Response envelope
 
-Most response objects inherit a common envelope. Always check `Errors` before using the payload:
+Every response is a JSON object with a single `d` property that holds the result:
+
+```json
+{
+  "d": {
+    "__type": "Document:#Invoice.Common",
+    "Errors": [],
+    "Info": [],
+    "OpenInfo": [],
+    "DocumentNumber": 10045
+  }
+}
+```
+
+Depending on the endpoint, `d` can also be a plain value (`true`, a string, an array) or `null`. The `__type` hint can be ignored.
+
+Most result objects inherit a common envelope. Always check `Errors` before using the payload:
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | `Errors` | array | List of errors. Empty on success. Each item: `ID` (numeric error code), `Error` (error name), `Paramters` (optional context, e.g. row number). |
-| `Info` | array | Informational messages (e.g. `SuccessfulAction`). |
-| `OpenInfo` | object | Key/value extras returned by some endpoints (e.g. `PaymentMismatchDelta`). |
+| `Info` | array | Informational messages. Each item: `ID`, `Info` (message name, e.g. `SuccessfulAction`), `Paramters`. |
+| `OpenInfo` | array | Key/value extras returned by some endpoints, as `{ "Key": "...", "Value": "..." }` pairs — e.g. `[{ "Key": "PaymentMismatchDelta", "Value": "0.01" }]`. |
+
+### Dates
+
+Date fields are sent and returned in the WCF JSON date format: milliseconds since 1970-01-01 UTC, optionally followed by the time-zone offset.
+
+```json
+"IssueDate": "/Date(1788210000000+0300)/"
+```
+
+That value is 1 September 2026, 00:00 Israel time. JSON encoders may escape the slashes (`"\/Date(1788210000000+0300)\/"`) — both forms are accepted. ISO-8601 strings such as `"2026-09-01T00:00:00"` are **not** accepted in requests.
+
+To build a value, take the Unix time in milliseconds (JavaScript `date.getTime()`, C# `DateTimeOffset.ToUnixTimeMilliseconds()`, PHP `$date->getTimestamp() * 1000`) and append the offset.
 
 ### First steps
 

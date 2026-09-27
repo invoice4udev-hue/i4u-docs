@@ -29,7 +29,7 @@ Host: apiqa.invoice4u.co.il
 Content-Type: application/json
 
 {
-  "date": "2026-08-24",
+  "date": "/Date(1787518800000+0300)/",
   "token": "<token>"
 }
 ```
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryCostReportResult": [
+  "d": [
     {
       "ItemId": 1001,
       "ItemName": "Laptop Pro",
@@ -106,7 +106,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetTopSoldItemsResult": [
+  "d": [
     {
       "Id": 1001,
       "Name": "Laptop Pro",
@@ -178,7 +178,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetHighestByValueResult": [
+  "d": [
     {
       "Id": 1001,
       "Name": "Laptop Pro",

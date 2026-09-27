@@ -42,7 +42,7 @@ POST /Services/ApiService.svc/CreateDocument HTTP/1.1
     "TaxIncluded": true,
     "ApiIdentifier": "my-first-doc-001",
     "Items": [ { "Name": "Test item", "Quantity": 1, "Price": 117.0 } ],
-    "Payments": [ { "PaymentType": 4, "Amount": 117.0, "Date": "2026-07-06T00:00:00" } ]
+    "Payments": [ { "PaymentType": 4, "Amount": 117.0, "Date": "/Date(1783285200000+0300)/" } ]
   },
   "token": "<token>"
 }

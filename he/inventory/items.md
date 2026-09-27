@@ -45,7 +45,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryItemsResult": [
+  "d": [
     {
       "Id": 1001,
       "Name": "Laptop Pro",
@@ -111,7 +111,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetActiveInventoryItemsResult": [
+  "d": [
     {
       "Id": 1001,
       "Name": "Laptop Pro",
@@ -179,7 +179,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetInventoryItemResult": {
+  "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
     "CategoryId": 5,
@@ -260,7 +260,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateInventoryItemResult": {
+  "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
     "CategoryId": 5,
@@ -342,7 +342,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateInventoryItemResult": {
+  "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
     "CategoryId": 5,

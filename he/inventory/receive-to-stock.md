@@ -39,7 +39,7 @@ Content-Type: application/json
   "doc": {
     "DocumentType": 5,
     "DocumentNumber": 0,
-    "IssueDate": "2026-08-24",
+    "IssueDate": "/Date(1787518800000+0300)/",
     "ClientID": 12,
     "BranchID": 101,
     "Currency": "ILS",
@@ -68,11 +68,11 @@ Content-Type: application/json
 
 ```json
 {
-  "ReceiveToStockResult": {
+  "d": {
     "ID": 50001,
     "DocumentNumber": "REC-2026-1234",
     "DocumentType": 5,
-    "IssueDate": "2026-08-24",
+    "IssueDate": "/Date(1787518800000+0300)/",
     "ClientID": 12,
     "ClientName": "Global Electronics Inc",
     "BranchID": 101,

@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetCatalogItemsResult": {
+  "d": {
     "Errors": [],
     "Info": [],
     "Response": [

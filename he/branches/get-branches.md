@@ -32,7 +32,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetBranchesResult": [
+  "d": [
     {
       "ID": 101,
       "Name": "Head Office",

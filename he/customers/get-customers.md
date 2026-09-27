@@ -73,7 +73,7 @@
 
 ```json
 {
-  "GetCustomersByOrgIdResult": {
+  "d": {
     "Response": [ { "ID": 88231, "Name": "Acme Ltd" }, ... ],
     "Errors": []
   }

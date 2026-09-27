@@ -49,7 +49,7 @@ All three return the full [Document object](document-object.md):
 
 ```json
 {
-  "GetDocumentResult": {
+  "d": {
     "ID": "7f6a2c1e-8b4d-4f2a-9c3e-0d1e2f3a4b5c",
     "DocumentNumber": 20260123,
     "DocumentType": 3,

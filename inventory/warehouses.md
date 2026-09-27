@@ -44,7 +44,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateWarehouseResult": {
+  "d": {
     "Id": 101,
     "Name": "Central Warehouse",
     "Address": "123 Industrial St",
@@ -106,7 +106,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateWarehouseResult": {
+  "d": {
     "Id": 101,
     "Errors": []
   }
@@ -158,7 +158,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetWarehousesResult": [
+  "d": [
     {
       "Id": 101,
       "Name": "Central Warehouse",

@@ -73,7 +73,7 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 
 ```json
 {
-  "GetCustomersByOrgIdResult": {
+  "d": {
     "Response": [ { "ID": 88231, "Name": "Acme Ltd" }, ... ],
     "Errors": []
   }

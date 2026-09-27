@@ -44,7 +44,7 @@ Content-Type: application/json
 
 ```json
 {
-  "CreateSupplierResult": {
+  "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
     "Email": "sales@globalelectronics.com",
@@ -109,7 +109,7 @@ Content-Type: application/json
 
 ```json
 {
-  "UpdateSupplierResult": {
+  "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
     "Email": "support@globalelectronics.com",
@@ -167,7 +167,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetSupplierResult": {
+  "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
     "Email": "support@globalelectronics.com",
@@ -224,7 +224,7 @@ Content-Type: application/json
 
 ```json
 {
-  "GetSuppliersResult": [
+  "d": [
     {
       "Id": 12,
       "Name": "Global Electronics Inc",
