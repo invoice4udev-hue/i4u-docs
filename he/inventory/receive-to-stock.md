@@ -18,7 +18,7 @@
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `doc` | Document | ‫כן‬ | המסמך שמייצג את הקליטה. השתמשו ב-`DocumentType: 10` (`SupplierInvoiceToInventory`) כדי לקבל השפעה על המלאי — ראו [ולידציה בפועל](#actual-validation). כללו `SupplierId`, `AddToInventory: true`, ומערך `Items[]` עם `Name`, `Quantity`, `Price`, `InventoryId` (קישור לפריט המלאי), ואופציונלית `WarehouseId`. |
+| `doc` | Document | ‫כן‬ | ‫המסמך שמייצג את הקליטה. השתמשו ב-`DocumentType: 10` (`SupplierInvoiceToInventory`) כדי לקבל השפעה על המלאי — ראו [ולידציה בפועל](#actual-validation). כללו `SupplierId`, `AddToInventory: true`, ומערך `Items[]` עם `Name`, `Quantity`, `Price`, `InventoryId` (קישור לפריט המלאי), ואופציונלית `WarehouseId`.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫הערות‬

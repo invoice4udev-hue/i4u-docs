@@ -60,13 +60,15 @@ Content-Type: application/json
 
 ### Errors
 
+An invalid/missing token returns `null`.
+
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` (403) | User lacks inventory module permissions. |
+| `UnauthorizedUser` (80) | Expired account. |
+| `UnauthorizedInventoryAttempt` (403) | Inventory module inactive. |
 | `InventorySupplierNameExists` (401) | A supplier with this name already exists for the organization. |
 
-See [module-inactive behavior](overview.md#module-inactive-behavior) for the full envelope shape on the two error rows above.
+See [module-inactive behavior](overview.md#module-inactive-behavior) for more detail.
 
 ---
 
@@ -127,17 +129,19 @@ Content-Type: application/json
 
 ### Known behavior: same-name update fails
 
-The duplicate-name check for `UpdateSupplier` looks up any supplier with the same `Name` in the organization, but it does not exclude the supplier being updated. Submitting an update that keeps the current `Name` unchanged can therefore return `InventorySupplierNameExists` (401) even though no *other* supplier has that name. Workaround: send a different transient name first, or avoid re-sending an unchanged `Name` field, until this is fixed server-side.
+The duplicate-name check for `UpdateSupplier` looks up any supplier with the same `Name` in the organization, but it does not exclude the supplier being updated. Submitting an update that keeps the current `Name` unchanged can therefore return `InventorySupplierNameExists` (401) even though no *other* supplier has that name. `Name` is a required field and the DAL sends it unconditionally on every update (`SupplierData.cs:110`), so there is **no safe way to update a supplier's other fields while keeping its `Name` unchanged** in a single call — omitting or "not re-sending" `Name` does not help, since it must be sent every time. The only workaround until this is fixed server-side is a two-step rename: update with a different, temporarily-unused `Name` first, then update again back to the original `Name` (this works because the duplicate check only looks at suppliers *currently* holding that name).
 
 ### Errors
 
+An invalid/missing token returns `null`.
+
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` (403) | User lacks inventory module permissions. |
+| `UnauthorizedUser` (80) | Expired account. |
+| `UnauthorizedInventoryAttempt` (403) | Inventory module inactive. |
 | `InventorySupplierNameExists` (401) | Another supplier already has this name — or, due to the bug above, the same supplier kept its own name. |
 
-See [module-inactive behavior](overview.md#module-inactive-behavior) for the full envelope shape on the first two rows.
+See [module-inactive behavior](overview.md#module-inactive-behavior) for more detail.
 
 ---
 
@@ -191,7 +195,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a `Supplier` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a `Supplier` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -256,4 +260,4 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).

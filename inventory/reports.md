@@ -67,7 +67,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns an empty array (`{"d":[]}`) — this method's backing list is initialized to `new List<ItemBalance>()` instead of `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -87,7 +87,7 @@ Retrieves the top-selling items based on sales quantity or sales value, for a fi
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `filterType` | int | Yes | Time period: `0` all time, `1` this month, `2` last month, `3` this week. There is no quarter/year option. |
+| `filterType` | int | Yes | Time period: `0` all time, `1` this month, `2` last month, `3` the past week (`EInventoryReportFilterTypes.LastWeek`; the Angular UI's tab for this value is labeled with the translation key `Item.PassingWeek`). There is no quarter/year option. |
 | `type` | int | Yes | Metric: `0` quantity sold, `1` sales value. |
 | `token` | string | Yes | Authentication token. |
 
@@ -136,7 +136,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -198,7 +198,7 @@ Only `Name` and `QuantityToNotify` (the total inventory value) are populated —
 
 ### Errors
 
-An invalid or expired token, or an inactive Inventory module, both return `null` — not an error object — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid token, an expired account, or an inactive Inventory module all return `null` — not an error object — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -259,14 +259,14 @@ Content-Type: application/json
     },
     "ItemsBalance": [
       {
-        "Date": "/Date(1788296400000+0300)/",
+        "Date": "/Date(1788210000000+0300)/",
         "Qty": 10,
         "Entry": 10,
         "Exit": 0,
         "Op": 10
       },
       {
-        "Date": "/Date(1789074000000+0300)/",
+        "Date": "/Date(1790801999000+0300)/",
         "Qty": 8,
         "Entry": 0,
         "Exit": 2,
@@ -283,7 +283,7 @@ Content-Type: application/json
 | What happens | Response |
 | --- | --- |
 | Fully invalid token (fails to decrypt) | `{"d":null}` |
-| Expired token | `ItemsMovement` object with `Errors: [{"ID": 80, ...}]` (`UnauthorizedUser`), `Item` and `ItemsBalance` both `null` |
+| Expired account | `ItemsMovement` object with `Errors: [{"ID": 80, ...}]` (`UnauthorizedUser`), `Item` and `ItemsBalance` both `null` |
 | Inactive Inventory module | Same shape as above with `UnauthorizedInventoryAttempt` (403) |
 
 See [module-inactive behavior](overview.md#module-inactive-behavior) for why the invalid-token and expired-token cases differ.
@@ -362,7 +362,7 @@ Content-Type: application/json
 | What happens | Response |
 | --- | --- |
 | Fully invalid token (fails to decrypt) | `{"d":[]}` |
-| Expired token | One-element array carrying `UnauthorizedUser` (80) |
+| Expired account | One-element array carrying `UnauthorizedUser` (80) |
 | Inactive Inventory module | One-element array carrying `UnauthorizedInventoryAttempt` (403) |
 
 See [module-inactive behavior](overview.md#module-inactive-behavior) for why the invalid-token and expired-token cases differ.

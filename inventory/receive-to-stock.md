@@ -112,7 +112,7 @@ Content-Type: application/json
 - **Stock effects require `DocumentType: 10`.** Other document types create a document as usual but do not move inventory quantities.
 - **A single-item receipt with no `InventoryId` fails with a misleading error.** For `DocumentType: 10`, if `Items` contains exactly **one** item and that item's `InventoryId` is missing or `0`, the response carries `DocumentItemPriceCannotBeZero` (41) — even though the actual problem is the missing `InventoryId`, not the price. This check does not fire when there are two or more items.
 - **`WarehouseId` is accepted but not validated.** It is written to the document item only if you send it; there is no check that the warehouse exists or is active.
-- **Invalid token or inactive Inventory module returns `null`**, not an error object — see [module-inactive behavior](overview.md#module-inactive-behavior).
+- **An invalid token, an expired account, or an inactive Inventory module all return `null`**, not an error object — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ### Errors
 

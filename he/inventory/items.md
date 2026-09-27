@@ -72,7 +72,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -137,7 +137,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -205,7 +205,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר גורם לחריגה בלתי מטופלת כאן (בלוק ה-`catch` של מתודה זו אינו מאפס את המערך שלה לפני קריאת `.FirstOrDefault()` בסוף), כך שהתשובה היא WCF fault, לא גוף `{"d": …}` נקי. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).
 
 ---
 
@@ -225,7 +225,7 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | ‫כן‬ | הפריט ליצירה. `Id` **חייב להיות `0`** — ה-API יוצר רק כאשר `Id` הוא `0`; אם `Id > 0` הקריאה מחזירה `null` בלי ליצור או לעדכן דבר (ראו שגיאות למטה). שדות: `Name`, `Code`, `ItemCategoryId`, `UnitType` (ראו למטה), `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber` (שניהם ברמת הפריט, לא לכל מופע), `IsActive`, `IsNonStockItem`. אופציונלי: מערך `ItemInstances`. |
+| `item` | Item | ‫כן‬ | ‫הפריט ליצירה. `Id` **חייב להיות `0`** — ה-API יוצר רק כאשר `Id` הוא `0`; אם `Id > 0` הקריאה מחזירה `null` בלי ליצור או לעדכן דבר (ראו שגיאות למטה). שדות: `Name`, `Code`, `ItemCategoryId`, `UnitType` (ראו למטה), `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber` (שניהם ברמת הפריט, לא לכל מופע), `IsActive`, `IsNonStockItem`. אופציונלי: מערך `ItemInstances`.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ‫ערכי `UnitType`: `0` יחידות, `1` ק"ג, `2` גרם, `3` ליטר, `4` מ"ל.‬
@@ -295,7 +295,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
@@ -322,7 +322,7 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | ‫כן‬ | הפריט לעדכון. חייב לכלול `Id` > 0 — אם `Id` הוא `0` או חסר, התשובה היא `null` (אין עדכון, בלי אובייקט שגיאה). אותם שדות כמו ביצירה: `Name`, `Code`, `ItemCategoryId`, `UnitType`, `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber`, `IsActive`. |
+| `item` | Item | ‫כן‬ | ‫הפריט לעדכון. חייב לכלול `Id` > 0 — אם `Id` הוא `0` או חסר, התשובה היא `null` (אין עדכון, בלי אובייקט שגיאה). אותם שדות כמו ביצירה: `Name`, `Code`, `ItemCategoryId`, `UnitType`, `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber`, `IsActive`.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -389,7 +389,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |

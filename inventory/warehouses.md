@@ -59,7 +59,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -114,7 +114,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -177,4 +177,4 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).

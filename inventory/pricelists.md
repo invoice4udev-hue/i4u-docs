@@ -18,7 +18,7 @@ Creates a new price list in the authenticated organization.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | Yes | The price list to create. Fields: `Name`, `Discount`, `DiscountType` (`0` = percent, `1` = fixed amount), `LinkedCustomers` (comma-separated customer IDs), `IsActive` — a required (non-nullable) field on the wire, so omitting it deserializes as `false` and the price list is created **inactive** with no warning. `OrganizationID` is ignored if sent — the server always overwrites it with the authenticated organization. |
+| `pricelist` | Pricelist | Yes | The price list to create. Fields: `Name`, `Discount`, `DiscountType` (`0` = percent, `1` = fixed amount), `LinkedCustomers` (comma-separated customer IDs), `IsActive` â€” a required (non-nullable) field on the wire, so omitting it deserializes as `false` and the price list is created **inactive** with no warning. `OrganizationID` is ignored if sent â€” the server always overwrites it with the authenticated organization. |
 | `token` | string | Yes | Authentication token. |
 
 ### Example request
@@ -59,7 +59,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -123,7 +123,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -190,7 +190,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -249,7 +249,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -320,7 +320,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -334,7 +334,7 @@ Removes customers from price list assignments.
 | - | - |
 | **Method** | `POST` |
 | **Path** | `/RemoveCustomerFromInventoryPricelist` |
-| **Response** | `bool` — `true` on success, `false` on error |
+| **Response** | `bool` â€” `true` on success, `false` on error |
 
 ### Request schema
 
@@ -366,4 +366,4 @@ Content-Type: application/json
 
 ### Errors
 
-This endpoint never returns an error object — it returns the plain boolean `false` on an invalid/expired token, an inactive Inventory module, or any server error. There is no way to distinguish those cases from the response alone; see [module-inactive behavior](overview.md#module-inactive-behavior).
+This endpoint never returns an error object â€” it returns the plain boolean `false` on an invalid token, an expired account, an inactive Inventory module, or any server error. There is no way to distinguish those cases from the response alone; see [module-inactive behavior](overview.md#module-inactive-behavior).

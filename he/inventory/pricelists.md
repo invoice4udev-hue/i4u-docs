@@ -59,7 +59,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -79,7 +79,7 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | ‫כן‬ | המחירון לעדכון. חייב לכלול `Id`. אותם שדות כמו ביצירה: `Name`, `Discount`, `DiscountType`, `LinkedCustomers`, `IsActive`. `OrganizationID` מתעלמים ממנו אם נשלח. |
+| `pricelist` | Pricelist | ‫כן‬ | ‫המחירון לעדכון. חייב לכלול `Id`. אותם שדות כמו ביצירה: `Name`, `Discount`, `DiscountType`, `LinkedCustomers`, `IsActive`. `OrganizationID` מתעלמים ממנו אם נשלח.‬ |
 | `customerID` | int? | ‫לא‬ | ‫מזהה לקוח אופציונלי לשיוך למחירון זה.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
@@ -123,7 +123,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -190,7 +190,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -249,7 +249,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -320,7 +320,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -366,4 +366,4 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫מתודה זו אף פעם לא מחזירה אובייקט שגיאה — היא מחזירה את הבוליאני `false` הפשוט עבור טוקן לא תקין/פג תוקף, רכיב מלאי כבוי, או כל שגיאת שרת. אין דרך להבחין בין המקרים הללו מתוך התשובה בלבד; ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫מתודה זו אף פעם לא מחזירה אובייקט שגיאה — היא מחזירה את הבוליאני `false` הפשוט עבור טוקן לא תקין, חשבון שפג תוקפו, רכיב מלאי כבוי, או כל שגיאת שרת. אין דרך להבחין בין המקרים הללו מתוך התשובה בלבד; ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬

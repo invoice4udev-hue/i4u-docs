@@ -54,7 +54,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
+An invalid token, an expired account, or an inactive Inventory module does **not** return an error object here â€” the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -111,7 +111,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
+An invalid token, an expired account, or an inactive Inventory module does **not** return an error object here â€” the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -163,7 +163,7 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
+An invalid token, an expired account, or an inactive Inventory module does **not** return an error object here â€” the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -224,4 +224,4 @@ Content-Type: application/json
 
 ### Errors
 
-An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively â€” see [module-inactive behavior](overview.md#module-inactive-behavior).

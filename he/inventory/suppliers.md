@@ -60,13 +60,15 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
+‫טוקן לא תקין/חסר מחזיר `null`.‬
+
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` (403) | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `UnauthorizedUser` (80) | ‫חשבון שפג תוקפו.‬ |
+| `UnauthorizedInventoryAttempt` (403) | ‫רכיב מלאי כבוי.‬ |
 | `InventorySupplierNameExists` (401) | ‫קיים כבר ספק אחר עם שם זהה בארגון.‬ |
 
-‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לצורת המעטפה המלאה בשתי השורות הראשונות למעלה.‬
+‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לפרטים נוספים.‬
 
 ---
 
@@ -127,17 +129,19 @@ Content-Type: application/json
 
 ### ‫התנהגות ידועה: עדכון עם אותו שם נכשל‬
 
-‫בדיקת הכפילות בשם עבור `UpdateSupplier` מחפשת כל ספק עם אותו `Name` בארגון, אך אינה מוציאה מהבדיקה את הספק המתעדכן עצמו. לכן עדכון ששומר על ה-`Name` הקיים ללא שינוי עלול להחזיר `InventorySupplierNameExists` (401) גם כאשר אף ספק *אחר* לא נושא את השם הזה. פתרון עקיפה: שלחו שם זמני שונה תחילה, או הימנעו משליחת `Name` שלא השתנה, עד שהתקלה תתוקן בצד השרת.‬
+‫בדיקת הכפילות בשם עבור `UpdateSupplier` מחפשת כל ספק עם אותו `Name` בארגון, אך אינה מוציאה מהבדיקה את הספק המתעדכן עצמו. לכן עדכון ששומר על ה-`Name` הקיים ללא שינוי עלול להחזיר `InventorySupplierNameExists` (401) גם כאשר אף ספק *אחר* לא נושא את השם הזה. `Name` הוא שדה חובה וה-DAL שולח אותו ללא תנאי בכל עדכון (`SupplierData.cs:110`), כך שאין דרך בטוחה לעדכן שדות אחרים של ספק תוך שמירה על אותו `Name` ללא שינוי בקריאה בודדת — השמטת `Name` או אי-שליחתו מחדש אינם עוזרים, שכן יש לשלוח אותו בכל פעם. הפתרון היחיד עד שהתקלה תתוקן בצד השרת הוא שינוי שם דו-שלבי: עדכנו לשם אחר שאינו בשימוש זמנית, ואז עדכנו שוב חזרה לשם המקורי (זה עובד כי בדיקת הכפילות בודקת רק אילו ספקים מחזיקים כרגע בשם הזה).‬
 
 ### ‫שגיאות‬
 
+‫טוקן לא תקין/חסר מחזיר `null`.‬
+
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` (403) | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `UnauthorizedUser` (80) | ‫חשבון שפג תוקפו.‬ |
+| `UnauthorizedInventoryAttempt` (403) | ‫רכיב מלאי כבוי.‬ |
 | `InventorySupplierNameExists` (401) | ‫ספק אחר כבר נושא שם זה — או, בשל התקלה שתוארה למעלה, אותו ספק ששמר על שמו שלו.‬ |
 
-‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לצורת המעטפה המלאה בשתי השורות הראשונות.‬
+‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לפרטים נוספים.‬
 
 ---
 
@@ -191,7 +195,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Supplier` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Supplier` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -256,4 +260,4 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬

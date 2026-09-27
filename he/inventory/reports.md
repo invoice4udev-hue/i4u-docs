@@ -67,7 +67,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר מערך ריק (`{"d":[]}`) — הרשימה הפנימית של מתודה זו מאותחלת ל-`new List<ItemBalance>()` במקום ל-`null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -87,8 +87,8 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `filterType` | int | ‫כן‬ | תקופת זמן: `0` כל הזמנים, `1` החודש הזה, `2` החודש שעבר, `3` השבוע הזה. אין אפשרות רבעון/שנה. |
-| `type` | int | ‫כן‬ | מדד: `0` כמות שנמכרה, `1` ערך מכירות. |
+| `filterType` | int | ‫כן‬ | ‫תקופת זמן: `0` כל הזמנים, `1` החודש הזה, `2` החודש שעבר, `3` השבוע האחרון (`EInventoryReportFilterTypes.LastWeek`; בממשק ה-Angular הטאב לערך זה מתוייג במפתח התרגום `Item.PassingWeek`). אין אפשרות רבעון/שנה.‬ |
+| `type` | int | ‫כן‬ | ‫מדד: `0` כמות שנמכרה, `1` ערך מכירות.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -136,7 +136,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -198,7 +198,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין או פג תוקף, וגם רכיב מלאי כבוי, שניהם מחזירים `null` — לא אובייקט שגיאה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+‫טוקן לא תקין, חשבון שפג תוקפו, או רכיב מלאי כבוי, כולם מחזירים `null` — לא אובייקט שגיאה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -218,9 +218,9 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `itemId` | int? | ‫לא‬ | פריט המלאי לדווח עליו. השמיטו או שלחו `null` אם אין. |
-| `fromDate` | DateTime? | ‫לא‬ | תחילת חלון הדיווח. השמיטו או שלחו `null` אם אין. |
-| `toDate` | DateTime? | ‫לא‬ | סוף חלון הדיווח. השמיטו או שלחו `null` אם אין. |
+| `itemId` | int? | ‫לא‬ | ‫פריט המלאי לדווח עליו. השמיטו או שלחו `null` אם אין.‬ |
+| `fromDate` | DateTime? | ‫לא‬ | ‫תחילת חלון הדיווח. השמיטו או שלחו `null` אם אין.‬ |
+| `toDate` | DateTime? | ‫לא‬ | ‫סוף חלון הדיווח. השמיטו או שלחו `null` אם אין.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ‫`Item` נושא את `Id`, `Name`, `Code`, `Description`, `SellingPrice`, `PurchasePrice`, `SellingCurrency`, `PurchaseCurrency`, `QuantityToNotify` (הכמות הנוכחית במלאי), ו-`UnitType`. כל שורת `ItemsBalance` נושאת `Date`, `Qty`, `Entry`, `Exit` ו-`Op` (בלי מזהי פריט לכל שורה — כולן מתארות את `Item` היחיד שלמעלה).‬
@@ -259,14 +259,14 @@ Content-Type: application/json
     },
     "ItemsBalance": [
       {
-        "Date": "/Date(1788296400000+0300)/",
+        "Date": "/Date(1788210000000+0300)/",
         "Qty": 10,
         "Entry": 10,
         "Exit": 0,
         "Op": 10
       },
       {
-        "Date": "/Date(1789074000000+0300)/",
+        "Date": "/Date(1790801999000+0300)/",
         "Qty": 8,
         "Entry": 0,
         "Exit": 2,
@@ -283,7 +283,7 @@ Content-Type: application/json
 | ‫מה קורה‬ | ‫תשובה‬ |
 | --- | --- |
 | ‫טוקן לא תקין לגמרי (נכשל בפענוח)‬ | `{"d":null}` |
-| ‫טוקן פג תוקף‬ | ‫אובייקט `ItemsMovement` עם `Errors: [{"ID": 80, ...}]` (`UnauthorizedUser`), כאשר `Item` ו-`ItemsBalance` שניהם `null`‬ |
+| ‫חשבון שפג תוקפו‬ | ‫אובייקט `ItemsMovement` עם `Errors: [{"ID": 80, ...}]` (`UnauthorizedUser`), כאשר `Item` ו-`ItemsBalance` שניהם `null`‬ |
 | ‫רכיב מלאי כבוי‬ | ‫אותה צורה כמו למעלה עם `UnauthorizedInventoryAttempt` (403)‬ |
 
 ‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) להסבר מדוע מקרי הטוקן הלא-תקין והטוקן שפג תוקפו שונים זה מזה.‬
@@ -306,8 +306,8 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `fromDate` | DateTime? | ‫לא‬ | תחילת חלון הדיווח. השמיטו או שלחו `null` אם אין. |
-| `toDate` | DateTime? | ‫לא‬ | סוף חלון הדיווח. השמיטו או שלחו `null` אם אין. |
+| `fromDate` | DateTime? | ‫לא‬ | ‫תחילת חלון הדיווח. השמיטו או שלחו `null` אם אין.‬ |
+| `toDate` | DateTime? | ‫לא‬ | ‫סוף חלון הדיווח. השמיטו או שלחו `null` אם אין.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ‫כל שורת `ItemBalance` נושאת `InventoryId`, `ItemName`, `ItemCode`, `Price`, `TotalPrice`, `Qty`, `Entry`, `Exit` ו-`Op` — בניגוד לדוח העלות למעלה, דוח זה אינו ממלא את `Cost` או `UnitType`.‬
@@ -362,7 +362,7 @@ Content-Type: application/json
 | ‫מה קורה‬ | ‫תשובה‬ |
 | --- | --- |
 | ‫טוקן לא תקין לגמרי (נכשל בפענוח)‬ | `{"d":[]}` |
-| ‫טוקן פג תוקף‬ | ‫מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80)‬ |
+| ‫חשבון שפג תוקפו‬ | ‫מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80)‬ |
 | ‫רכיב מלאי כבוי‬ | ‫מערך בעל איבר אחד הנושא את `UnauthorizedInventoryAttempt` (403)‬ |
 
 ‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) להסבר מדוע מקרי הטוקן הלא-תקין והטוקן שפג תוקפו שונים זה מזה.‬
