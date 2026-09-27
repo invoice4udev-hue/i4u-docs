@@ -377,7 +377,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"billing@acme.test\",\r\n    \"name\": \"Acme Ltd\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "raw": "{\r\n    \"email\": \"billing@acme.example\",\r\n    \"name\": \"Acme Ltd\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -480,7 +480,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"number\": 500123,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "raw": "{\r\n    \"number\": 10045,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1799,7 +1799,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"apiIdentifier\": \"my-first-doc-001\",\r\n    \"docType\": 3,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"apiIdentifier\": \"order-10045-invoice\",\r\n    \"docType\": 1,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1980,7 +1980,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 1,\r\n        \"ClientID\": {{ClientID}},\r\n        \"Subject\": \"Draft invoice\",\r\n        \"TaxIncluded\": true,\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"Consulting hours\",\r\n                \"Quantity\": 1,\r\n                \"Price\": 100\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 1,\r\n        \"Subject\": \"Draft for order #10052\",\r\n        \"ClientID\": {{ClientID}},\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"Widget\",\r\n                \"Quantity\": 2,\r\n                \"Price\": 50\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2083,7 +2083,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"dr\": {\r\n        \"DocumentType\": 1,\r\n        \"From\": \"/Date(1767218400000+0200)/\",\r\n        \"To\": \"{{CurrentMsDate}}\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"dr\": {\r\n        \"DocumentType\": 1\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2981,7 +2981,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"newAkU\": \"{{$guid}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "raw": "{\r\n    \"newAkU\": \"0f9e8d7c-6b5a-4c3d-2e1f-a0b1c2d3e4f5\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3099,7 +3099,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"CAT-01\",\r\n        \"Name\": \"Cables\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Name\": \"Electronics\",\r\n        \"Description\": \"Electronic devices and components\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3133,7 +3133,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Id\": {{CategoryId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"CAT-01\",\r\n        \"Name\": \"Cables & adapters\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Id\": {{CategoryId}},\r\n        \"Name\": \"Electronics\",\r\n        \"Description\": \"Updated: Electronic devices\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3240,7 +3240,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"supplier\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Name\": \"Cable Co. Ltd\",\r\n        \"UniqueId\": \"514000000\",\r\n        \"PaymentTerms\": 30,\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactName\": \"Dana Levi\",\r\n        \"ContactEmail\": \"orders@cableco.test\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"supplier\": {\r\n        \"Name\": \"Global Electronics Inc\",\r\n        \"ContactEmail\": \"sales@globalelectronics.com\",\r\n        \"ContactPhone\": \"03-9876543\",\r\n        \"City\": \"Tel Aviv\",\r\n        \"Country\": \"Israel\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3274,7 +3274,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"supplier\": {\r\n        \"Id\": {{SupplierId}},\r\n        \"IsActive\": true,\r\n        \"Name\": \"Cable Co. Ltd\",\r\n        \"UniqueId\": \"514000000\",\r\n        \"PaymentTerms\": 45,\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactName\": \"Dana Levi\",\r\n        \"ContactEmail\": \"orders@cableco.test\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"supplier\": {\r\n        \"Id\": {{SupplierId}},\r\n        \"Name\": \"Global Electronics Inc\",\r\n        \"ContactEmail\": \"support@globalelectronics.com\",\r\n        \"ContactPhone\": \"03-9876544\",\r\n        \"City\": \"Ramat Gan\",\r\n        \"Country\": \"Israel\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3381,7 +3381,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"WH-1\",\r\n        \"Name\": \"Main warehouse\",\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": 0,\r\n        \"Name\": \"Central Warehouse\",\r\n        \"Street\": \"123 Industrial St\",\r\n        \"City\": \"Tel Aviv\",\r\n        \"ContactPhone\": \"03-1234567\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3415,7 +3415,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": {{WarehouseId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"WH-1\",\r\n        \"Name\": \"Main warehouse (north)\",\r\n        \"City\": \"Haifa\",\r\n        \"Street\": \"2 Example St\",\r\n        \"ContactPhone\": \"04-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": {{WarehouseId}},\r\n        \"Name\": \"Central Warehouse\",\r\n        \"Street\": \"456 Industrial St\",\r\n        \"City\": \"Tel Aviv\",\r\n        \"ContactPhone\": \"03-1234567\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3488,7 +3488,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Id\": 0,\r\n        \"Name\": \"Wholesale\",\r\n        \"Discount\": 10,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Name\": \"Wholesale Pricing\",\r\n        \"Discount\": 15,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3522,7 +3522,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Id\": {{PricelistId}},\r\n        \"Name\": \"Wholesale\",\r\n        \"Discount\": 12,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"customerID\": {{ClientID}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Id\": {{PricelistId}},\r\n        \"Name\": \"Wholesale Pricing\",\r\n        \"Discount\": 18,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"customerID\": {{ClientID}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3624,7 +3624,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"customerIds\": \"88231,88232\",\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"customerIds\": \"88231,88232,88233\",\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3658,7 +3658,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"customerIDs\": \"88231\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"customerIDs\": \"88231,88232\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3697,7 +3697,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"USB-C-1M\",\r\n        \"Name\": \"USB-C cable 1m\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 29.5,\r\n        \"PurchasePrice\": 12,\r\n        \"QuantityToNotify\": 5\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": 0,\r\n        \"Name\": \"Laptop Pro\",\r\n        \"Code\": \"LP-001\",\r\n        \"Description\": \"High-performance laptop\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 4500,\r\n        \"PurchasePrice\": 2800,\r\n        \"IsActive\": true,\r\n        \"SerialNumber\": 12345,\r\n        \"BatchNumber\": 1,\r\n        \"ItemInstances\": [\r\n            {\r\n                \"ItemStatusId\": 1,\r\n                \"WarehouseId\": {{WarehouseId}},\r\n                \"TotalQuantity\": 8\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3731,7 +3731,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": {{InventoryItemId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"USB-C-1M\",\r\n        \"Name\": \"USB-C cable 1m\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 32,\r\n        \"PurchasePrice\": 12,\r\n        \"QuantityToNotify\": 5\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": {{InventoryItemId}},\r\n        \"Name\": \"Laptop Pro\",\r\n        \"Code\": \"LP-001\",\r\n        \"Description\": \"High-performance laptop - Updated\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 4750,\r\n        \"PurchasePrice\": 2900,\r\n        \"IsActive\": true,\r\n        \"SerialNumber\": 12345,\r\n        \"BatchNumber\": 1,\r\n        \"ItemInstances\": [\r\n            {\r\n                \"Id\": 5001,\r\n                \"ItemStatusId\": 1,\r\n                \"WarehouseId\": {{WarehouseId}},\r\n                \"TotalQuantity\": 6\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3976,7 +3976,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"filterType\": 1,\r\n    \"type\": 0,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"filterType\": 2,\r\n    \"type\": 0,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -4050,7 +4050,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 10,\r\n        \"SupplierId\": {{SupplierId}},\r\n        \"AddToInventory\": true,\r\n        \"Subject\": \"Stock receipt\",\r\n        \"TaxIncluded\": false,\r\n        \"IssueDate\": \"{{CurrentMsDate}}\",\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"USB-C cable 1m\",\r\n                \"Quantity\": 50,\r\n                \"Price\": 12,\r\n                \"InventoryId\": {{InventoryItemId}},\r\n                \"WarehouseId\": {{WarehouseId}}\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 10,\r\n        \"DocumentNumber\": 0,\r\n        \"IssueDate\": \"/Date(1787518800000+0300)/\",\r\n        \"SupplierId\": {{SupplierId}},\r\n        \"AddToInventory\": true,\r\n        \"BranchID\": 101,\r\n        \"Currency\": \"ILS\",\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"Laptop Pro\",\r\n                \"Quantity\": 10,\r\n                \"Price\": 2800,\r\n                \"InventoryId\": {{InventoryItemId}},\r\n                \"WarehouseId\": {{WarehouseId}}\r\n            },\r\n            {\r\n                \"Name\": \"Wireless Mouse\",\r\n                \"Quantity\": 50,\r\n                \"Price\": 75,\r\n                \"InventoryId\": {{InventoryItemId}},\r\n                \"WarehouseId\": {{WarehouseId}}\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
