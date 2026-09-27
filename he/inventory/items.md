@@ -205,7 +205,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-‫טוקן לא תקין/חסר גורם לחריגה בלתי מטופלת כאן (בלוק ה-`catch` של מתודה זו אינו מאפס את המערך שלה לפני קריאת `.FirstOrDefault()` בסוף), כך שהתשובה היא WCF fault, לא גוף `{"d": …}` נקי. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).
+‫טוקן לא תקין/חסר גורם לחריגה בלתי מטופלת כאן (בלוק ה-`catch` של מתודה זו אינו מאפס את המערך שלה לפני קריאת `.FirstOrDefault()` בסוף), כך שהתשובה היא WCF fault, לא גוף `{"d": …}` נקי. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
