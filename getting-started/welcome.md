@@ -78,7 +78,7 @@ Date fields are sent and returned in the WCF JSON date format: milliseconds sinc
 "IssueDate": "/Date(1788210000000+0300)/"
 ```
 
-That value is 1 September 2026, 00:00 Israel time. JSON encoders may escape the slashes (`"\/Date(1788210000000+0300)\/"`) — both forms are accepted. ISO-8601 strings such as `"2026-09-01T00:00:00"` are **not** accepted in requests.
+That value is 1 September 2026, 00:00 Israel time. JSON encoders may escape the slashes (`"\/Date(1788210000000+0300)\/"`) — both forms are accepted. ISO-8601 strings such as `"2026-09-01T00:00:00"` are **not** accepted in requests. Exception: [`GetTaxRate`](../account/vat-rate-and-numbering.md)'s optional `date` is a plain `yyyy-MM-dd` string, not a WCF date.
 
 To build a value, take the Unix time in milliseconds (JavaScript `date.getTime()`, C# `DateTimeOffset.ToUnixTimeMilliseconds()`, PHP `$date->getTimestamp() * 1000`) and append the offset.
 

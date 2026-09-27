@@ -6,7 +6,7 @@ Practical notes that save integration time. Read this before going live.
 
 * **Everything is POST + JSON** (unless a page says otherwise). Parameters are wrapped by name in the body — `{ "doc": {...}, "token": "..." }` — not sent as bare objects.
 * Responses wrap the result in a single `d` property — e.g. `{ "d": { "Errors": [], … } }`. Endpoints that return a plain value give `{ "d": true }` or `{ "d": "24/12/2026" }`, and `{ "d": null }` means no object was returned (some endpoints return `null` for an invalid token). Objects also carry a `__type` hint you can ignore. See [Response envelope](welcome.md#response-envelope).
-* **Dates** use the WCF format `"/Date(1788210000000+0300)/"` (milliseconds since 1970-01-01 UTC plus the time-zone offset), in requests and responses. ISO strings such as `"2026-09-01T00:00:00"` are rejected. See [Dates](welcome.md#dates).
+* **Dates** use the WCF format `"/Date(1788210000000+0300)/"` (milliseconds since 1970-01-01 UTC plus the time-zone offset), in requests and responses. ISO strings such as `"2026-09-01T00:00:00"` are rejected. See [Dates](welcome.md#dates). Exception: [`GetTaxRate`](../account/vat-rate-and-numbering.md)'s optional `date` is a plain `yyyy-MM-dd` string, not a WCF date.
 * A few endpoints have `GET` variants (`...REST` suffixed) that take query-string parameters — useful for quick tests, not recommended for production (credentials in URLs).
 
 ### Errors
@@ -18,7 +18,7 @@ Practical notes that save integration time. Read this before going live.
 ### Tokens
 
 * Your **API key** (GUID) *is* the token — pass it as `token` in every call; there is no login step ([details](../authentication/is-authenticated.md)). Email+password login is deprecated — it still works during the migration period, but migrate to the API key.
-* Invalid key → `UnauthorizedUser` (80). Check the key in the Invoice4U web app.
+* Invalid key → most endpoints return `UnauthorizedUser` (80); some (e.g. `IsAuthenticated`, the Inventory endpoints) return `null`, an empty result, or an HTTP 500 fault instead — see [Authentication overview](../authentication/overview.md) and each endpoint's page. Check the key in the Invoice4U web app.
 
 ### Documents
 

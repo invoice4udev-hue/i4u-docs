@@ -16,7 +16,7 @@
 | ----- | ---- | -------- | ----------- |
 | `CustomerID` | int | ‫כן (בפועל)‬ | ‫הלקוח שעליו מדווחים.‬ |
 | `From` / `To` | datetime | ‫לא‬ | ‫טווח תאריכי הפקה.‬ |
-| `Status` | int | ‫לא‬ | ‫[סטטוס מסמך](document-types.md#document-statuses-statusid). מוחל רק כשהערך שונה מ-`0`.‬ |
+| `Status` | int | ‫לא‬ | ‫[סטטוס מסמך](document-types.md#statusid). מוחל רק כשהערך שונה מ-`0`.‬ |
 | `DocumentType` | int | ‫לא‬ | ‫סינון לפי [סוג מסמך](document-types.md) בודד. מוחל רק כשהערך גדול מ-`0`.‬ |
 
 ## ‫דוגמת בקשה‬

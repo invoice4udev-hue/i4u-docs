@@ -13,7 +13,7 @@ Documents are the core of the Invoice4U API: invoices, receipts, invoice-receipt
 | `SendDocumentByMail` | [Email a Document](send-document-by-email.md) |
 | `GetCustomerReport` | [Customer Report](customer-report.md) |
 | `CreateOrUpdateDraftDocument`, `GetDraftDocument`, `GetDraftDocuments`, `DeleteDraftDocument`, `DeleteDraftDocuments`, `CheckIfDraftExistsByDocumentType`, `GetPreviewDocumentByToken` | [Draft Documents](draft-documents.md) |
-| `UserIsraelInvoicesStatus`, `FetchAllocationNumber`, `UpdateAllocationNumber` | [Allocation Numbers (Israel Tax)](allocation-numbers.md) |
+| `UserIsraelInvoicesStatus`, `FetchAllocationNumber`, `UpdateAllocationNumber` | [Allocation Numbers (Israel Tax Authority)](allocation-numbers.md) |
 
 ### Reference pages
 

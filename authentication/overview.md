@@ -15,8 +15,8 @@ Email + password login (`VerifyLogin`) is **deprecated**. It still works during 
 ### Token behavior
 
 * The API key identifies your organization. Documents, customers and branches you access are always scoped to the authenticated organization.
-* Expired accounts return the `ExpiredAccount` (66) error on authenticated calls.
-* When a call is made with an invalid key, endpoints return the `UnauthorizedUser` (80) error inside the response object's `Errors` list.
+* `ExpiredAccount` (66) is returned as-is by some endpoints (e.g. document creation); many others replace it with `UnauthorizedUser` (80). See each endpoint's own Errors section for its exact behavior.
+* Most endpoints report an invalid key as `UnauthorizedUser` (80) inside the response object's `Errors` list; some — including [`IsAuthenticated`](is-authenticated.md) and the [Inventory endpoints](../inventory/overview.md#module-inactive-behavior) — return `null`, an empty result, or an HTTP 500 fault instead. Each endpoint page lists its exact behavior.
 
 {% hint style="warning" %}
 Treat the API key like a password. Send it only over HTTPS and never embed it in client-side (browser/mobile) code.

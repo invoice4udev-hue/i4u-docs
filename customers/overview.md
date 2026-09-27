@@ -8,7 +8,7 @@ Customers ("clients") are the entities you issue documents to. Every customer be
 | -------- | ---- |
 | `CreateCustomer` | [Create a Customer](create-customer.md) |
 | `UpdateCustomer` | [Update a Customer](update-customer.md) |
-| `GetCustomerById`, `GetCustomerByName`, `GetCustomerByEmail`, `GetCustomerByGuid`, `GetCustomerByClientCode`, `GetCustomerByExternalNumber`, `GetCustomersByOrgId`, `GetCustomers`, `GetFullCustomer` | [Retrieve Customers](get-customers.md) |
+| `GetCustomerById`, `GetCustomerByName`, `GetCustomerByEmail`, `GetCustomerByGuid`, `GetCustomerByGuidInnerSearch`, `GetCustomerByClientCode`, `GetByClientCode`, `GetCustomerByExternalNumber`, `GetCustomersByOrgId`, `GetCustomers`, `GetFullCustomer` | [Retrieve Customers](get-customers.md) |
 
 ### The Customer object
 

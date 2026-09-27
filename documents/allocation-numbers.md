@@ -1,6 +1,6 @@
 # Allocation Numbers (Israel Tax Authority)
 
-Israeli invoices above the legal threshold require an **allocation number** (מספר הקצאה) from the Israel Tax Authority. These endpoints fetch or set one for an existing document.
+Israeli invoices above the legal threshold require an **allocation number** (מספר הקצאה) from the Israel Tax Authority. These endpoints check your Israel Invoices connection, and fetch or set an allocation number for an existing document.
 
 ## Check the connection status — `UserIsraelInvoicesStatus`
 

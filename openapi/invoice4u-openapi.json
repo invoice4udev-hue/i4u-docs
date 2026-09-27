@@ -2035,7 +2035,7 @@
         ],
         "operationId": "GetTaxRate",
         "summary": "Get the VAT rate",
-        "description": "Returns the Israeli VAT rate for today, or for the given date.",
+        "description": "Returns the system-wide standard Israeli VAT rate for today, or for the given date — the same value for every organization, not each organization's own VAT setting.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2053,7 +2053,7 @@
                   "date": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Optional date as yyyy-MM-dd (e.g. 2024-12-31), parsed with DateTime.TryParse. Omit it to get the organization's current configured rate regardless of today's date. An unparseable value causes an HTTP 500 fault (uncaught ArgumentException)."
+                    "description": "Optional date as yyyy-MM-dd (e.g. 2024-12-31), parsed with DateTime.TryParse. Omit it to get the current system-wide standard rate (from the TaxRate app setting, same for every organization) regardless of today's date. An unparseable value causes an HTTP 500 fault (uncaught ArgumentException)."
                   }
                 }
               },
@@ -2066,7 +2066,7 @@
         },
         "responses": {
           "200": {
-            "description": "Tax. TaxRate is 17 for dates before 2025-01-01, otherwise the organization's current configured rate. Invalid token or expired account: TaxRate -1 with Errors [UnauthorizedUser (80)] (the ExpiredAccount (66) error from IsAuthenticated is not carried over).",
+            "description": "Tax. TaxRate is 17 for dates before 2025-01-01, otherwise the system-wide standard rate from the TaxRate app setting (same value for every organization, not the organization's own VAT setting). Invalid token or expired account: TaxRate -1 with Errors [UnauthorizedUser (80)] (the ExpiredAccount (66) error from IsAuthenticated is not carried over).",
             "content": {
               "application/json": {
                 "schema": {
@@ -4213,7 +4213,7 @@
               "TaxRate": {
                 "type": "number",
                 "format": "double",
-                "description": "VAT percentage (e.g. 18). 17 for dates before 2025-01-01, otherwise the organization's current configured rate. -1 when the token is invalid or the account has expired (the ExpiredAccount (66) error from IsAuthenticated is not carried over — only UnauthorizedUser (80) is set)."
+                "description": "VAT percentage (e.g. 18). 17 for dates before 2025-01-01, otherwise the system-wide standard rate from the TaxRate app setting (same value for every organization, not the organization's own VAT setting). -1 when the token is invalid or the account has expired (the ExpiredAccount (66) error from IsAuthenticated is not carried over — only UnauthorizedUser (80) is set)."
               }
             }
           }

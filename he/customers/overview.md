@@ -8,7 +8,7 @@
 | ----- | ---- |
 | `CreateCustomer` | ‫[יצירת לקוח](create-customer.md)‬ |
 | `UpdateCustomer` | ‫[עדכון לקוח](update-customer.md)‬ |
-| `GetCustomerById`, `GetCustomerByName`, `GetCustomerByEmail`, `GetCustomerByGuid`, `GetCustomerByClientCode`, `GetCustomerByExternalNumber`, `GetCustomersByOrgId`, `GetCustomers`, `GetFullCustomer` | ‫[שליפת לקוחות](get-customers.md)‬ |
+| `GetCustomerById`, `GetCustomerByName`, `GetCustomerByEmail`, `GetCustomerByGuid`, `GetCustomerByGuidInnerSearch`, `GetCustomerByClientCode`, `GetByClientCode`, `GetCustomerByExternalNumber`, `GetCustomersByOrgId`, `GetCustomers`, `GetFullCustomer` | ‫[שליפת לקוחות](get-customers.md)‬ |
 
 ### ‫אובייקט ה-Customer‬ {#the-customer-object}
 

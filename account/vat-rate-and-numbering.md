@@ -1,10 +1,10 @@
 # VAT Rate & Document Numbering
 
-Two read-only account settings: the VAT rate to apply on documents, and the organization's document numbering — the next starting number per document type, which types already have documents, the accounting ledger numbers used for bookkeeping exports, and the organization's bank details.
+The system-wide VAT rate, and the organization's document numbering — the next starting number per document type, which types already have documents, the accounting ledger numbers used for bookkeeping exports, and the organization's bank details.
 
 ## Get the VAT rate — `GetTaxRate`
 
-Returns the VAT rate to use for a given date, or the organization's current configured rate.
+Returns the VAT rate to use for a given date, or the **system-wide standard rate** — the same value for every organization, not your organization's own VAT setting.
 
 ### Endpoint
 
@@ -19,7 +19,7 @@ Returns the VAT rate to use for a given date, or the organization's current conf
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `token` | string | Yes | Authentication token. |
-| `date` | string | No | Date to price the VAT rate for, `yyyy-MM-dd`. Parsed with `DateTime.TryParse`. Omit it to get the organization's current configured rate regardless of today's date. |
+| `date` | string | No | Date to price the VAT rate for, `yyyy-MM-dd` — a plain date string, not a WCF date (see [Dates](../getting-started/welcome.md#dates)). Parsed with `DateTime.TryParse`. Omit it to get the current system-wide standard rate regardless of today's date. |
 
 ### Example request
 
@@ -49,7 +49,7 @@ Content-Type: application/json
 
 ### Notes
 
-* Before `2025-01-01` the rate is fixed at `17`; on or after that date it returns the organization's currently configured rate (`18` at the time of writing), read from the `TaxRate` app setting.
+* Before `2025-01-01` the rate is fixed at `17`; on or after that date it returns the **system-wide standard rate** (`18` at the time of writing), from the `TaxRate` app setting — the same value for every organization, not your organization's own VAT setting.
 * The `2025-01-01` cutoff and the `17` pre-2025 rate are hard-coded in `IsraelTaxService.GetTaxRate`; they do not read the `TaxRate2025Date` / `TaxRateTill2024` app settings that also exist on this server.
 * `token` is declared as the first parameter in the method signature, but as with every endpoint on this API, field order in the JSON body doesn't matter.
 

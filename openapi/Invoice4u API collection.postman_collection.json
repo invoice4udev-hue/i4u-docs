@@ -3039,7 +3039,7 @@
                 "GetTaxRate"
               ]
             },
-            "description": "VAT rate for a date (yyyy-MM-dd) — 17 before 2025-01-01, otherwise the current rate. Omit `date` for today."
+            "description": "VAT rate for a date (yyyy-MM-dd) — 17 before 2025-01-01, otherwise the system-wide standard rate (same for every organization, not the organization's own VAT setting). Omit `date` for the current rate."
           },
           "response": []
         },

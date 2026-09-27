@@ -14,7 +14,7 @@
 
 | ‫שדה‬                                             | ‫טיפוס‬       | ‫חובה‬ | ‫תיאור‬                                                            |
 | ------------------------------------------------- | ------------- | ------ | ------------------------------------------------------------------ |
-| `DocumentType`                                    | int           | ‫כן    | ‫סינון לפי [סוג מסמך](document-types.md) בודד.‬                    |
+| `DocumentType`                                    | int           | ‫כן‬    | ‫סינון לפי [סוג מסמך](document-types.md) בודד.‬                    |
 | `From` / `To`                                     | datetime      | ‫לא‬   | ‫טווח תאריכי הפקה.‬                                                |
 | `FromActualCreationDate` / `ToActualCreationDate` | datetime      | ‫לא‬   | ‫טווח תאריכי יצירה בפועל.‬                                         |
 | `FromPaymentDueDate` / `ToPaymentDueDate`         | datetime      | ‫לא‬   | ‫טווח תאריכי פירעון.‬                                              |
