@@ -41,7 +41,24 @@
 
 ‫שליפת מסמך לפי מפתח האידמפוטנטיות שלכם — מסלול השחזור המומלץ אחרי יצירה שנקטעה ב-timeout. וריאציית GET‏: `/GetDocumentByApiIdentifierREST`.‬
 
-‫בדיקת קיום בלבד: `IsDocumentExistsByApiIdentifier` ← `{ "apiIdentifier": "...", "token": "..." }` ← boolean.‬
+### ‫בדיקת קיום בלבד — `IsDocumentExistsByApiIdentifier`‬
+
+| | |
+| - | - |
+| ‫**מתודה**‬ | `GET` |
+| ‫**נתיב**‬ | `/IsDocumentExistsByApiIdentifier` |
+| ‫**תשובה**‬ | `bool` |
+
+```http
+GET /Services/ApiService.svc/IsDocumentExistsByApiIdentifier?apiIdentifier=my-first-doc-001&token=<token> HTTP/1.1
+Host: apiqa.invoice4u.co.il
+```
+
+```json
+{ "d": true }
+```
+
+‫בדיקת קיום קלה יותר כשלא צריך את המסמך המלא — אותו `apiIdentifier` כמו למעלה, אך כפרמטרים ב-query string במקום גוף JSON. מחזיר `false` גם כשאין מסמך עם המזהה הזה וגם כשהטוקן לא תקין או פג תוקף — בדקו את הטוקן קודם עם [`IsAuthenticated`](../authentication/is-authenticated.md) אם צריך להבחין בין שני המקרים.‬
 
 ## ‫דוגמת תשובה‬
 
@@ -77,4 +94,7 @@
 {% endopenapi-operation %}
 
 {% openapi-operation spec="invoice4u-api" path="/GetDocumentByApiIdentifier" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/IsDocumentExistsByApiIdentifier" method="get" %}
 {% endopenapi-operation %}

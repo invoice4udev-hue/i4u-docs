@@ -33,6 +33,8 @@
 * [חשבוניות זיכוי (מלא וחלקי)](documents/credit-invoices.md)
 * [שליפת מסמך בודד](documents/get-document.md)
 * [חיפוש מסמכים](documents/search-documents.md)
+* [שליחת מסמך במייל](documents/send-document-by-email.md)
+* [דוח לקוח](documents/customer-report.md)
 * [טיוטות מסמכים](documents/draft-documents.md)
 * [מספרי הקצאה (רשות המסים)](documents/allocation-numbers.md)
 

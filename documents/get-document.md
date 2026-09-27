@@ -41,7 +41,24 @@ Document numbers are sequential **per type**, so the type is required. GET varia
 
 Fetch a document by your idempotency key — the recommended recovery path after a timed-out create. GET variant: `/GetDocumentByApiIdentifierREST`.
 
-Existence check only: `IsDocumentExistsByApiIdentifier` → `{ "apiIdentifier": "...", "token": "..." }` → boolean.
+### Only check that it exists — `IsDocumentExistsByApiIdentifier`
+
+| | |
+| - | - |
+| **Method** | `GET` |
+| **Path** | `/IsDocumentExistsByApiIdentifier` |
+| **Response** | `bool` |
+
+```http
+GET /Services/ApiService.svc/IsDocumentExistsByApiIdentifier?apiIdentifier=my-first-doc-001&token=<token> HTTP/1.1
+Host: apiqa.invoice4u.co.il
+```
+
+```json
+{ "d": true }
+```
+
+A lighter existence check when you don't need the full document — same `apiIdentifier` as above, but sent as query-string parameters instead of a JSON body. Returns `false` both when no document with that identifier exists **and** when the token is invalid or expired — verify the token first with [`IsAuthenticated`](../authentication/is-authenticated.md) if you need to tell the two apart.
 
 ## Example response
 
@@ -85,5 +102,8 @@ Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document cr
 {% endopenapi-operation %}
 
 {% openapi-operation spec="invoice4u-api" path="/GetDocumentByApiIdentifier" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/IsDocumentExistsByApiIdentifier" method="get" %}
 {% endopenapi-operation %}
 

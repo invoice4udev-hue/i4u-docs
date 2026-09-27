@@ -34,6 +34,8 @@
 * [Credit Invoices (Full & Partial)](documents/credit-invoices.md)
 * [Get a Single Document](documents/get-document.md)
 * [Search Documents](documents/search-documents.md)
+* [Email a Document](documents/send-document-by-email.md)
+* [Customer Report](documents/customer-report.md)
 * [Draft Documents](documents/draft-documents.md)
 * [Allocation Numbers (Israel Tax Authority)](documents/allocation-numbers.md)
 

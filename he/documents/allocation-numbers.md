@@ -2,6 +2,30 @@
 
 ‫חשבוניות ישראליות מעל הסף החוקי דורשות **מספר הקצאה** מרשות המסים. המתודות האלה שולפות או קובעות מספר הקצאה למסמך קיים.‬
 
+## ‫בדיקת סטטוס החיבור — `UserIsraelInvoicesStatus`‬
+
+‫מאמת אם הארגון מחובר לשירות חשבוניות ישראל, לפני ניסיון שליפה.‬
+
+| | |
+| - | - |
+| ‫**מתודה**‬ | `POST` |
+| ‫**נתיב**‬ | `/UserIsraelInvoicesStatus` |
+| ‫**תשובה**‬ | ‫`Organization` — רק `ID`, ‏`IsraelInvoicesConnected` ו-`IsraelInvoicesTokenRegisterDate` משמעותיים; כל שדה אחר של `Organization` חוזר בערך ברירת המחדל שלו.‬ |
+
+```json
+{ "token": "<token>" }
+```
+
+```json
+{
+  "d": {
+    "ID": 12345,
+    "IsraelInvoicesConnected": true,
+    "IsraelInvoicesTokenRegisterDate": "/Date(1767218400000+0200)/"
+  }
+}
+```
+
 ## ‫שליפה מרשות המסים — `FetchAllocationNumber`‬
 
 ‫מבקש מספר הקצאה עבור מסמך שעדיין אין לו.‬
@@ -47,6 +71,9 @@
 | `AllocationNumberDeclined` (156) / `AllocationNumberDeclinedWaitDecision` (157) | ‫רשות המסים דחתה את הבקשה / ממתין להחלטה.‬ |
 
 ## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/UserIsraelInvoicesStatus" method="post" %}
+{% endopenapi-operation %}
 
 {% openapi-operation spec="invoice4u-api" path="/FetchAllocationNumber" method="post" %}
 {% endopenapi-operation %}

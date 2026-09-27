@@ -2,6 +2,30 @@
 
 Israeli invoices above the legal threshold require an **allocation number** (מספר הקצאה) from the Israel Tax Authority. These endpoints fetch or set one for an existing document.
 
+## Check the connection status — `UserIsraelInvoicesStatus`
+
+Confirms whether the organization is connected to the Israel Invoices service before attempting a fetch.
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/UserIsraelInvoicesStatus` |
+| **Response** | `Organization` — only `ID`, `IsraelInvoicesConnected` and `IsraelInvoicesTokenRegisterDate` are meaningful; every other `Organization` field comes back at its default value. |
+
+```json
+{ "token": "<token>" }
+```
+
+```json
+{
+  "d": {
+    "ID": 12345,
+    "IsraelInvoicesConnected": true,
+    "IsraelInvoicesTokenRegisterDate": "/Date(1767218400000+0200)/"
+  }
+}
+```
+
 ## Fetch from the ITA — `FetchAllocationNumber`
 
 Requests an allocation number for a document that doesn't have one yet.
@@ -59,6 +83,9 @@ The number must be at least **9 characters** — otherwise `AllocationNumberInva
 | `AllocationNumberDeclined` (156) / `AllocationNumberDeclinedWaitDecision` (157) | ITA declined the request / pending decision. |
 
 ## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/UserIsraelInvoicesStatus" method="post" %}
+{% endopenapi-operation %}
 
 {% openapi-operation spec="invoice4u-api" path="/FetchAllocationNumber" method="post" %}
 {% endopenapi-operation %}
