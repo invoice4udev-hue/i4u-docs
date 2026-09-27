@@ -295,6 +295,245 @@
             "description": "Shortcut variant of `GetCustomers` that searches by `Name` only. Use this when integrating a 'customer auto-complete' style picker on your side - send the user's typed text as `Name` and display the matches."
           },
           "response": []
+        },
+        {
+          "name": "Get Customer by ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"custId\": {{ClientID}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerById",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerById"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by Name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Acme Ltd\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerByName",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerByName"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"billing@acme.test\",\r\n    \"name\": \"Acme Ltd\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerByEmail",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerByEmail"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by Client Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientCode\": 1045,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerByClientCode",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerByClientCode"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by Client Code (alias)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"clientCode\": 1045,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetByClientCode",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetByClientCode"
+              ]
+            },
+            "description": "Alias of GetCustomerByClientCode — same lookup and response."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by External Number",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"number\": 500123,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerByExternalNumber",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerByExternalNumber"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by GUID (inner search)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"guid\": \"b1e2c3d4-0000-4a5b-8c9d-001122334455\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerByGuidInnerSearch",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetCustomerByGuidInnerSearch"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1476,29 +1715,11 @@
             },
             {
               "name": "Get Document by API Identifier (REST)",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"apiIdentifier\": \"WC_CLR_8477\",\r\n    \"docType\": 3,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
+                "header": [],
                 "url": {
-                  "raw": "{{baseURL}}/Services/ApiService.svc/GetDocumentByApiIdentifierREST",
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetDocumentByApiIdentifierREST?apiIdentifier=WC_CLR_8477&docType=3&token={{Invoice4u_ApiKey}}",
                   "host": [
                     "{{baseURL}}"
                   ],
@@ -1506,6 +1727,20 @@
                     "Services",
                     "ApiService.svc",
                     "GetDocumentByApiIdentifierREST"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiIdentifier",
+                      "value": "WC_CLR_8477"
+                    },
+                    {
+                      "key": "docType",
+                      "value": "3"
+                    },
+                    {
+                      "key": "token",
+                      "value": "{{Invoice4u_ApiKey}}"
+                    }
                   ]
                 },
                 "description": "Idempotency lookup: returns the document originally created with the supplied `ApiIdentifier` (e.g. `{{$guid}}`)."
@@ -1550,6 +1785,106 @@
                 "description": "Renders the document PDF and returns it as a byte array. Note this hits the **PrintService**, not `ApiService`."
               },
               "response": []
+            },
+            {
+              "name": "Get Document by API Identifier",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"apiIdentifier\": \"my-first-doc-001\",\r\n    \"docType\": 3,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetDocumentByApiIdentifier",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetDocumentByApiIdentifier"
+                  ]
+                },
+                "description": "Returns the document created with this ApiIdentifier and document type."
+              },
+              "response": []
+            },
+            {
+              "name": "Document Exists by API Identifier (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/IsDocumentExistsByApiIdentifier?apiIdentifier=my-first-doc-001&token={{Invoice4u_ApiKey}}",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "IsDocumentExistsByApiIdentifier"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiIdentifier",
+                      "value": "my-first-doc-001"
+                    },
+                    {
+                      "key": "token",
+                      "value": "{{Invoice4u_ApiKey}}"
+                    }
+                  ]
+                },
+                "description": "GET with query-string parameters. `d` is true/false. Also false for an invalid token."
+              },
+              "response": []
+            },
+            {
+              "name": "Customer Report",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"dr\": {\r\n        \"From\": \"/Date(1767218400000+0200)/\",\r\n        \"To\": \"{{CurrentMsDate}}\",\r\n        \"CustomerID\": {{ClientID}},\r\n        \"Status\": 0\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetCustomerReport",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetCustomerReport"
+                  ]
+                },
+                "description": "Documents of one customer in a date range. Only From, To, CustomerID, Status and DocumentType are used."
+              },
+              "response": []
             }
           ]
         },
@@ -1570,7 +1905,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"doc\": {\r\n        \"ID\": \"REPLACE-WITH-DOC-GUID\",\r\n        \"AssociatedEmails\": [\r\n            { \"Mail\": \"client@acme.test\", \"IsUserMail\": false }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"ID\": \"{{DocumentId}}\",\r\n        \"AssociatedEmails\": [\r\n            { \"Mail\": \"client@acme.test\", \"IsUserMail\": false }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1624,6 +1959,361 @@
                   ]
                 },
                 "description": "Updates the workflow status of one or more documents. `StatusID` values correspond to the `EDocumentStatus` enum on the server."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "📝 Drafts",
+          "item": [
+            {
+              "name": "Create or Update Draft",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 1,\r\n        \"ClientID\": {{ClientID}},\r\n        \"Subject\": \"Draft invoice\",\r\n        \"TaxIncluded\": true,\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"Consulting hours\",\r\n                \"Quantity\": 1,\r\n                \"Price\": 100\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateOrUpdateDraftDocument",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateOrUpdateDraftDocument"
+                  ]
+                },
+                "description": "Creates a draft (or updates it when doc.ID is an existing draft). Save the returned ID into DraftDocId."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Draft",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docId\": \"{{DraftDocId}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetDraftDocument",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetDraftDocument"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Check Draft Exists for Type",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docType\": 1,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CheckIfDraftExistsByDocumentType",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CheckIfDraftExistsByDocumentType"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Drafts",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"dr\": {\r\n        \"DocumentType\": 1,\r\n        \"From\": \"/Date(1767218400000+0200)/\",\r\n        \"To\": \"{{CurrentMsDate}}\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetDraftDocuments",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetDraftDocuments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Preview Document",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetPreviewDocumentByToken",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetPreviewDocumentByToken"
+                  ]
+                },
+                "description": "See the Draft Documents page for how the preview works."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Draft",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docId\": \"{{DraftDocId}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/DeleteDraftDocument",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "DeleteDraftDocument"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Drafts (bulk)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docIds\": [\r\n        \"{{DraftDocId}}\"\r\n    ],\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/DeleteDraftDocuments",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "DeleteDraftDocuments"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "🏛️ Allocation Numbers (Israel Tax)",
+          "item": [
+            {
+              "name": "Israel Invoices Connection Status",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UserIsraelInvoicesStatus",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UserIsraelInvoicesStatus"
+                  ]
+                },
+                "description": "Only ID, IsraelInvoicesConnected and IsraelInvoicesTokenRegisterDate are meaningful; other Organization fields come back with default values."
+              },
+              "response": []
+            },
+            {
+              "name": "Fetch Allocation Number",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docId\": \"{{DocumentId}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/FetchAllocationNumber",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "FetchAllocationNumber"
+                  ]
+                },
+                "description": "⚠️ On an account connected to Israel Invoices this requests a REAL allocation number from the Tax Authority. Do not run it against a production/connected account for testing."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Allocation Number",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"docId\": \"{{DocumentId}}\",\r\n    \"allocationNumber\": \"123456789\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateAllocationNumber",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateAllocationNumber"
+                  ]
+                },
+                "description": "Sets an allocation number obtained outside Invoice4U on the document."
               },
               "response": []
             }
@@ -2206,6 +2896,36 @@
             "description": "Searches clearing logs by combination of `PaymentId`, amount range and success flag. All fields are optional."
           },
           "response": []
+        },
+        {
+          "name": "Record External Charge in Clearing Log (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/ProcessApiRequestClearingLogInsertREST_V2?clearingLog={\"ClientName\":\"Acme Ltd\",\"Amount\":117,\"PaymentNumber\":1,\"Currency\":1,\"CreditNumber\":\"4580\",\"IsSuccess\":true,\"ClearingConfirmationNumber\":\"0123456\"}&token={{Invoice4u_ApiKey}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "ProcessApiRequestClearingLogInsertREST_V2"
+              ],
+              "query": [
+                {
+                  "key": "clearingLog",
+                  "value": "{\"ClientName\":\"Acme Ltd\",\"Amount\":117,\"PaymentNumber\":1,\"Currency\":1,\"CreditNumber\":\"4580\",\"IsSuccess\":true,\"ClearingConfirmationNumber\":\"0123456\"}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Invoice4u_ApiKey}}"
+                }
+              ]
+            },
+            "description": "GET with query-string parameters; clearingLog is a JSON ClearingLog object (Postman URL-encodes it)."
+          },
+          "response": []
         }
       ]
     },
@@ -2247,6 +2967,1112 @@
             "description": "Provisions a new Invoice4u organisation. Both `token` and `uniqueToken` are partner-issued and must be supplied by Invoice4u – do **not** use this endpoint without coordinating with the Invoice4u team."
           },
           "response": []
+        },
+        {
+          "name": "Set New API Key (partners)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"newAkU\": \"{{$guid}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/UpdateAKU",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "UpdateAKU"
+              ]
+            },
+            "description": "Partner-only. ⚠️ Replaces the organization's API key immediately — the key in Invoice4u_ApiKey stops working. Template only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧮 Account & Reference Data",
+      "item": [
+        {
+          "name": "Get VAT Rate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\",\r\n    \"date\": \"2024-12-31\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetTaxRate",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetTaxRate"
+              ]
+            },
+            "description": "VAT rate for a date (yyyy-MM-dd) — 17 before 2025-01-01, otherwise the current rate. Omit `date` for today."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document Numbering",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/DocumentsNumberingGet",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "DocumentsNumberingGet"
+              ]
+            },
+            "description": "Starting number per document type, *Created flags (type already has documents), and accounting ledger numbers."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 Inventory",
+      "item": [
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"CAT-01\",\r\n        \"Name\": \"Cables\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateInventoryCategory",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateInventoryCategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"itemCategory\": {\r\n        \"Id\": {{CategoryId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"CAT-01\",\r\n        \"Name\": \"Cables & adapters\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateInventoryCategory",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateInventoryCategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": {{CategoryId}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryCategoryById",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryCategoryById"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Categories",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryCategories",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryCategories"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Suppliers",
+          "item": [
+            {
+              "name": "Create Supplier",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"supplier\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Name\": \"Cable Co. Ltd\",\r\n        \"UniqueId\": \"514000000\",\r\n        \"PaymentTerms\": 30,\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactName\": \"Dana Levi\",\r\n        \"ContactEmail\": \"orders@cableco.test\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateSupplier",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateSupplier"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Supplier",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"supplier\": {\r\n        \"Id\": {{SupplierId}},\r\n        \"IsActive\": true,\r\n        \"Name\": \"Cable Co. Ltd\",\r\n        \"UniqueId\": \"514000000\",\r\n        \"PaymentTerms\": 45,\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactName\": \"Dana Levi\",\r\n        \"ContactEmail\": \"orders@cableco.test\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateSupplier",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateSupplier"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Supplier",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": {{SupplierId}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetSupplier",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetSupplier"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Suppliers",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetSuppliers",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetSuppliers"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Warehouses",
+          "item": [
+            {
+              "name": "Create Warehouse",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"WH-1\",\r\n        \"Name\": \"Main warehouse\",\r\n        \"City\": \"Tel Aviv\",\r\n        \"Street\": \"1 Example St\",\r\n        \"ContactPhone\": \"03-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateWarehouse",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateWarehouse"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Warehouse",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"warehouse\": {\r\n        \"Id\": {{WarehouseId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"WH-1\",\r\n        \"Name\": \"Main warehouse (north)\",\r\n        \"City\": \"Haifa\",\r\n        \"Street\": \"2 Example St\",\r\n        \"ContactPhone\": \"04-5555555\"\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateWarehouse",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateWarehouse"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Warehouses",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetWarehouses",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetWarehouses"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Price Lists",
+          "item": [
+            {
+              "name": "Create Price List",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Id\": 0,\r\n        \"Name\": \"Wholesale\",\r\n        \"Discount\": 10,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/AddInventoryPricelist",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "AddInventoryPricelist"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Price List",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"pricelist\": {\r\n        \"Id\": {{PricelistId}},\r\n        \"Name\": \"Wholesale\",\r\n        \"Discount\": 12,\r\n        \"DiscountType\": 0,\r\n        \"LinkedCustomers\": \"88231\",\r\n        \"IsActive\": true\r\n    },\r\n    \"customerID\": {{ClientID}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateInventoryPricelist",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateInventoryPricelist"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Price Lists",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryPricelists",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryPricelists"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Price Lists of a Customer",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"customerId\": {{ClientID}},\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryPricelistByCustomerId",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryPricelistByCustomerId"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Price Lists of Several Customers",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"customerIds\": \"88231,88232\",\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryPricelistByCustomerIds",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryPricelistByCustomerIds"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Unlink Customers from Price Lists",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"customerIDs\": \"88231\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/RemoveCustomerFromInventoryPricelist",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "RemoveCustomerFromInventoryPricelist"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Items",
+          "item": [
+            {
+              "name": "Create Item",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": 0,\r\n        \"IsActive\": true,\r\n        \"Code\": \"USB-C-1M\",\r\n        \"Name\": \"USB-C cable 1m\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 29.5,\r\n        \"PurchasePrice\": 12,\r\n        \"QuantityToNotify\": 5\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateInventoryItem",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateInventoryItem"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Item",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"item\": {\r\n        \"Id\": {{InventoryItemId}},\r\n        \"IsActive\": true,\r\n        \"Code\": \"USB-C-1M\",\r\n        \"Name\": \"USB-C cable 1m\",\r\n        \"ItemCategoryId\": {{CategoryId}},\r\n        \"UnitType\": 0,\r\n        \"SellingPrice\": 32,\r\n        \"PurchasePrice\": 12,\r\n        \"QuantityToNotify\": 5\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/UpdateInventoryItem",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "UpdateInventoryItem"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Item",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": {{InventoryItemId}},\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryItem",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryItem"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Items (filtered)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"isActive\": true,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryItems",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryItems"
+                  ]
+                },
+                "description": "All filters are optional; omitted filters are ignored. Date filters use the /Date(ms+zone)/ format."
+              },
+              "response": []
+            },
+            {
+              "name": "List Active Items",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetActiveInventoryItems",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetActiveInventoryItems"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Reports",
+          "item": [
+            {
+              "name": "Stock Movements (per item)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"itemId\": {{InventoryItemId}},\r\n    \"fromDate\": \"/Date(1788210000000+0300)/\",\r\n    \"toDate\": \"{{CurrentMsDate}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetItemsMovementReport",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetItemsMovementReport"
+                  ]
+                },
+                "description": "Omit itemId for all items."
+              },
+              "response": []
+            },
+            {
+              "name": "Stock Movement Totals",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fromDate\": \"/Date(1788210000000+0300)/\",\r\n    \"toDate\": \"{{CurrentMsDate}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetTotalMovementReport",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetTotalMovementReport"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Inventory Cost Report",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"date\": \"{{CurrentMsDate}}\",\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetInventoryCostReport",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetInventoryCostReport"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Top Sold Items",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"filterType\": 1,\r\n    \"type\": 0,\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetTopSoldItems",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetTopSoldItems"
+                  ]
+                },
+                "description": "filterType: 0 all, 1 this month, 2 last month, 3 this week. type: 0 quantity, 1 sales value."
+              },
+              "response": []
+            },
+            {
+              "name": "Highest-Value Items",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/GetHighestByValue",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "GetHighestByValue"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Receive to Stock",
+          "item": [
+            {
+              "name": "Receive to Stock (supplier invoice)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"DocumentType\": 10,\r\n        \"SupplierId\": {{SupplierId}},\r\n        \"AddToInventory\": true,\r\n        \"Subject\": \"Stock receipt\",\r\n        \"TaxIncluded\": false,\r\n        \"IssueDate\": \"{{CurrentMsDate}}\",\r\n        \"Items\": [\r\n            {\r\n                \"Name\": \"USB-C cable 1m\",\r\n                \"Quantity\": 50,\r\n                \"Price\": 12,\r\n                \"InventoryId\": {{InventoryItemId}},\r\n                \"WarehouseId\": {{WarehouseId}}\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/ReceiveToStock",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "ReceiveToStock"
+                  ]
+                },
+                "description": "DocumentType 10 = SupplierInvoiceToInventory (stock receipt). Items link to inventory via InventoryId; WarehouseId is optional."
+              },
+              "response": []
+            }
+          ]
         }
       ]
     }
@@ -2305,6 +4131,48 @@
       "value": "",
       "type": "default",
       "description": "Auto-populated by the collection pre-request script with /Date(ms+0200)/ formatted current time."
+    },
+    {
+      "key": "DocumentId",
+      "value": "",
+      "type": "default",
+      "description": "GUID (ID) of an existing document, e.g. from a CreateDocument response."
+    },
+    {
+      "key": "DraftDocId",
+      "value": "",
+      "type": "default",
+      "description": "GUID of an existing draft (from CreateOrUpdateDraftDocument)."
+    },
+    {
+      "key": "CategoryId",
+      "value": "",
+      "type": "default",
+      "description": "ID of an inventory item category."
+    },
+    {
+      "key": "SupplierId",
+      "value": "",
+      "type": "default",
+      "description": "ID of an inventory supplier."
+    },
+    {
+      "key": "WarehouseId",
+      "value": "",
+      "type": "default",
+      "description": "ID of an inventory warehouse."
+    },
+    {
+      "key": "InventoryItemId",
+      "value": "",
+      "type": "default",
+      "description": "ID of an inventory item."
+    },
+    {
+      "key": "PricelistId",
+      "value": "",
+      "type": "default",
+      "description": "ID of a price list."
     }
   ]
 }
