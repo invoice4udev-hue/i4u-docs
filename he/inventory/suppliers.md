@@ -18,7 +18,7 @@
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `supplier` | Supplier | ‫כן‬ | ‫הספק ליצירה. חייב לכלול `Name` (ייחודי לכל ארגון).‬ |
+| `supplier` | Supplier | ‫כן‬ | ‫הספק ליצירה. חייב לכלול `Name` (ייחודי לכל ארגון). `IsActive` הוא שדה חובה (לא-nullable) בפרוטוקול — אם משמיטים אותו, WCF מפענח אותו כ-`false` והספק נוצר **לא פעיל** בלי אזהרה.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -31,10 +31,11 @@ Content-Type: application/json
 {
   "supplier": {
     "Name": "Global Electronics Inc",
-    "Email": "sales@globalelectronics.com",
-    "Phone": "03-9876543",
+    "ContactEmail": "sales@globalelectronics.com",
+    "ContactPhone": "03-9876543",
     "City": "Tel Aviv",
-    "Country": "Israel"
+    "Country": "Israel",
+    "IsActive": true
   },
   "token": "<token>"
 }
@@ -47,10 +48,11 @@ Content-Type: application/json
   "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
-    "Email": "sales@globalelectronics.com",
-    "Phone": "03-9876543",
+    "ContactEmail": "sales@globalelectronics.com",
+    "ContactPhone": "03-9876543",
     "City": "Tel Aviv",
     "Country": "Israel",
+    "IsActive": true,
     "Errors": []
   }
 }
@@ -61,8 +63,10 @@ Content-Type: application/json
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
-| `InventorySupplierNameExists` | ‫כבר קיים ספק בשם זה.‬ |
+| `UnauthorizedInventoryAttempt` (403) | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `InventorySupplierNameExists` (401) | ‫קיים כבר ספק אחר עם שם זהה בארגון.‬ |
+
+‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לצורת המעטפה המלאה בשתי השורות הראשונות למעלה.‬
 
 ---
 
@@ -96,8 +100,8 @@ Content-Type: application/json
   "supplier": {
     "Id": 12,
     "Name": "Global Electronics Inc",
-    "Email": "support@globalelectronics.com",
-    "Phone": "03-9876544",
+    "ContactEmail": "support@globalelectronics.com",
+    "ContactPhone": "03-9876544",
     "City": "Ramat Gan",
     "Country": "Israel"
   },
@@ -112,8 +116,8 @@ Content-Type: application/json
   "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
-    "Email": "support@globalelectronics.com",
-    "Phone": "03-9876544",
+    "ContactEmail": "support@globalelectronics.com",
+    "ContactPhone": "03-9876544",
     "City": "Ramat Gan",
     "Country": "Israel",
     "Errors": []
@@ -121,13 +125,19 @@ Content-Type: application/json
 }
 ```
 
+### ‫התנהגות ידועה: עדכון עם אותו שם נכשל‬
+
+‫בדיקת הכפילות בשם עבור `UpdateSupplier` מחפשת כל ספק עם אותו `Name` בארגון, אך אינה מוציאה מהבדיקה את הספק המתעדכן עצמו. לכן עדכון ששומר על ה-`Name` הקיים ללא שינוי עלול להחזיר `InventorySupplierNameExists` (401) גם כאשר אף ספק *אחר* לא נושא את השם הזה. פתרון עקיפה: שלחו שם זמני שונה תחילה, או הימנעו משליחת `Name` שלא השתנה, עד שהתקלה תתוקן בצד השרת.‬
+
 ### ‫שגיאות‬
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
 | `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
-| `InventorySupplierNameExists` | ‫כבר קיים ספק אחר בשם זה.‬ |
+| `UnauthorizedInventoryAttempt` (403) | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `InventorySupplierNameExists` (401) | ‫ספק אחר כבר נושא שם זה — או, בשל התקלה שתוארה למעלה, אותו ספק ששמר על שמו שלו.‬ |
+
+‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) לצורת המעטפה המלאה בשתי השורות הראשונות.‬
 
 ---
 
@@ -170,8 +180,8 @@ Content-Type: application/json
   "d": {
     "Id": 12,
     "Name": "Global Electronics Inc",
-    "Email": "support@globalelectronics.com",
-    "Phone": "03-9876544",
+    "ContactEmail": "support@globalelectronics.com",
+    "ContactPhone": "03-9876544",
     "City": "Ramat Gan",
     "Country": "Israel",
     "Errors": []
@@ -181,10 +191,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Supplier` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -228,8 +235,8 @@ Content-Type: application/json
     {
       "Id": 12,
       "Name": "Global Electronics Inc",
-      "Email": "support@globalelectronics.com",
-      "Phone": "03-9876544",
+      "ContactEmail": "support@globalelectronics.com",
+      "ContactPhone": "03-9876544",
       "City": "Ramat Gan",
       "Country": "Israel",
       "Errors": []
@@ -237,8 +244,8 @@ Content-Type: application/json
     {
       "Id": 13,
       "Name": "Local Parts Ltd",
-      "Email": "info@localparts.co.il",
-      "Phone": "02-5555555",
+      "ContactEmail": "info@localparts.co.il",
+      "ContactPhone": "02-5555555",
       "City": "Jerusalem",
       "Country": "Israel",
       "Errors": []
@@ -249,7 +256,4 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬

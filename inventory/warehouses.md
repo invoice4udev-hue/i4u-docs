@@ -18,7 +18,7 @@ Creates a new warehouse in the authenticated organization.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `warehouse` | Warehouse | Yes | The warehouse to create. For new warehouse, set `Id` to `0`. |
+| `warehouse` | Warehouse | Yes | The warehouse to create. For new warehouse, set `Id` to `0`. `IsActive` is a required (non-nullable) field on the wire — if you omit it, WCF deserializes it as `false` and the warehouse is created **inactive** with no warning. |
 | `token` | string | Yes | Authentication token. |
 
 ### Example request
@@ -32,9 +32,10 @@ Content-Type: application/json
   "warehouse": {
     "Id": 0,
     "Name": "Central Warehouse",
-    "Address": "123 Industrial St",
+    "Street": "123 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567"
+    "ContactPhone": "03-1234567",
+    "IsActive": true
   },
   "token": "<token>"
 }
@@ -47,9 +48,10 @@ Content-Type: application/json
   "d": {
     "Id": 101,
     "Name": "Central Warehouse",
-    "Address": "123 Industrial St",
+    "Street": "123 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567",
+    "ContactPhone": "03-1234567",
+    "IsActive": true,
     "Errors": []
   }
 }
@@ -57,10 +59,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -94,9 +93,9 @@ Content-Type: application/json
   "warehouse": {
     "Id": 101,
     "Name": "Central Warehouse",
-    "Address": "456 Industrial St",
+    "Street": "456 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567"
+    "ContactPhone": "03-1234567"
   },
   "token": "<token>"
 }
@@ -115,10 +114,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a `Warehouse` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -162,17 +158,17 @@ Content-Type: application/json
     {
       "Id": 101,
       "Name": "Central Warehouse",
-      "Address": "123 Industrial St",
+      "Street": "123 Industrial St",
       "City": "Tel Aviv",
-      "Phone": "03-1234567",
+      "ContactPhone": "03-1234567",
       "Errors": []
     },
     {
       "Id": 102,
       "Name": "North Storage",
-      "Address": "789 Logistics Ave",
+      "Street": "789 Logistics Ave",
       "City": "Haifa",
-      "Phone": "04-9876543",
+      "ContactPhone": "04-9876543",
       "Errors": []
     }
   ]
@@ -181,7 +177,4 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).

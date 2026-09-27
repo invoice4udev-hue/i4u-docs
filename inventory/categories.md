@@ -54,10 +54,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -114,10 +111,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -169,10 +163,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module does **not** return an error object here — the response is `null` (see [module-inactive behavior](overview.md#module-inactive-behavior)). There are no other documented error cases for this endpoint.
 
 ---
 
@@ -233,7 +224,4 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).

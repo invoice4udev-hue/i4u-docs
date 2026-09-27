@@ -18,7 +18,7 @@ Creates a new price list in the authenticated organization.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | Yes | The price list to create. Typically includes `Name` and pricing rules. |
+| `pricelist` | Pricelist | Yes | The price list to create. Fields: `Name`, `Discount`, `DiscountType` (`0` = percent, `1` = fixed amount), `LinkedCustomers` (comma-separated customer IDs), `IsActive` — a required (non-nullable) field on the wire, so omitting it deserializes as `false` and the price list is created **inactive** with no warning. `OrganizationID` is ignored if sent — the server always overwrites it with the authenticated organization. |
 | `token` | string | Yes | Authentication token. |
 
 ### Example request
@@ -31,7 +31,9 @@ Content-Type: application/json
 {
   "pricelist": {
     "Name": "Wholesale Pricing",
-    "Description": "Bulk discount pricing tier",
+    "Discount": 15,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true
   },
   "token": "<token>"
@@ -44,8 +46,11 @@ Content-Type: application/json
 {
   "d": {
     "Id": 25,
+    "OrganizationID": 4001,
     "Name": "Wholesale Pricing",
-    "Description": "Bulk discount pricing tier",
+    "Discount": 15,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true,
     "Errors": []
   }
@@ -54,10 +59,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -77,7 +79,7 @@ Updates an existing price list.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | Yes | The price list to update. Must include `Id`. |
+| `pricelist` | Pricelist | Yes | The price list to update. Must include `Id`. Same fields as create: `Name`, `Discount`, `DiscountType`, `LinkedCustomers`, `IsActive`. `OrganizationID` is ignored if sent. |
 | `customerID` | int? | No | Optional customer ID to associate with this price list. |
 | `token` | string | Yes | Authentication token. |
 
@@ -92,7 +94,9 @@ Content-Type: application/json
   "pricelist": {
     "Id": 25,
     "Name": "Wholesale Pricing",
-    "Description": "Updated bulk discount tier",
+    "Discount": 18,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true
   },
   "customerID": 88231,
@@ -106,8 +110,11 @@ Content-Type: application/json
 {
   "d": {
     "Id": 25,
+    "OrganizationID": 4001,
     "Name": "Wholesale Pricing",
-    "Description": "Updated bulk discount tier",
+    "Discount": 18,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true,
     "Errors": []
   }
@@ -116,10 +123,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a `Pricelist` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -162,15 +166,21 @@ Content-Type: application/json
   "d": [
     {
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231",
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 26,
+      "OrganizationID": 4001,
       "Name": "Retail Pricing",
-      "Description": "Standard retail prices",
+      "Discount": 5,
+      "DiscountType": 1,
+      "LinkedCustomers": "",
       "IsActive": true,
       "Errors": []
     }
@@ -180,10 +190,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -228,8 +235,11 @@ Content-Type: application/json
   "d": [
     {
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231",
       "IsActive": true,
       "Errors": []
     }
@@ -239,10 +249,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -288,16 +295,22 @@ Content-Type: application/json
     {
       "CustomerId": 88231,
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231,88232",
       "IsActive": true,
       "Errors": []
     },
     {
       "CustomerId": 88232,
-      "Id": 26,
-      "Name": "Retail Pricing",
-      "Description": "Standard retail prices",
+      "Id": 25,
+      "OrganizationID": 4001,
+      "Name": "Wholesale Pricing",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231,88232",
       "IsActive": true,
       "Errors": []
     }
@@ -307,10 +320,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -356,8 +366,4 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
-| `false` | Operation failed on server error. |
+This endpoint never returns an error object — it returns the plain boolean `false` on an invalid/expired token, an inactive Inventory module, or any server error. There is no way to distinguish those cases from the response alone; see [module-inactive behavior](overview.md#module-inactive-behavior).

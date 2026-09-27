@@ -40,19 +40,25 @@ Content-Type: application/json
 {
   "d": [
     {
-      "ItemId": 1001,
+      "InventoryId": 1001,
       "ItemName": "Laptop Pro",
-      "Quantity": 15,
+      "ItemCode": "LP-001",
+      "UnitType": 0,
       "Cost": 2800.00,
-      "TotalValue": 42000.00,
+      "Price": 4500.00,
+      "TotalPrice": 42000.00,
+      "Qty": 15,
       "Errors": []
     },
     {
-      "ItemId": 1002,
+      "InventoryId": 1002,
       "ItemName": "Wireless Mouse",
-      "Quantity": 50,
+      "ItemCode": "WM-001",
+      "UnitType": 0,
       "Cost": 75.00,
-      "TotalValue": 3750.00,
+      "Price": 150.00,
+      "TotalPrice": 3750.00,
+      "Qty": 50,
       "Errors": []
     }
   ]
@@ -61,16 +67,13 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
 ## Get Top Sold Items
 
-Retrieves the top-selling items based on sales volume or value.
+Retrieves the top-selling items based on sales quantity or sales value, for a fixed time window.
 
 ### Endpoint
 
@@ -84,8 +87,8 @@ Retrieves the top-selling items based on sales volume or value.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `filterType` | int | Yes | Filter type: `1` = by quantity, `2` = by value. |
-| `type` | int | Yes | Time period: `1` = last week, `2` = last month, `3` = last quarter, `4` = last year. |
+| `filterType` | int | Yes | Time period: `0` all time, `1` this month, `2` last month, `3` this week. There is no quarter/year option. |
+| `type` | int | Yes | Metric: `0` quantity sold, `1` sales value. |
 | `token` | string | Yes | Authentication token. |
 
 ### Example request
@@ -96,8 +99,8 @@ Host: apiqa.invoice4u.co.il
 Content-Type: application/json
 
 {
-  "filterType": 1,
-  "type": 2,
+  "filterType": 2,
+  "type": 0,
   "token": "<token>"
 }
 ```
@@ -108,39 +111,32 @@ Content-Type: application/json
 {
   "d": [
     {
-      "Id": 1001,
-      "Name": "Laptop Pro",
-      "SKU": "LP-001",
-      "QuantitySold": 120,
-      "SalesValue": 540000.00,
+      "Id": 1002,
+      "Name": "Wireless Mouse",
+      "QuantityToNotify": 450,
       "Errors": []
     },
     {
-      "Id": 1002,
-      "Name": "Wireless Mouse",
-      "SKU": "WM-001",
-      "QuantitySold": 450,
-      "SalesValue": 67500.00,
+      "Id": 1001,
+      "Name": "Laptop Pro",
+      "QuantityToNotify": 120,
       "Errors": []
     },
     {
       "Id": 1003,
       "Name": "USB-C Cable",
-      "SKU": "USB-C-001",
-      "QuantitySold": 300,
-      "SalesValue": 9000.00,
+      "QuantityToNotify": 300,
       "Errors": []
     }
   ]
 }
 ```
 
+`QuantityToNotify` doubles as the report's metric column: it holds the quantity sold when `type: 0`, and the sales value when `type: 1`. No other item fields (`Code`, prices, …) are populated on this response.
+
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -180,31 +176,182 @@ Content-Type: application/json
 {
   "d": [
     {
+      "Name": "Laptop Pro",
+      "QuantityToNotify": 42000.00,
+      "Errors": []
+    },
+    {
+      "Name": "Server Unit",
+      "QuantityToNotify": 40000.00,
+      "Errors": []
+    },
+    {
+      "Name": "Wireless Mouse",
+      "QuantityToNotify": 3750.00,
+      "Errors": []
+    }
+  ]
+}
+```
+
+Only `Name` and `QuantityToNotify` (the total inventory value) are populated — there is no `Id`, `Code`, `Quantity`, `Cost`, or `TotalValue` field on this response.
+
+### Errors
+
+An invalid or expired token, or an inactive Inventory module, both return `null` — not an error object — see [module-inactive behavior](overview.md#module-inactive-behavior).
+
+---
+
+## Get Items Movement Report
+
+Returns the movement history (receipts, sales, and adjustments) for one item, or across the organization if no item is specified.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/GetItemsMovementReport` |
+| **Response** | `ItemsMovement` object — `{ Item, ItemsBalance[] }` |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `itemId` | int? | No | The inventory item to report on. Omit or send `null` for none. |
+| `fromDate` | DateTime? | No | Start of the reporting window. Omit or send `null` for none. |
+| `toDate` | DateTime? | No | End of the reporting window. Omit or send `null` for none. |
+| `token` | string | Yes | Authentication token. |
+
+`Item` carries `Id`, `Name`, `Code`, `Description`, `SellingPrice`, `PurchasePrice`, `SellingCurrency`, `PurchaseCurrency`, `QuantityToNotify` (current quantity on hand), and `UnitType`. Each `ItemsBalance` row carries `Date`, `Qty`, `Entry`, `Exit`, and `Op` (no per-row item identifiers — they all describe the single `Item` above).
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/GetItemsMovementReport HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "itemId": 1001,
+  "fromDate": "/Date(1788210000000+0300)/",
+  "toDate": "/Date(1790801999000+0300)/",
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "d": {
+    "Item": {
       "Id": 1001,
       "Name": "Laptop Pro",
-      "SKU": "LP-001",
-      "Quantity": 15,
-      "Cost": 2800.00,
-      "TotalValue": 42000.00,
-      "Errors": []
+      "Code": "LP-001",
+      "Description": "High-performance laptop",
+      "SellingPrice": 4500.00,
+      "PurchasePrice": 2800.00,
+      "SellingCurrency": "ILS",
+      "PurchaseCurrency": "ILS",
+      "QuantityToNotify": 8,
+      "UnitType": 0
+    },
+    "ItemsBalance": [
+      {
+        "Date": "/Date(1788296400000+0300)/",
+        "Qty": 10,
+        "Entry": 10,
+        "Exit": 0,
+        "Op": 10
+      },
+      {
+        "Date": "/Date(1789074000000+0300)/",
+        "Qty": 8,
+        "Entry": 0,
+        "Exit": 2,
+        "Op": 8
+      }
+    ],
+    "Errors": []
+  }
+}
+```
+
+### Errors
+
+| What happens | Response |
+| --- | --- |
+| Fully invalid token (fails to decrypt) | `{"d":null}` |
+| Expired token | `ItemsMovement` object with `Errors: [{"ID": 80, ...}]` (`UnauthorizedUser`), `Item` and `ItemsBalance` both `null` |
+| Inactive Inventory module | Same shape as above with `UnauthorizedInventoryAttempt` (403) |
+
+See [module-inactive behavior](overview.md#module-inactive-behavior) for why the invalid-token and expired-token cases differ.
+
+---
+
+## Get Total Movement Report
+
+Returns aggregated movement totals for every item in the organization, without needing to query one item at a time.
+
+### Endpoint
+
+| | |
+| - | - |
+| **Method** | `POST` |
+| **Path** | `/GetTotalMovementReport` |
+| **Response** | `ItemBalance[]` |
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `fromDate` | DateTime? | No | Start of the reporting window. Omit or send `null` for none. |
+| `toDate` | DateTime? | No | End of the reporting window. Omit or send `null` for none. |
+| `token` | string | Yes | Authentication token. |
+
+Each `ItemBalance` row carries `InventoryId`, `ItemName`, `ItemCode`, `Price`, `TotalPrice`, `Qty`, `Entry`, `Exit`, and `Op` — unlike the cost report above, this report does not populate `Cost` or `UnitType`.
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/GetTotalMovementReport HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "fromDate": "/Date(1788210000000+0300)/",
+  "toDate": "/Date(1790801999000+0300)/",
+  "token": "<token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "d": [
+    {
+      "InventoryId": 1001,
+      "ItemName": "Laptop Pro",
+      "ItemCode": "LP-001",
+      "Price": 4500.00,
+      "TotalPrice": 36000.00,
+      "Qty": 8,
+      "Entry": 10,
+      "Exit": 2,
+      "Op": 8
     },
     {
-      "Id": 1050,
-      "Name": "Server Unit",
-      "SKU": "SRV-001",
-      "Quantity": 5,
-      "Cost": 8000.00,
-      "TotalValue": 40000.00,
-      "Errors": []
-    },
-    {
-      "Id": 1002,
-      "Name": "Wireless Mouse",
-      "SKU": "WM-001",
-      "Quantity": 50,
-      "Cost": 75.00,
-      "TotalValue": 3750.00,
-      "Errors": []
+      "InventoryId": 1002,
+      "ItemName": "Wireless Mouse",
+      "ItemCode": "WM-001",
+      "Price": 150.00,
+      "TotalPrice": 7200.00,
+      "Qty": 48,
+      "Entry": 50,
+      "Exit": 2,
+      "Op": 48
     }
   ]
 }
@@ -212,7 +359,10 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+| What happens | Response |
+| --- | --- |
+| Fully invalid token (fails to decrypt) | `{"d":[]}` |
+| Expired token | One-element array carrying `UnauthorizedUser` (80) |
+| Inactive Inventory module | One-element array carrying `UnauthorizedInventoryAttempt` (403) |
+
+See [module-inactive behavior](overview.md#module-inactive-behavior) for why the invalid-token and expired-token cases differ.

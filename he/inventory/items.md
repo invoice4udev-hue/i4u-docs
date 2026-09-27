@@ -49,18 +49,20 @@ Content-Type: application/json
     {
       "Id": 1001,
       "Name": "Laptop Pro",
-      "CategoryId": 5,
-      "SKU": "LP-001",
-      "Price": 4500.00,
+      "Code": "LP-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 4500.00,
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 1002,
       "Name": "Wireless Mouse",
-      "CategoryId": 5,
-      "SKU": "WM-001",
-      "Price": 150.00,
+      "Code": "WM-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 150.00,
       "IsActive": true,
       "Errors": []
     }
@@ -70,10 +72,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -115,18 +114,20 @@ Content-Type: application/json
     {
       "Id": 1001,
       "Name": "Laptop Pro",
-      "CategoryId": 5,
-      "SKU": "LP-001",
-      "Price": 4500.00,
+      "Code": "LP-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 4500.00,
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 1002,
       "Name": "Wireless Mouse",
-      "CategoryId": 5,
-      "SKU": "WM-001",
-      "Price": 150.00,
+      "Code": "WM-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 150.00,
       "IsActive": true,
       "Errors": []
     }
@@ -136,10 +137,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -182,17 +180,22 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "ManufacturerId": 3,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ],
     "Errors": []
@@ -202,10 +205,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -225,8 +225,12 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | ‫כן‬ | ‫הפריט ליצירה. הגדירו את `Id` ל-`0`. כללו `Name`, `CategoryId`, `Price`. אופציונלי: מערך `ItemInstances`.‬ |
+| `item` | Item | ‫כן‬ | הפריט ליצירה. `Id` **חייב להיות `0`** — ה-API יוצר רק כאשר `Id` הוא `0`; אם `Id > 0` הקריאה מחזירה `null` בלי ליצור או לעדכן דבר (ראו שגיאות למטה). שדות: `Name`, `Code`, `ItemCategoryId`, `UnitType` (ראו למטה), `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber` (שניהם ברמת הפריט, לא לכל מופע), `IsActive`, `IsNonStockItem`. אופציונלי: מערך `ItemInstances`. |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
+
+‫ערכי `UnitType`: `0` יחידות, `1` ק"ג, `2` גרם, `3` ליטר, `4` מ"ל.‬
+
+‫כל רשומה במערך `ItemInstances` משתמשת ב-`ItemStatusId` (`1` תקין במלאי וזמין למכירה, `2` לא במלאי, `3` נמכר), `ManufacturerId`, `WarehouseId` ו-`TotalQuantity` — לא `SerialNumber`/`BatchNumber`, שנמצאים על הפריט עצמו.‬
 
 ### ‫דוגמת בקשה‬
 
@@ -239,16 +243,20 @@ Content-Type: application/json
   "item": {
     "Id": 0,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ]
   },
@@ -263,17 +271,21 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ],
     "Errors": []
@@ -283,10 +295,14 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `InventorySerialNumberItemExistsForUser` (402) | ‫פריט אחר כבר משתמש ב-`SerialNumber` הזה עבור הארגון.‬ |
+| `InventoryCodeItemExistsForUser` (404) | ‫פריט אחר כבר משתמש ב-`Code` הזה עבור הארגון.‬ |
+
+‫אם `item.Id` גדול מ-`0`, הבקשה מתעלמת בשקט והתשובה היא `null` (בלי אובייקט שגיאה) — לא נוצר פריט חדש.‬
 
 ---
 
@@ -306,7 +322,7 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | ‫כן‬ | ‫הפריט לעדכון. חייב לכלול `Id` > 0.‬ |
+| `item` | Item | ‫כן‬ | הפריט לעדכון. חייב לכלול `Id` > 0 — אם `Id` הוא `0` או חסר, התשובה היא `null` (אין עדכון, בלי אובייקט שגיאה). אותם שדות כמו ביצירה: `Name`, `Code`, `ItemCategoryId`, `UnitType`, `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber`, `IsActive`. |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -320,17 +336,21 @@ Content-Type: application/json
   "item": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop - Updated",
-    "Price": 4750.00,
-    "Cost": 2900.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4750.00,
+    "PurchasePrice": 2900.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 6
       }
     ]
   },
@@ -345,17 +365,21 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop - Updated",
-    "Price": 4750.00,
-    "Cost": 2900.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4750.00,
+    "PurchasePrice": 2900.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 6
       }
     ],
     "Errors": []
@@ -365,7 +389,9 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Item` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+| `InventorySerialNumberItemExistsForUser` (402) | ‫פריט אחר כבר משתמש ב-`SerialNumber` הזה עבור הארגון.‬ |
+| `InventoryCodeItemExistsForUser` (404) | ‫פריט אחר כבר משתמש ב-`Code` הזה עבור הארגון.‬ |

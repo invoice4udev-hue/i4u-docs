@@ -18,7 +18,7 @@
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | ‫כן‬ | ‫המחירון ליצירה. בדרך כלל כולל `Name` וכללי תמחור.‬ |
+| `pricelist` | Pricelist | ‫כן‬ | ‫המחירון ליצירה. שדות: `Name`, `Discount`, `DiscountType` (`0` = אחוז, `1` = סכום קבוע), `LinkedCustomers` (מזהי לקוחות מופרדים בפסיקים), `IsActive` — שדה חובה (לא-nullable) בפרוטוקול, כך שהשמטתו מפוענחת כ-`false` והמחירון נוצר **לא פעיל** בלי אזהרה. `OrganizationID` מתעלמים ממנו אם נשלח — השרת תמיד דורס אותו בערך הארגון המאומת.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -31,7 +31,9 @@ Content-Type: application/json
 {
   "pricelist": {
     "Name": "Wholesale Pricing",
-    "Description": "Bulk discount pricing tier",
+    "Discount": 15,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true
   },
   "token": "<token>"
@@ -44,8 +46,11 @@ Content-Type: application/json
 {
   "d": {
     "Id": 25,
+    "OrganizationID": 4001,
     "Name": "Wholesale Pricing",
-    "Description": "Bulk discount pricing tier",
+    "Discount": 15,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true,
     "Errors": []
   }
@@ -54,10 +59,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -77,7 +79,7 @@ Content-Type: application/json
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `pricelist` | Pricelist | ‫כן‬ | ‫המחירון לעדכון. חייב לכלול `Id`.‬ |
+| `pricelist` | Pricelist | ‫כן‬ | המחירון לעדכון. חייב לכלול `Id`. אותם שדות כמו ביצירה: `Name`, `Discount`, `DiscountType`, `LinkedCustomers`, `IsActive`. `OrganizationID` מתעלמים ממנו אם נשלח. |
 | `customerID` | int? | ‫לא‬ | ‫מזהה לקוח אופציונלי לשיוך למחירון זה.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
@@ -92,7 +94,9 @@ Content-Type: application/json
   "pricelist": {
     "Id": 25,
     "Name": "Wholesale Pricing",
-    "Description": "Updated bulk discount tier",
+    "Discount": 18,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true
   },
   "customerID": 88231,
@@ -106,8 +110,11 @@ Content-Type: application/json
 {
   "d": {
     "Id": 25,
+    "OrganizationID": 4001,
     "Name": "Wholesale Pricing",
-    "Description": "Updated bulk discount tier",
+    "Discount": 18,
+    "DiscountType": 0,
+    "LinkedCustomers": "88231",
     "IsActive": true,
     "Errors": []
   }
@@ -116,10 +123,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Pricelist` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -162,15 +166,21 @@ Content-Type: application/json
   "d": [
     {
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231",
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 26,
+      "OrganizationID": 4001,
       "Name": "Retail Pricing",
-      "Description": "Standard retail prices",
+      "Discount": 5,
+      "DiscountType": 1,
+      "LinkedCustomers": "",
       "IsActive": true,
       "Errors": []
     }
@@ -180,10 +190,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -228,8 +235,11 @@ Content-Type: application/json
   "d": [
     {
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231",
       "IsActive": true,
       "Errors": []
     }
@@ -239,10 +249,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -288,16 +295,22 @@ Content-Type: application/json
     {
       "CustomerId": 88231,
       "Id": 25,
+      "OrganizationID": 4001,
       "Name": "Wholesale Pricing",
-      "Description": "Bulk discount pricing tier",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231,88232",
       "IsActive": true,
       "Errors": []
     },
     {
       "CustomerId": 88232,
-      "Id": 26,
-      "Name": "Retail Pricing",
-      "Description": "Standard retail prices",
+      "Id": 25,
+      "OrganizationID": 4001,
+      "Name": "Wholesale Pricing",
+      "Discount": 18,
+      "DiscountType": 0,
+      "LinkedCustomers": "88231,88232",
       "IsActive": true,
       "Errors": []
     }
@@ -307,10 +320,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -356,8 +366,4 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
-| `false` | ‫הפעולה נכשלה בשגיאת שרת.‬ |
+‫מתודה זו אף פעם לא מחזירה אובייקט שגיאה — היא מחזירה את הבוליאני `false` הפשוט עבור טוקן לא תקין/פג תוקף, רכיב מלאי כבוי, או כל שגיאת שרת. אין דרך להבחין בין המקרים הללו מתוך התשובה בלבד; ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬

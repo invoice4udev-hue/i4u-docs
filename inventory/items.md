@@ -49,18 +49,20 @@ Content-Type: application/json
     {
       "Id": 1001,
       "Name": "Laptop Pro",
-      "CategoryId": 5,
-      "SKU": "LP-001",
-      "Price": 4500.00,
+      "Code": "LP-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 4500.00,
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 1002,
       "Name": "Wireless Mouse",
-      "CategoryId": 5,
-      "SKU": "WM-001",
-      "Price": 150.00,
+      "Code": "WM-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 150.00,
       "IsActive": true,
       "Errors": []
     }
@@ -70,10 +72,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -115,18 +114,20 @@ Content-Type: application/json
     {
       "Id": 1001,
       "Name": "Laptop Pro",
-      "CategoryId": 5,
-      "SKU": "LP-001",
-      "Price": 4500.00,
+      "Code": "LP-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 4500.00,
       "IsActive": true,
       "Errors": []
     },
     {
       "Id": 1002,
       "Name": "Wireless Mouse",
-      "CategoryId": 5,
-      "SKU": "WM-001",
-      "Price": 150.00,
+      "Code": "WM-001",
+      "ItemCategoryId": 5,
+      "UnitType": 0,
+      "SellingPrice": 150.00,
       "IsActive": true,
       "Errors": []
     }
@@ -136,10 +137,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -182,17 +180,22 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "ManufacturerId": 3,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ],
     "Errors": []
@@ -202,10 +205,7 @@ Content-Type: application/json
 
 ### Errors
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+An invalid/expired token or an inactive Inventory module returns an `Item` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
 
 ---
 
@@ -225,8 +225,12 @@ Creates a new inventory item with optional item instances (variants/serial numbe
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | Yes | The item to create. Set `Id` to `0`. Include `Name`, `CategoryId`, `Price`. Optional: `ItemInstances` array. |
+| `item` | Item | Yes | The item to create. `Id` **must be `0`** — the API only creates when `Id` is `0`; if `Id > 0` the call returns `null` without creating or updating anything (see Errors below). Fields: `Name`, `Code`, `ItemCategoryId`, `UnitType` (see below), `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber` (both item-level, not per-instance), `IsActive`, `IsNonStockItem`. Optional: `ItemInstances` array. |
 | `token` | string | Yes | Authentication token. |
+
+`UnitType` values: `0` Units, `1` Kg, `2` Gr, `3` Liter, `4` Ml.
+
+Each entry in `ItemInstances` uses `ItemStatusId` (`1` valid in stock and for sale, `2` not in stock, `3` sold), `ManufacturerId`, `WarehouseId`, and `TotalQuantity` — not `SerialNumber`/`BatchNumber`, which belong on the item itself.
 
 ### Example request
 
@@ -239,16 +243,20 @@ Content-Type: application/json
   "item": {
     "Id": 0,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ]
   },
@@ -263,17 +271,21 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop",
-    "Price": 4500.00,
-    "Cost": 2800.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4500.00,
+    "PurchasePrice": 2800.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 8
       }
     ],
     "Errors": []
@@ -283,10 +295,14 @@ Content-Type: application/json
 
 ### Errors
 
+An invalid/expired token or an inactive Inventory module returns an `Item` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+| `InventorySerialNumberItemExistsForUser` (402) | Another item already uses this `SerialNumber` for the organization. |
+| `InventoryCodeItemExistsForUser` (404) | Another item already uses this `Code` for the organization. |
+
+If `item.Id` is greater than `0`, the request is silently ignored and the response is `null` (no error object) — no new item is created.
 
 ---
 
@@ -306,7 +322,7 @@ Updates an existing inventory item and/or its item instances.
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `item` | Item | Yes | The item to update. Must include `Id` > 0. |
+| `item` | Item | Yes | The item to update. Must include `Id` > 0 — if `Id` is `0` or missing, the response is `null` (no update happens, no error object). Same fields as create: `Name`, `Code`, `ItemCategoryId`, `UnitType`, `SellingPrice`, `PurchasePrice`, `SerialNumber`, `BatchNumber`, `IsActive`. |
 | `token` | string | Yes | Authentication token. |
 
 ### Example request
@@ -320,17 +336,21 @@ Content-Type: application/json
   "item": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop - Updated",
-    "Price": 4750.00,
-    "Cost": 2900.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4750.00,
+    "PurchasePrice": 2900.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 6
       }
     ]
   },
@@ -345,17 +365,21 @@ Content-Type: application/json
   "d": {
     "Id": 1001,
     "Name": "Laptop Pro",
-    "CategoryId": 5,
-    "SKU": "LP-001",
+    "Code": "LP-001",
     "Description": "High-performance laptop - Updated",
-    "Price": 4750.00,
-    "Cost": 2900.00,
+    "ItemCategoryId": 5,
+    "UnitType": 0,
+    "SellingPrice": 4750.00,
+    "PurchasePrice": 2900.00,
     "IsActive": true,
+    "SerialNumber": 12345,
+    "BatchNumber": 1,
     "ItemInstances": [
       {
         "Id": 5001,
-        "SerialNumber": "SN12345",
-        "BatchNumber": "BN001"
+        "ItemStatusId": 1,
+        "WarehouseId": 101,
+        "TotalQuantity": 6
       }
     ],
     "Errors": []
@@ -365,7 +389,9 @@ Content-Type: application/json
 
 ### Errors
 
+An invalid/expired token or an inactive Inventory module returns an `Item` object carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid or missing token. |
-| `UnauthorizedInventoryAttempt` | User lacks inventory module permissions. |
+| `InventorySerialNumberItemExistsForUser` (402) | Another item already uses this `SerialNumber` for the organization. |
+| `InventoryCodeItemExistsForUser` (404) | Another item already uses this `Code` for the organization. |

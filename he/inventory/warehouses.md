@@ -18,7 +18,7 @@
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | ----- | ---- | -------- | ----------- |
-| `warehouse` | Warehouse | ‫כן‬ | ‫המחסן ליצירה. עבור מחסן חדש, הגדירו את `Id` ל-`0`.‬ |
+| `warehouse` | Warehouse | ‫כן‬ | ‫המחסן ליצירה. עבור מחסן חדש, הגדירו את `Id` ל-`0`. `IsActive` הוא שדה חובה (לא-nullable) בפרוטוקול — אם משמיטים אותו, WCF מפענח אותו כ-`false` והמחסן נוצר **לא פעיל** בלי אזהרה.‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
 
 ### ‫דוגמת בקשה‬
@@ -32,9 +32,10 @@ Content-Type: application/json
   "warehouse": {
     "Id": 0,
     "Name": "Central Warehouse",
-    "Address": "123 Industrial St",
+    "Street": "123 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567"
+    "ContactPhone": "03-1234567",
+    "IsActive": true
   },
   "token": "<token>"
 }
@@ -47,9 +48,10 @@ Content-Type: application/json
   "d": {
     "Id": 101,
     "Name": "Central Warehouse",
-    "Address": "123 Industrial St",
+    "Street": "123 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567",
+    "ContactPhone": "03-1234567",
+    "IsActive": true,
     "Errors": []
   }
 }
@@ -57,10 +59,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Warehouse` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -94,9 +93,9 @@ Content-Type: application/json
   "warehouse": {
     "Id": 101,
     "Name": "Central Warehouse",
-    "Address": "456 Industrial St",
+    "Street": "456 Industrial St",
     "City": "Tel Aviv",
-    "Phone": "03-1234567"
+    "ContactPhone": "03-1234567"
   },
   "token": "<token>"
 }
@@ -115,10 +114,7 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים אובייקט `Warehouse` הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
 
 ---
 
@@ -162,17 +158,17 @@ Content-Type: application/json
     {
       "Id": 101,
       "Name": "Central Warehouse",
-      "Address": "123 Industrial St",
+      "Street": "123 Industrial St",
       "City": "Tel Aviv",
-      "Phone": "03-1234567",
+      "ContactPhone": "03-1234567",
       "Errors": []
     },
     {
       "Id": 102,
       "Name": "North Storage",
-      "Address": "789 Logistics Ave",
+      "Street": "789 Logistics Ave",
       "City": "Haifa",
-      "Phone": "04-9876543",
+      "ContactPhone": "04-9876543",
       "Errors": []
     }
   ]
@@ -181,7 +177,4 @@ Content-Type: application/json
 
 ### ‫שגיאות‬
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן חסר או לא תקין.‬ |
-| `UnauthorizedInventoryAttempt` | ‫למשתמש אין הרשאה לרכיב המלאי.‬ |
+‫טוקן לא תקין/פג תוקף או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
