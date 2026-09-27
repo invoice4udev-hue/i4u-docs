@@ -23,6 +23,10 @@
 * [סקירת מתודות סניפים](branches/overview.md)
 * [שליפת סניפים](branches/get-branches.md)
 
+## חשבון (Account)
+
+* [שיעור מע״מ ומספור מסמכים](account/vat-rate-and-numbering.md)
+
 ## מסמכים (Documents)
 
 * [סקירת מתודות מסמכים](documents/overview.md)

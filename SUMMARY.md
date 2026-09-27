@@ -24,6 +24,10 @@
 * [Branch Endpoints Overview](branches/overview.md)
 * [Get Branches](branches/get-branches.md)
 
+## Account
+
+* [VAT Rate & Document Numbering](account/vat-rate-and-numbering.md)
+
 ## Documents
 
 * [Document Endpoints Overview](documents/overview.md)
