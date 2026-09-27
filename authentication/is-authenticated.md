@@ -22,9 +22,9 @@ Validates an API key (or token) and returns the resolved user. Useful for checki
 | **Method** | `POST` |
 | **Path** | `/IsAuthenticated` |
 | **Body** | `{ "token": "<API key>" }` |
-| **Response** | `User` object; check `Errors[]` for problems |
+| **Response** | `User` object, or `null` if the key is invalid; check `Errors[]` for `ExpiredAccount` |
 
-An account expired more than **4 days** ago adds an `ExpiredAccount` error to the returned user.
+An unrecognized, malformed or revoked key returns `null` directly — there is no `User` object and no `Errors[]` to inspect. An account expired more than **4 days** ago still resolves to the `User`, with an `ExpiredAccount` error added to it.
 
 ## Example request
 
@@ -38,11 +38,21 @@ Content-Type: application/json
 }
 ```
 
+## Example response
+
+Invalid key (verified live against `apiqa.invoice4u.co.il`):
+
+```json
+{
+  "d": null
+}
+```
+
 ## Errors
 
 | Result | Meaning |
 | ------ | ------- |
-| `Errors[]` contains `UnauthorizedUser` (80) | Key not found, malformed, or revoked. |
+| `null` response, no `User` object | Key not found, malformed, or revoked. |
 | `Errors[]` contains `ExpiredAccount` (66) | Account expired more than 4 days ago. |
 
 ## Related: check account expiry

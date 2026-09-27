@@ -26,4 +26,4 @@ Treat the API key like a password. Send it only over HTTPS and never embed it in
 
 * [Verify Your API Key & Account Expiry](is-authenticated.md)
 
-To rotate your API key or change account credentials, use the Invoice4U web application (Settings) — these operations are not exposed through the public API.
+To change account credentials, use the Invoice4U web application (Settings). Partners can rotate an organization's API key programmatically with `UpdateAKU`, as part of the partner [User Registration](../registration/user-registration.md) flow — this operation is not available to regular API users.
