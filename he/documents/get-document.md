@@ -73,10 +73,18 @@ Host: apiqa.invoice4u.co.il
     "Subject": "Monthly subscription",
     "Total": 117.0,
     "StatusID": 2,
+    "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
+    "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
+    "PrintOriginalPDFLink": null,
+    "PrintCertifiedCopyPDFLink": null,
     "Errors": []
   }
 }
 ```
+
+{% hint style="info" %}
+‫`Print*PDFLink` נקבע רק ב[יצירת מסמך](create-document.md) — שליפות אלה תמיד מקבלות שם `null`. בנו את כתובת ה-PDF בעצמכם מתוך `CipherText` / `CipherTextOriginal`; ראו [צפייה במסמך (קישורי PDF)](overview.md#viewing-the-document-pdf-links).‬
+{% endhint %}
 
 ## ‫שגיאות‬
 

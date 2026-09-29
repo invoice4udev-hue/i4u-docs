@@ -15,7 +15,7 @@ Variants:
 | Path | Method | Notes |
 | ---- | ------ | ----- |
 | `/CreateDocument` | POST | Standard. |
-| `/CreateDocumentREST` | GET/POST | Explicit REST variant, same body. |
+| `/CreateDocumentREST` | POST | Explicit REST variant, same body and token. |
 | `/CreateDocumentWithIdentifierValidation` | POST | Rejects duplicates by `ApiIdentifier` — see [dedicated page](create-document-with-validation.md). |
 
 ## Request schema
@@ -44,8 +44,7 @@ Content-Type: application/json
       {
         "Name": "Pro plan - June",
         "Quantity": 1,
-        "Price": 117.00,
-        "PriceIncludeTax": 117.00
+        "Price": 117.00
       }
     ],
     "Payments": [
@@ -93,6 +92,7 @@ On QA the PDF links point to `newviewqa.invoice4u.co.il`; on production to `newv
 ## Behavior notes
 
 * **Totals are computed server-side** from `Items` (item-based types) or `Payments` (+`Deduction`) — you don't send `Total`.
+* `DocumentItem.PriceIncludeTax` is **ignored on creation** — with `TaxIncluded: true`, `Price` itself is the tax-included price and the server reverse-calculates the net amount; see [The Document Object](document-object.md#documentitem).
 * For **InvoiceReceipt**, payments total must equal items total (±0.01 rounding is auto-fixable — see `AutoFixPaymentsMismatchItems` on the [Document object](document-object.md)). Mismatch → `PaymentAmountDoesntMatchItemsAmount` (56), plus an `OpenInfo` entry `{ "Key": "PaymentMismatchDelta", "Value": "<difference>" }`.
 * **Email delivery** happens automatically when `AssociatedEmails` is set; **SMS delivery** when `SmsMessages` is set.
 * Organizations connected to **2Sign** with signable document flows get the document sent as a signing task instead of a plain email.

@@ -28,6 +28,10 @@
 4. `POST /CreateDocument`.
 5. ‫בדיקת `Errors`; בהצלחה, השתמשו ב-`DocumentNumber`, `ID` ובשדות `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink`.‬
 
+### ‫צפייה במסמך (קישורי PDF)‬ {#viewing-the-document-pdf-links}
+
+‫רק **יצירת מסמך** (`CreateDocument`, `CreateDocumentWithIdentifierValidation`) קובעת את `PrintOriginalPDFLink` ואת `PrintCertifiedCopyPDFLink` בתשובה שלה — כתובות URL חתומות מראש לתת-דומיין מציג המסמכים: ב-QA הכתובת מפנה ל-`newviewqa.invoice4u.co.il`, בפרודקשן ל-`newview.invoice4u.co.il`. כל שאר המתודות שמחזירות `Document` — [שליפת מסמך בודד](get-document.md), [חיפוש](search-documents.md) וטיוטות (‏[Draft Documents](draft-documents.md)) — משאירות את שני השדות `null`; הן נושאות רק את `CipherText` ואת `CipherTextOriginal`, אסימוני הצפן (מקודדים ב-Base64 וב-URL) שמהם בונים את הקישורים. בנו את הכתובת בעצמכם: `{baseViewUrl}/Views/PDF.aspx?cipher={CipherTextOriginal}` עבור ה**מקור**, ו-`{baseViewUrl}/Views/PDF.aspx?cipher={CipherText}` עבור ה**העתק הנאמן למקור**. זהו כל ה-Base64 שתקבלו — אין שדה עם בייטים גולמיים של ה-PDF המעובד, כך שקריאה לכתובת `PDF.aspx` נשארת הדרך היחידה לקבל את הקובץ.‬
+
 ### ‫הגנה מכפילויות‬
 
 ‫שני מנגנונים מונעים חיוב כפול כשהמערכת שלכם מבצעת ניסיונות חוזרים:‬

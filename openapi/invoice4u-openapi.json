@@ -1253,6 +1253,7 @@
         "tags": ["Documents"],
         "operationId": "GetDocuments",
         "summary": "Search documents",
+        "description": "Searches documents of a single type per call — `DocumentType` is required. `CustomerName` only verifies that a customer with that name exists; it is not applied as a search filter for new-system results — use `CustomerID` to filter by customer. Ignored by this endpoint: `DocumentTypes`, `FromPaymentDueDate`/`ToPaymentDueDate`, `FromNumber`/`ToNumber`, `ItemDescription`, `ItemsIncluded`, `PaymentsIncluded` — these fields exist on the shared `DocumentsRequest` schema for other consumers.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1269,8 +1270,7 @@
                 "dr": {
                   "DocumentType": 3,
                   "From": "2026-06-01T00:00:00",
-                  "To": "2026-06-30T23:59:59",
-                  "ItemsIncluded": true
+                  "To": "2026-06-30T23:59:59"
                 },
                 "token": "<token>"
               }
@@ -1611,12 +1611,12 @@
         },
         "responses": {
           "200": {
-            "description": "Result; check Errors (AllocationNumberInvalid=162).",
+            "description": "Success returns `d: null` — the document is not returned. Only a failure (invalid token, or allocationNumber shorter than 9 characters, AllocationNumberInvalid=162) returns a Document with Errors.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": { "d": { "$ref": "#/components/schemas/Document" } }
+                  "properties": { "d": { "allOf": [ { "$ref": "#/components/schemas/Document" } ], "nullable": true } }
                 }
               }
             }
@@ -3477,7 +3477,7 @@
           "Name": { "type": "string" },
           "Description": { "type": "string", "nullable": true },
           "Price": { "type": "number", "format": "double", "description": "Unit price." },
-          "PriceIncludeTax": { "type": "number", "format": "double", "description": "Price including VAT (when TaxIncluded)." },
+          "PriceIncludeTax": { "type": "number", "format": "double", "description": "Ignored by document creation — with TaxIncluded=true, Price itself is treated as the gross (tax-included) price and the server reverse-calculates the net amount. Read only by draft calculation (CreateOrUpdateDraftDocument with IsCalcBeforeTax)." },
           "Quantity": { "type": "number", "format": "double" },
           "TaxPercentage": { "type": "number", "format": "double", "nullable": true, "description": "Per-item VAT override." },
           "Discount": { "$ref": "#/components/schemas/Discount" },
@@ -3501,8 +3501,8 @@
             "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9]
           },
           "Amount": { "type": "number", "format": "double" },
-          "Date": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
-          "DateStr": { "type": "string", "nullable": true, "description": "Alternative string date when Date is not set." },
+          "Date": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true, "description": "Payment date. Required unless DateStr is supplied instead." },
+          "DateStr": { "type": "string", "nullable": true, "description": "Fallback payment date, read only when Date is null, parsed strictly as dd/MM/yyyy — any other format (or both fields missing) fails with PaymentDateMissing (46)." },
           "NumberOfPayments": { "type": "integer", "description": "Credit-card installments." },
           "CreditCardName": { "type": "string", "nullable": true, "description": "Card brand name; resolved against configured credit companies." },
           "CreditCardType": { "type": "integer", "nullable": true },
@@ -3659,30 +3659,30 @@
         "type": "object",
         "required": ["DocumentType"],
         "properties": {
-          "DocumentType": { "type": "integer", "description": "Single document type filter." },
-          "DocumentTypes": { "type": "string", "nullable": true, "description": "Comma-separated list of types." },
+          "DocumentType": { "type": "integer", "description": "Single document type filter — required by GetDocuments (one call searches one type)." },
+          "DocumentTypes": { "type": "string", "nullable": true, "description": "Comma-separated list of types. Not honored by GetDocuments, GetCustomerReport or GetDraftDocuments — reserved for other internal report queries that share this schema." },
           "From": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
           "To": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
           "FromActualCreationDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
           "ToActualCreationDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
-          "FromPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
-          "ToPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+          "FromPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true, "description": "Not honored by GetDocuments — accepted by the shared schema but not forwarded to the search." },
+          "ToPaymentDueDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true, "description": "Not honored by GetDocuments — accepted by the shared schema but not forwarded to the search." },
           "Status": { "type": "integer", "description": "Document status filter." },
           "CustomerID": { "type": "integer", "nullable": true },
-          "CustomerName": { "type": "string", "nullable": true },
+          "CustomerName": { "type": "string", "nullable": true, "description": "For GetDocuments, only verifies that a customer with this name exists (ClientDoesntExists, 7, otherwise) — it does not filter new-system results. Use CustomerID to filter by customer." },
           "BranchID": { "type": "integer" },
           "DocumentNumber": { "type": "integer" },
           "ExectDocumentNumber": { "type": "integer", "description": "Exact document number." },
-          "FromNumber": { "type": "integer", "nullable": true },
-          "ToNumber": { "type": "integer", "nullable": true },
+          "FromNumber": { "type": "integer", "nullable": true, "description": "Not honored by GetDocuments — use DocumentNumber/ExectDocumentNumber instead." },
+          "ToNumber": { "type": "integer", "nullable": true, "description": "Not honored by GetDocuments — use DocumentNumber/ExectDocumentNumber instead." },
           "FromAmount": { "type": "number", "format": "float", "nullable": true },
           "ToAmount": { "type": "number", "format": "float", "nullable": true },
           "Currency": { "type": "string", "nullable": true },
           "PaymentType": { "type": "integer" },
           "ItemCode": { "type": "string", "nullable": true },
-          "ItemDescription": { "type": "string", "nullable": true },
-          "ItemsIncluded": { "type": "boolean", "nullable": true, "description": "Include full Items in results." },
-          "PaymentsIncluded": { "type": "boolean", "nullable": true, "description": "Include full Payments in results." },
+          "ItemDescription": { "type": "string", "nullable": true, "description": "Not honored by GetDocuments." },
+          "ItemsIncluded": { "type": "boolean", "nullable": true, "description": "Not honored by GetDocuments — has no effect on whether Items come back in the results." },
+          "PaymentsIncluded": { "type": "boolean", "nullable": true, "description": "Not honored by GetDocuments — has no effect on whether Payments come back in the results." },
           "OnlyGeneralClient": { "type": "boolean", "nullable": true },
           "GeneralClientName": { "type": "string", "nullable": true }
         }

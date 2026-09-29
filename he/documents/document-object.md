@@ -68,7 +68,7 @@
 | `Code` | string | ‫לא‬ | ‫קוד קטלוגי.‬ |
 | `TaxPercentage` | double | ‫לא‬ | ‫דריסת מע"מ פר פריט.‬ |
 | `Discount` | Discount | ‫לא‬ | ‫הנחה פר פריט.‬ |
-| `PriceIncludeTax` | double | ‫לא‬ | ‫מחיר כולל מע"מ (כאשר `TaxIncluded`).‬ |
+| `PriceIncludeTax` | double | ‫לא‬ | ‫**מתעלמים ממנו ביצירת מסמך** — כאשר `TaxIncluded: true`, `Price` עצמו נחשב למחיר הגולמי (כולל מע"מ), והשרת מחשב לאחור את הסכום נטו. נקרא רק בחישוב טיוטה (`CreateOrUpdateDraftDocument` עם `IsCalcBeforeTax`).‬ |
 | `InventoryId` / `WarehouseId` | int | ‫תהליכי מלאי‬ | ‫הפניות לפריט מלאי / מחסן.‬ |
 | `LawyerIdentifier` | string | ‫חשבונות עו"ד‬ | `"1"` פקדונות, `"2"` הוצאות. |
 
@@ -78,7 +78,8 @@
 | --- | ----- | ---- | ----- |
 | `PaymentType` | int | ‫**כן**‬ | `1` כרטיס אשראי, `2` צ'ק, `3` העברה בנקאית, `4` מזומן, `5` אשראי, `6` ניכוי במקור, `7` אחר, `8` ביט, `9` פייבוקס. לא תקין ← `PaymentTypeOutOfRange` (51). |
 | `Amount` | double | ‫**כן**‬ | ‫לא יכול להיות `0` (`PaymentAmountCannotBeZero`, 47).‬ |
-| `Date` או `DateStr` | datetime / string | ‫**כן**‬ | ‫תאריך התשלום (`PaymentDateMissing`, 46).‬ |
+| `Date` | datetime | ‫מותנה‬ | ‫תאריך התשלום. חובה אלא אם נשלח `DateStr` במקום.‬ |
+| `DateStr` | string | ‫מותנה‬ | ‫תאריך תשלום חלופי, נקרא **רק כאשר `Date` הוא `null`**, ומפורש בקפדנות כ-`dd/MM/yyyy` — כל פורמט אחר (או השמטת שני השדות) נכשל עם `PaymentDateMissing` (46).‬ |
 | `NumberOfPayments` | int | ‫לא‬ | ‫מספר תשלומים בכרטיס אשראי (או `NumberOfPaymentsStr`).‬ |
 | `CreditCardName` | string | ‫לא‬ | ‫שם מותג הכרטיס; מזוהה מול חברות האשראי המוגדרות אצלכם.‬ |
 | `CreditCardType` | int | ‫לא‬ | ‫מזהה חברת האשראי (ראו `GetCompanies`).‬ |

@@ -75,15 +75,15 @@ All three return the full [Document object](document-object.md):
     "StatusID": 2,
     "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
     "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
-    "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
-    "PrintCertifiedCopyPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=...",
+    "PrintOriginalPDFLink": null,
+    "PrintCertifiedCopyPDFLink": null,
     "Errors": []
   }
 }
 ```
 
 {% hint style="info" %}
-Same `PrintOriginalPDFLink` / `PrintCertifiedCopyPDFLink` fields as [document creation](create-document.md) — QA points to `newviewqa.invoice4u.co.il`, production to `newview.invoice4u.co.il`. `CipherText` / `CipherTextOriginal` (also on the object) are the Base64-encoded cipher tokens behind those links, not the rendered PDF itself — there's no field with the raw file bytes. Both `Print*PDFLink` fields can come back `null` on a lookup; if so, build the URL from `CipherText`/`CipherTextOriginal` yourself.
+`Print*PDFLink` is set only by [document creation](create-document.md) — these lookups always come back with `null` there. Build the PDF URL yourself from `CipherText` / `CipherTextOriginal`; see [Viewing the document (PDF links)](overview.md#viewing-the-document-pdf-links).
 {% endhint %}
 
 ## Errors

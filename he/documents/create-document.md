@@ -15,7 +15,7 @@
 | ‫נתיב‬ | ‫מתודה‬ | ‫הערות‬ |
 | ---- | ----- | ----- |
 | `/CreateDocument` | POST | ‫הסטנדרטי.‬ |
-| `/CreateDocumentREST` | GET/POST | ‫וריאציית REST מפורשת, אותו גוף.‬ |
+| `/CreateDocumentREST` | POST | ‫וריאציית REST מפורשת, אותו גוף וטוקן.‬ |
 | `/CreateDocumentWithIdentifierValidation` | POST | ‫דוחה כפילויות לפי `ApiIdentifier` — ראו [עמוד ייעודי](create-document-with-validation.md).‬ |
 
 ## ‫סכימת הבקשה‬
@@ -44,8 +44,7 @@ Content-Type: application/json
       {
         "Name": "Pro plan - June",
         "Quantity": 1,
-        "Price": 117.00,
-        "PriceIncludeTax": 117.00
+        "Price": 117.00
       }
     ],
     "Payments": [
@@ -93,6 +92,7 @@ Content-Type: application/json
 ## ‫הערות התנהגות‬
 
 * ‫**הסכומים מחושבים בצד השרת** מתוך `Items` (סוגים מבוססי פריטים) או `Payments` (+`Deduction`) — אתם לא שולחים `Total`.‬
+* ‫`DocumentItem.PriceIncludeTax` **מתעלמים ממנו ביצירה** — כאשר `TaxIncluded: true`, `Price` עצמו הוא המחיר כולל המע"מ, והשרת מחשב לאחור את הסכום נטו; ראו [אובייקט המסמך](document-object.md#documentitem).‬
 * ‫ב**חשבונית מס קבלה**, סכום התשלומים חייב להיות שווה לסכום הפריטים (פער עיגול של ±0.01 ניתן לתיקון אוטומטי — ראו `AutoFixPaymentsMismatchItems` ב[אובייקט המסמך](document-object.md)). אי-התאמה ← `PaymentAmountDoesntMatchItemsAmount` (56) ובנוסף רשומת `OpenInfo` מהצורה `{ "Key": "PaymentMismatchDelta", "Value": "<הפרש>" }`.‬
 * ‫**משלוח אימייל** מתבצע אוטומטית כאשר `AssociatedEmails` מוגדר; **משלוח SMS** כאשר `SmsMessages` מוגדר.‬
 * ‫ארגונים המחוברים ל-**2Sign** עם תהליכי מסמכים לחתימה מקבלים את המסמך כמשימת חתימה במקום אימייל רגיל.‬

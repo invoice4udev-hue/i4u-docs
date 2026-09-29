@@ -62,6 +62,7 @@ Stores an allocation number obtained outside Invoice4U.
 | - | - |
 | **Method** | `POST` |
 | **Path** | `/UpdateAllocationNumber` |
+| **Response** | `null` on success; a `Document` with `Errors` only on failure |
 
 ```json
 {
@@ -72,6 +73,14 @@ Stores an allocation number obtained outside Invoice4U.
 ```
 
 The number must be at least **9 characters** — otherwise `AllocationNumberInvalid` (162).
+
+On success the response is `{ "d": null }` — the endpoint doesn't return the updated document:
+
+```json
+{ "d": null }
+```
+
+Only a failure (invalid token, or `allocationNumber` shorter than 9 characters) returns a `Document` with `Errors` populated. Call [`GetDocument`](get-document.md) afterwards if you need to read back the stored `AllocationNumber`.
 
 ## Errors
 

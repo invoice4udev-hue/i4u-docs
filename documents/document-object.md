@@ -68,7 +68,7 @@ Full field reference for the `Document` object and its child objects. Fields mar
 | `Code` | string | No | Catalog code. |
 | `TaxPercentage` | double | No | Per-item VAT override. |
 | `Discount` | Discount | No | Per-item discount. |
-| `PriceIncludeTax` | double | No | Price including VAT (when `TaxIncluded`). |
+| `PriceIncludeTax` | double | No | **Ignored by document creation** — with `TaxIncluded: true`, `Price` itself is treated as the gross (tax-included) price and the server reverse-calculates the net amount. Read only by draft calculation (`CreateOrUpdateDraftDocument` with `IsCalcBeforeTax`). |
 | `InventoryId` / `WarehouseId` | int | Inventory flows | Inventory item / warehouse references. |
 | `LawyerIdentifier` | string | Lawyer accounts | `"1"` deposits, `"2"` expenses. |
 
@@ -78,7 +78,8 @@ Full field reference for the `Document` object and its child objects. Fields mar
 | ----- | ---- | -------- | ----------- |
 | `PaymentType` | int | **Yes** | `1` CreditCard, `2` Check, `3` MoneyTransfer, `4` Cash, `5` Credit, `6` WithholdingTax, `7` Other, `8` Bit, `9` PayBox. Invalid → `PaymentTypeOutOfRange` (51). |
 | `Amount` | double | **Yes** | Must not be `0` (`PaymentAmountCannotBeZero`, 47). |
-| `Date` or `DateStr` | datetime / string | **Yes** | Payment date (`PaymentDateMissing`, 46). |
+| `Date` | datetime | Conditional | Payment date. Required unless `DateStr` is supplied instead. |
+| `DateStr` | string | Conditional | Fallback payment date, read **only when `Date` is `null`**, parsed strictly as `dd/MM/yyyy` — any other format (or both fields missing) fails with `PaymentDateMissing` (46). |
 | `NumberOfPayments` | int | No | Credit-card installments (or `NumberOfPaymentsStr`). |
 | `CreditCardName` | string | No | Card brand name; resolved against your configured credit companies. |
 | `CreditCardType` | int | No | Card company ID (see `GetCompanies`). |
