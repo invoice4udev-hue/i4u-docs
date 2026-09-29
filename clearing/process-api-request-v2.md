@@ -170,10 +170,10 @@ Redirect the customer to `ClearingRedirectUrl`. After payment you receive the ca
 
 ## Callback payload
 
-After the customer completes the hosted page, Invoice4U POSTs the result to your `CallBackUrl` as a form field named `Data` containing a JSON object. All values are strings (`"True"`/`"False"` for booleans):
+After the customer completes the hosted page, Invoice4U POSTs the result to your `CallBackUrl` as a form field named `Data` containing a JSON object (i.e. the request body is `Data=<json>`). All values are strings (`"True"`/`"False"` for booleans):
 
 ```json
-Data={
+{
   "Success": "True",
   "TokenCaptureOnly": "False",
   "TokenCaptureAndCharge": "False",

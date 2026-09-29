@@ -101,7 +101,7 @@ flowchart LR
 | `DocHeadline` | string | ‫לא‬ | ‫נושא המסמך (ברירת מחדל: `Description`).‬ |
 | `IsManualDocCreationsWithParams` | boolean | ‫לא‬ | ‫שליחת שורות פריטים מפורשות דרך שדות ה-`DocItem*` המופרדים ב-pipe שלהלן.‬ |
 | `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | ‫**עם פריטים ידניים**‬ | ‫רשימות מופרדות ב-pipe, באורך שווה, למשל `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`. ערכים חסרים/ריקים מחזירים שגיאת API נקייה (`DocumentItemMissingName` 39, `DocumentItemQuantityCannotBeZero` 40, `DocumentItemPriceCannotBeZero` 41).‬ |
-| `DocItemTaxRate` | string | ‫**עם פריטים ידניים**‬ | ‫רשימת שיעורי מע"מ מופרדת ב-pipe, באותו אורך כמו `DocItemQuantity`/`DocItemPrice` (ערכים ריקים לכל פריט תקינים, למשל `"‬|‫"`). לא נבדק מראש — אם השדה **הושמט לגמרי** הבקשה נכשלת בשגיאת שרת לא מטופלת (500) במקום שגיאת API נקייה; אם מספר הפריטים המופרדים אינו תואם לרשימות האחרות, הבקשה נכשלת באותו אופן. שלחו אותו תמיד כאשר `IsManualDocCreationsWithParams` הוא `true`.‬ |
+| `DocItemTaxRate` | string | ‫**עם פריטים ידניים**‬ | ‫רשימת שיעורי מע"מ מופרדת ב-pipe, באותו אורך כמו `DocItemQuantity`/`DocItemPrice` (ערכים ריקים לכל פריט תקינים, למשל `"|"`). לא נבדק מראש — אם השדה **הושמט לגמרי** הבקשה נכשלת בשגיאת שרת לא מטופלת (500) במקום שגיאת API נקייה; אם מספר הפריטים המופרדים אינו תואם לרשימות האחרות, הבקשה נכשלת באותו אופן. שלחו אותו תמיד כאשר `IsManualDocCreationsWithParams` הוא `true`.‬ |
 | `DocItemCode` / `DocBranchId` | string | ‫לא‬ | ‫מתקבלים על ידי הבקשה אך **אינם מוחלים** על המסמך שנוצר במימוש הנוכחי — אל תסתמכו עליהם לקוד פריט או שיוך סניף.‬ |
 | `IsItemsBase64Encoded` | boolean | ‫לא‬ | ‫**לא נתמך** — הפענוח חלקי במימוש הנוכחי. שלחו את ערכי ה-`DocItem*` כטקסט UTF-8 רגיל, לא כ-Base64.‬ |
 | `DocComments` | string | ‫לא‬ | ‫הערות המסמך.‬ |
@@ -170,10 +170,10 @@ Content-Type: application/json
 
 ## ‫גוף הקולבק‬ {#callback-payload}
 
-‫לאחר שהלקוח משלים את דף התשלום, Invoice4U שולח POST עם התוצאה אל ה-`CallBackUrl` שלכם, כשדה טופס בשם `Data` המכיל אובייקט JSON. כל הערכים הם מחרוזות (`"True"`/`"False"` עבור בוליאנים):‬
+‫לאחר שהלקוח משלים את דף התשלום, Invoice4U שולח POST עם התוצאה אל ה-`CallBackUrl` שלכם, כשדה טופס בשם `Data` המכיל אובייקט JSON (כלומר גוף הבקשה הוא `Data=<json>`). כל הערכים הם מחרוזות (`"True"`/`"False"` עבור בוליאנים):‬
 
 ```json
-Data={
+{
   "Success": "True",
   "TokenCaptureOnly": "False",
   "TokenCaptureAndCharge": "False",
