@@ -13,7 +13,7 @@
 { "custId": 88231, "token": "<token>" }
 ```
 
-‫מחזיר את ה-`Customer`. אם הלקוח שייך לארגון אחר: `ClientIDDoesntExists` (37).‬
+‫מחזיר את ה-`Customer`, בהגבלה לארגון שלכם. ראו [שגיאות לפי מתודה](#errors-by-endpoint) בהמשך — פגם ב-BLL גורם לכך שטוקן לא תקין, חשבון שפג תוקפו ולקוח שלא נמצא אינם ניתנים להבחנה כאן.‬
 
 ## ‫שליפה לפי שם — `GetCustomerByName`‬
 
@@ -64,7 +64,7 @@
 { "number": 10045, "token": "<token>" }
 ```
 
-‫`POST /GetCustomerByExternalNumber` — חיפוש לפי `ExtNumber`. מחזיר `CustomerNotFound` (136) כאשר `number` אינו חיובי.‬
+‫`POST /GetCustomerByExternalNumber` — חיפוש לפי `ExtNumber`. כל נתיב כשל (טוקן לא תקין/חסר, חשבון שפג תוקפו, `number <= 0`, או היעדר התאמה) גורם ל-null-reference exception לא מטופל לפני שניתן לצרף שגיאה, ולכן מתקבל תמיד `{ "d": null }` — לעולם לא `CustomerNotFound` (136).‬
 
 ## ‫שליפה לפי קוד לקוח — `GetCustomerByClientCode`‬
 
@@ -140,14 +140,27 @@
 
 ‫האם כל שדה נתמך מתבצע כהתאמה מדויקת או חלקית (`LIKE`) אינו מתועד כאן — לוגיקת החיפוש הפנימית אינה חלק מהחוזה המפורסם.‬
 
-## ‫שגיאות (כל המתודות)‬
+## ‫שגיאות לפי מתודה‬ {#errors-by-endpoint}
 
-| ‫שגיאה (ID)‬ | ‫משמעות‬ |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
-| `ClientIDDoesntExists` (37) | ‫לקוח לא נמצא / שייך לארגון אחר.‬ |
-| `CustomerNotFound` (136) | ‫ערך חיפוש לא תקין.‬ |
-| `GeneralError` (0) | ‫שגיאת שרת.‬ |
+‫ההתנהגות שונה בכל מתודה — אין טבלת שגיאות אחת המשותפת לכל השליפות האלה. ערכי `Errors` מופיעים על ה-`Customer`/האוסף המוחזר, אלא אם צוין אחרת.‬
+
+| ‫מתודה‬ | ‫טוקן לא תקין‬ | ‫חשבון שפג תוקפו‬ | ‫לא נמצא‬ |
+| ----- | ------------ | ---------------- | ------- |
+| `GetCustomerById` | `Errors: [GeneralError (0)]`\* | `Errors: [GeneralError (0)]`\* | `Errors: [GeneralError (0)]`\* |
+| `GetCustomerByName` | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | `Errors: [UnauthorizedUser (80)]` | `null` |
+| `GetCustomerByEmail` | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | `Errors: [UnauthorizedUser (80)]` | ‫`null` (`Errors: [GeneralError (0)]` בשגיאת שרת/מסד נתונים לא קשורה)‬ |
+| `GetCustomerByGuid` | `null` | `null` | `null` |
+| `GetCustomerByGuidInnerSearch` | `null` | `null` | `null` |
+| `GetCustomerByExternalNumber` | `null` | `null` | ‫`null` (גם עבור `number <= 0`)‬ |
+| `GetCustomerByClientCode` | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | `null` |
+| ‫`GetByClientCode` (כינוי)‬ | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | ‫HTTP 500 (שגיאת שרת לא מטופלת)‬ | `null` |
+| `GetFullCustomer` | `Errors: [UnauthorizedUser (80)]` | `Errors: [ExpiredAccount (66)]` | `null` |
+| `GetCustomersByOrgId` | ‫מעטפה ריקה — ללא `Response`, ללא `Errors`†‬ | ‫`Errors: [UnauthorizedUser (80)]`, ללא `Response`‬ | ‫לא רלוונטי — מערך `Response` ריק‬ |
+| `GetCustomers` | ‫מעטפה ריקה — ללא `Response`, ללא `Errors`†‬ | ‫`Errors: [UnauthorizedUser (80)]`, ללא `Response`‬ | ‫לא רלוונטי — מערך `Response` ריק‬ |
+
+‫\* פגם מסוג null-reference ב-`GetCustomerById` גורם לכך שטוקן לא תקין, חשבון שפג תוקפו ולקוח שלא נמצא כולם מניבים אותה תגובת `GeneralError (0)` גנרית; `ClientIDDoesntExists` (37) לא יכולה למעשה להתרחש, מכיוון שהשאילתה הבסיסית כבר מוגבלת לארגון שלכם, כך שלקוח מארגון אחר אינו ניתן להבחנה מ"לא נמצא".‬
+
+‫† עבור `GetCustomersByOrgId`/`GetCustomers`, טוקן לא תקין או חסר גורם לחריגה לפני שניתן לצרף שגיאה לאוסף, ולכן מתקבלת מעטפה ריקה במקום שגיאה רגילה — לא ניתן להבחין בין "אין תוצאות" לבין "טוקן לא תקין" רק על סמך `Errors`.‬
 
 ## ‫נסו את זה‬
 

@@ -46,7 +46,7 @@ Almost every endpoint takes a `token` parameter — this is your organization **
 
 ### Response envelope
 
-Every response is a JSON object with a single `d` property that holds the result:
+Every successfully serialized API result is a JSON object with a single `d` property that holds the result. An unhandled fault (HTTP 500) returns a plain error body without the `d` wrapper.
 
 ```json
 {

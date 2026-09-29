@@ -70,7 +70,7 @@
         "tags": ["Authentication"],
         "operationId": "IsAuthenticated",
         "summary": "Verify a token or API key",
-        "description": "Validates an organization API key (GUID) or token and returns the resolved user. An account expired more than 4 days ago adds an `ExpiredAccount` error.",
+        "description": "Validates an organization API key (GUID) or token. Returns the resolved user; an account expired more than 4 days ago still resolves to the user, with an `ExpiredAccount` (66) error added to `Errors`. An invalid, malformed, or revoked key returns `{ \"d\": null }` — there is no `User` object and no `Errors` array to inspect.",
         "requestBody": {
           "required": true,
           "content": {
@@ -87,7 +87,7 @@
         },
         "responses": {
           "200": {
-            "description": "Resolved user, or a user object whose Errors array is populated when the token/key is invalid or the account is expired.",
+            "description": "Resolved user, with an `ExpiredAccount` (66) error in `Errors` when the account expired more than 4 days ago. `null` when the key/token is invalid, malformed, or revoked.",
             "content": {
               "application/json": {
                 "schema": {
@@ -95,6 +95,7 @@
                   "properties": {
                     "d": {
                       "type": "object",
+                      "nullable": true,
                       "description": "Authenticated user details.",
                       "properties": {
                         "ID": { "type": "integer" },
@@ -220,7 +221,7 @@
         },
         "responses": {
           "200": {
-            "description": "The customer.",
+            "description": "The customer. A null-reference bug in the BLL collapses invalid token, expired account, and not-found into the same response \u2014 a `Customer` with `Errors: [GeneralError (0)]`; the `ClientIDDoesntExists` (37) check for a customer belonging to another organization is unreachable in practice because the underlying query is already scoped to your organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -252,7 +253,7 @@
         },
         "responses": {
           "200": {
-            "description": "All customers in the organization.",
+            "description": "All customers in the authenticated organization. An invalid/missing token throws before an error can be attached, so you get back an empty envelope \u2014 no `Response`, no `Errors` \u2014 rather than a normal error; an expired account instead returns `Errors: [UnauthorizedUser (80)]` with no `Response`.",
             "content": {
               "application/json": {
                 "schema": {
@@ -294,7 +295,7 @@
         },
         "responses": {
           "200": {
-            "description": "Matching customers.",
+            "description": "Matching customers. An invalid/missing token throws before an error can be attached, so you get back an empty envelope \u2014 no `Response`, no `Errors` \u2014 rather than a normal error; an expired account instead returns `Errors: [UnauthorizedUser (80)]` with no `Response`.",
             "content": {
               "application/json": {
                 "schema": {
@@ -417,7 +418,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": { "$ref": "#/components/schemas/CatalogItem" }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/CatalogItem" } ], "nullable": true }
                   }
                 }
               }
@@ -1890,9 +1891,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/ItemsMovement"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/ItemsMovement" } ], "nullable": true }
                   }
                 }
               }
@@ -2139,9 +2138,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/NumberingDefinition"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/NumberingDefinition" } ], "nullable": true }
                   }
                 }
               }
@@ -2241,9 +2238,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2296,9 +2291,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2536,15 +2529,13 @@
         },
         "responses": {
           "200": {
-            "description": "Customer. Errors [UnauthorizedUser (80)] when the token is invalid.",
+            "description": "Customer, or null when not found. Errors [UnauthorizedUser (80)] when the token is invalid; Errors [ExpiredAccount (66)] when the account expired more than 4 days ago.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2589,15 +2580,13 @@
         },
         "responses": {
           "200": {
-            "description": "Customer.",
+            "description": "Customer, or null when not found. An invalid/missing token is not caught by a try block up front, so it raises an unhandled server error (HTTP 500) instead of a normal error response; an expired account instead returns Errors [UnauthorizedUser (80)].",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2648,15 +2637,13 @@
         },
         "responses": {
           "200": {
-            "description": "Customer. Errors [GeneralError (0)] on server error.",
+            "description": "Customer, or null when not found. An invalid/missing token is not caught by a try block up front, so it raises an unhandled server error (HTTP 500) instead of a normal error response; an expired account instead returns Errors [UnauthorizedUser (80)]; Errors [GeneralError (0)] on an unexpected server/database error during the lookup.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2707,9 +2694,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2760,9 +2745,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2792,7 +2775,7 @@
                   "number": {
                     "type": "integer",
                     "format": "int64",
-                    "description": "The customer's external number. 0 or negative returns CustomerNotFound (136)."
+                    "description": "The customer's external number. Any invalid input, including 0 or negative, currently returns null (see the 200 response note) rather than a CustomerNotFound error."
                   },
                   "token": {
                     "type": "string",
@@ -2809,15 +2792,13 @@
         },
         "responses": {
           "200": {
-            "description": "Customer.",
+            "description": "Customer, or null. An invalid/missing token, an expired account, a non-positive number, and \"not found\" are all indistinguishable — every failure path in this method hits an unhandled null-reference exception before an error can be attached, so it always falls back to `{\"d\": null}`.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Customer"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Customer" } ], "nullable": true }
                   }
                 }
               }
@@ -2875,9 +2856,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Pricelist"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Pricelist" } ], "nullable": true }
                   }
                 }
               }
@@ -2932,6 +2911,7 @@
                   "properties": {
                     "d": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "$ref": "#/components/schemas/Pricelist"
                       }
@@ -2993,6 +2973,7 @@
                   "properties": {
                     "d": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "$ref": "#/components/schemas/Pricelist"
                       }
@@ -3056,6 +3037,7 @@
                   "properties": {
                     "d": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "$ref": "#/components/schemas/PricelistWithCustomer"
                       }
@@ -3123,9 +3105,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "d": {
-                      "$ref": "#/components/schemas/Pricelist"
-                    }
+                    "d": { "allOf": [ { "$ref": "#/components/schemas/Pricelist" } ], "nullable": true }
                   }
                 }
               }
@@ -3307,6 +3287,7 @@
                   "properties": {
                     "d": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "$ref": "#/components/schemas/Item"
                       }
@@ -3358,6 +3339,7 @@
                   "properties": {
                     "d": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "$ref": "#/components/schemas/Item"
                       }
@@ -3664,7 +3646,7 @@
       "CustomerUpdateRequest": {
         "allOf": [
           { "$ref": "#/components/schemas/Customer" },
-          { "type": "object", "required": ["ID", "Name"] }
+          { "type": "object", "required": ["ID", "Name", "PayTerms", "Active", "Retainer"] }
         ]
       },
       "CustomerCollection": {

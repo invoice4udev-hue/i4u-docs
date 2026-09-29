@@ -13,7 +13,7 @@ Lookup endpoints for customers. All take a `token` and return either a single `C
 { "custId": 88231, "token": "<token>" }
 ```
 
-Returns the `Customer`. If the customer belongs to another organization: `ClientIDDoesntExists` (37).
+Returns the `Customer`, scoped to your organization. See [Errors by endpoint](#errors-by-endpoint) below — a BLL bug means invalid token, expired account and not-found are indistinguishable here.
 
 ## Get by name — `GetCustomerByName`
 
@@ -64,7 +64,7 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 { "number": 10045, "token": "<token>" }
 ```
 
-`POST /GetCustomerByExternalNumber` — lookup by `ExtNumber`. Returns `CustomerNotFound` (136) when `number` is not positive.
+`POST /GetCustomerByExternalNumber` — lookup by `ExtNumber`. Every failure path (invalid/missing token, expired account, `number <= 0`, or no match) hits an unhandled null-reference exception before an error can be attached, so it always falls back to `{ "d": null }` — never `CustomerNotFound` (136).
 
 ## Get by client code — `GetCustomerByClientCode`
 
@@ -140,14 +140,27 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 
 Whether each honored field matches exactly or partially (`LIKE`) is not documented here — the underlying search logic isn't part of the published contract.
 
-## Errors (all endpoints)
+## Errors by endpoint
 
-| Error (ID) | Meaning |
-| ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid token. |
-| `ClientIDDoesntExists` (37) | Customer not found / belongs to another organization. |
-| `CustomerNotFound` (136) | Invalid lookup value. |
-| `GeneralError` (0) | Server error. |
+Behavior differs per endpoint — none of these lookups share one error table. `Errors` values are on the returned `Customer`/collection unless noted otherwise.
+
+| Endpoint | Invalid token | Expired account | Not found |
+| -------- | ------------- | ---------------- | --------- |
+| `GetCustomerById` | `Errors: [GeneralError (0)]`\* | `Errors: [GeneralError (0)]`\* | `Errors: [GeneralError (0)]`\* |
+| `GetCustomerByName` | HTTP 500 (unhandled fault) | `Errors: [UnauthorizedUser (80)]` | `null` |
+| `GetCustomerByEmail` | HTTP 500 (unhandled fault) | `Errors: [UnauthorizedUser (80)]` | `null` (`Errors: [GeneralError (0)]` on an unrelated server/DB error) |
+| `GetCustomerByGuid` | `null` | `null` | `null` |
+| `GetCustomerByGuidInnerSearch` | `null` | `null` | `null` |
+| `GetCustomerByExternalNumber` | `null` | `null` | `null` (also for `number <= 0`) |
+| `GetCustomerByClientCode` | HTTP 500 (unhandled fault) | HTTP 500 (unhandled fault) | `null` |
+| `GetByClientCode` (alias) | HTTP 500 (unhandled fault) | HTTP 500 (unhandled fault) | `null` |
+| `GetFullCustomer` | `Errors: [UnauthorizedUser (80)]` | `Errors: [ExpiredAccount (66)]` | `null` |
+| `GetCustomersByOrgId` | empty envelope — no `Response`, no `Errors`† | `Errors: [UnauthorizedUser (80)]`, no `Response` | n/a — empty `Response` array |
+| `GetCustomers` | empty envelope — no `Response`, no `Errors`† | `Errors: [UnauthorizedUser (80)]`, no `Response` | n/a — empty `Response` array |
+
+\* A null-reference bug in `GetCustomerById` collapses invalid token, expired account and not-found into the same generic `GeneralError (0)` response; `ClientIDDoesntExists` (37) cannot actually occur, because the underlying query is already scoped to your organization, so a customer from another org is indistinguishable from "not found."
+
+† For `GetCustomersByOrgId`/`GetCustomers`, an invalid or missing token throws before any error can be attached to the collection, so you get back an empty envelope rather than a normal error — you cannot distinguish "no results" from "invalid token" by inspecting `Errors` alone.
 
 ## Try it
 

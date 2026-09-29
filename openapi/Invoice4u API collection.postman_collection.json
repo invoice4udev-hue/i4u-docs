@@ -43,7 +43,7 @@
                 "IsAuthenticated"
               ]
             },
-            "description": "Returns the `User` object that owns the supplied API key, or an error if the key is invalid / expired. Run this first to confirm `Invoice4u_ApiKey` is set correctly before sending business calls."
+            "description": "Returns the `User` object that owns the supplied API key; an expired account (more than 4 days) still resolves to the `User`, with an `ExpiredAccount` (66) error added. Returns `{ \"d\": null }` if the key is invalid, malformed, or revoked — there is no `User` object and no `Errors` array to inspect. Run this first to confirm `Invoice4u_ApiKey` is set correctly before sending business calls."
           },
           "response": []
         }
