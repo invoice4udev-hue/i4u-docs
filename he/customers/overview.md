@@ -35,11 +35,34 @@
 | `ClientCode` | int | ‫לא‬ | ‫קוד לקוח פנימי (ניתן לחיפוש).‬ |
 | `ContactFirstName`, `ContactLastName`, `ContactName`, `ContactEmail` | string | ‫לא‬ | ‫פרטי איש קשר.‬ |
 | `CustomerEmails` | AssociatedEmail[] | ‫לא‬ | ‫כתובות אימייל נוספות ללקוח.‬ |
-| `AccountNumber`, `BankName`, `BranchName`, `BankCode`, `BranchCode` | string | ‫לא‬ | ‫פרטי בנק.‬ |
+| `AccountNumber`, `BankName`, `BranchName`, `BankCode`, `BranchCode` | string | ‫לא‬ | ‫פרטי בנק. `BankCode` ו-`BranchCode` מתקבלים אך אינם מקושרים כרגע לנתונים מאוחסנים — הם תמיד מוחזרים ריקים.‬ |
 | `Website` | string | ‫לא‬ | ‫כתובת אתר.‬ |
 | `InternalNote` | string | ‫לא‬ | ‫הערה חופשית. `PrintInternalNoteOnQuote` (bool) שולט בהדפסה על הצעות מחיר.‬ |
 | `Retainer`, `RetainerAmount`, `RetainerTitle` | bool, double, string | ‫לא‬ | ‫הגדרות ריטיינר.‬ |
 | `Discount`, `DiscountType`, `PricelistID` | decimal, int, int | ‫לא‬ | ‫הנחה / מחירון ברירת מחדל.‬ |
+
+### ‫שדות נוספים המוחזרים‬
+
+‫ה-API מסריאליז גם את שדות ה-`Customer` הבאים בכל תשובה. שדות המסומנים **read-only** מנוהלים על ידי השרת — כל ערך שתשלחו עבורם ב-`CreateCustomer`/`UpdateCustomer` מתעלם ממנו.‬
+
+| ‫שדה‬ | ‫טיפוס‬ | ‫Read-only‬ | ‫תיאור‬ |
+| --- | ----- | :---: | ----- |
+| `OrgID` | int | ‫כן‬ | ‫הארגון שאליו שייך הלקוח. תמיד נקבע מהטוקן שלכם.‬ |
+| `DateCreated` | date | ‫כן‬ | ‫מועד יצירת הלקוח. מוחזר על ידי מתודות הרשימה/החיפוש (`GetCustomers`, `GetCustomersByOrgId`) כאשר קיים.‬ |
+| `IdNewAndOldSystem` | string | ‫כן‬ | ‫מזהה פנימי המגשר בין המערכת הישנה לחדשה.‬ |
+| `HasBeenExported` | boolean | ‫—‬ | ‫האם הלקוח סומן כמיוצא להנהלת חשבונות. נקבע על ידי תהליך הייצוא, לא על ידי `CreateCustomer`/`UpdateCustomer`; ניתן לשימוש כפילטר ב-[`GetCustomers`](get-customers.md).‬ |
+| `FreeUniqueID` | string | ‫לא‬ | ‫שדה מזהה חופשי. ניתן לשימוש גם כפילטר ב-`GetCustomers`.‬ |
+| `FreeZip` | string | ‫לא‬ | ‫שדה מיקוד משני.‬ |
+| `Ucan2ClientID` | int | ‫לא‬ | ‫קישור פנימי למערכת ה-Ucan2 הישנה, אם קיים.‬ |
+| `CreditCardNumber` | string | ‫כן‬ | ‫פרטי כרטיס אשראי מאוחסנים (מוסתרים) המשמשים לחיוב ריטיינר/הוראת קבע.‬ |
+| `CreditCardType` | int | ‫כן‬ | ‫קוד סוג הכרטיס.‬ |
+| `NameAccounting`, `EmailAccounting`, `PhoneAccounting` | string | ‫לא‬ | ‫פרטי איש קשר המשמשים לייצוא להנהלת חשבונות חיצונית.‬ |
+| `IsFromLead` | boolean | ‫לא‬ | ‫האם הלקוח מקורו בליד CRM.‬ |
+| `LeadId` | int | ‫לא‬ | ‫מזהה ה-CRM לליד המקושר.‬ |
+| `HasToken` | boolean | ‫כן‬ | ‫האם קיים טוקן תשלום שמור ללקוח — ערך הטוקן עצמו אינו מוחזר לעולם.‬ |
+| `PaymentDetailsIsDefault` | boolean | ‫כן‬ | ‫האם פרטי התשלום המאוחסנים הם ברירת המחדל של הלקוח. מוחזר רק על ידי `GetFullCustomer`/`GetCustomerById`.‬ |
+
+‫`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish` ו-`BranchNameEnglish` מסריאליזים גם הם על `Customer` אך אינם מאוכלסים כרגע על ידי אף מתודה — הם תמיד מוחזרים ריקים/כברירת מחדל.‬
 
 ### ‫קודי תוצאה ביצירה/עדכון‬ {#createupdate-result-codes}
 

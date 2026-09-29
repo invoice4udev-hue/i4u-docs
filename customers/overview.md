@@ -35,11 +35,34 @@ Used as request body for create/update and returned by all retrieval endpoints. 
 | `ClientCode` | int | No | Internal client code (searchable). |
 | `ContactFirstName`, `ContactLastName`, `ContactName`, `ContactEmail` | string | No | Contact person details. |
 | `CustomerEmails` | AssociatedEmail[] | No | Additional emails for the customer. |
-| `AccountNumber`, `BankName`, `BranchName`, `BankCode`, `BranchCode` | string | No | Bank details. |
+| `AccountNumber`, `BankName`, `BranchName`, `BankCode`, `BranchCode` | string | No | Bank details. `BankCode` and `BranchCode` are accepted but not currently linked to stored data — they are always returned empty. |
 | `Website` | string | No | Website URL. |
 | `InternalNote` | string | No | Free-text note. `PrintInternalNoteOnQuote` (bool) controls printing on quotes. |
 | `Retainer`, `RetainerAmount`, `RetainerTitle` | bool, double, string | No | Retainer settings. |
 | `Discount`, `DiscountType`, `PricelistID` | decimal, int, int | No | Default discount / pricelist. |
+
+### Other returned fields
+
+The API also serializes these `Customer` fields in every response. Fields marked **read-only** are server-managed — any value you send for them on `CreateCustomer`/`UpdateCustomer` is ignored.
+
+| Field | Type | Read-only | Description |
+| ----- | ---- | :---: | ----------- |
+| `OrgID` | int | Yes | Organization the customer belongs to. Always set from your token. |
+| `DateCreated` | date | Yes | When the customer was created. Returned by the list/search endpoints (`GetCustomers`, `GetCustomersByOrgId`) when available. |
+| `IdNewAndOldSystem` | string | Yes | Internal identifier bridging legacy and current systems. |
+| `HasBeenExported` | boolean | — | Whether the customer was flagged as exported to accounting. Set by export processing, not by `CreateCustomer`/`UpdateCustomer`; usable as a [`GetCustomers`](get-customers.md) filter. |
+| `FreeUniqueID` | string | No | Free-text identifier field. Also usable as a `GetCustomers` filter. |
+| `FreeZip` | string | No | Secondary postal code field. |
+| `Ucan2ClientID` | int | No | Internal link to the legacy Ucan2 system, if any. |
+| `CreditCardNumber` | string | Yes | Stored card details (masked) used for retainer/standing-order billing. |
+| `CreditCardType` | int | Yes | Card type code. |
+| `NameAccounting`, `EmailAccounting`, `PhoneAccounting` | string | No | Contact details used for external accounting export. |
+| `IsFromLead` | boolean | No | Whether the customer originated from a CRM lead. |
+| `LeadId` | int | No | Linked CRM lead ID. |
+| `HasToken` | boolean | Yes | Whether a saved payment token exists for the customer — the token value itself is never returned. |
+| `PaymentDetailsIsDefault` | boolean | Yes | Whether the stored payment details are the default for the customer. Returned only by `GetFullCustomer`/`GetCustomerById`. |
+
+`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish` and `BranchNameEnglish` are also serialized on `Customer` but are not currently populated by any endpoint — they are always returned empty/default.
 
 ### Create/update result codes
 

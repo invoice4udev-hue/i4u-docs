@@ -3617,12 +3617,33 @@
               "AccountNumber": { "type": "string", "nullable": true },
               "BankName": { "type": "string", "nullable": true },
               "BranchName": { "type": "string", "nullable": true },
-              "BankCode": { "type": "string", "nullable": true },
-              "BranchCode": { "type": "string", "nullable": true },
+              "BankCode": { "type": "string", "nullable": true, "description": "Accepted but not currently linked to stored data — always returned empty." },
+              "BranchCode": { "type": "string", "nullable": true, "description": "Accepted but not currently linked to stored data — always returned empty." },
               "Website": { "type": "string", "nullable": true },
               "InternalNote": { "type": "string", "nullable": true },
               "PrintInternalNoteOnQuote": { "type": "boolean", "nullable": true, "description": "Whether InternalNote is printed on quotes." },
-              "OrgID": { "type": "integer", "readOnly": true }
+              "OrgID": { "type": "integer", "readOnly": true, "description": "Organization the customer belongs to. Always set from your token." },
+              "DateCreated": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true, "readOnly": true, "description": "Returned by GetCustomers/GetCustomersByOrgId when available." },
+              "IdNewAndOldSystem": { "type": "string", "nullable": true, "readOnly": true, "description": "Internal identifier bridging legacy and current systems." },
+              "HasBeenExported": { "type": "boolean", "nullable": true, "description": "Whether the customer was flagged as exported to accounting. Set by export processing, not by CreateCustomer/UpdateCustomer; also usable as a GetCustomers filter." },
+              "FreeUniqueID": { "type": "string", "nullable": true, "description": "Free-text identifier field. Also usable as a GetCustomers filter." },
+              "FreeZip": { "type": "string", "nullable": true, "description": "Secondary postal code field." },
+              "Ucan2ClientID": { "type": "integer", "nullable": true, "description": "Internal link to the legacy Ucan2 system, if any." },
+              "CreditCardNumber": { "type": "string", "nullable": true, "readOnly": true, "description": "Stored card details (masked) used for retainer/standing-order billing." },
+              "CreditCardType": { "type": "integer", "nullable": true, "readOnly": true, "description": "Card type code." },
+              "NameAccounting": { "type": "string", "nullable": true, "description": "Contact name used for external accounting export." },
+              "EmailAccounting": { "type": "string", "nullable": true, "description": "Contact email used for external accounting export." },
+              "PhoneAccounting": { "type": "string", "nullable": true, "description": "Contact phone used for external accounting export." },
+              "IsFromLead": { "type": "boolean", "nullable": true, "description": "Whether the customer originated from a CRM lead." },
+              "LeadId": { "type": "integer", "nullable": true, "description": "Linked CRM lead ID." },
+              "HasToken": { "type": "boolean", "nullable": true, "readOnly": true, "description": "Whether a saved payment token exists for the customer — the token value itself is never returned." },
+              "PaymentDetailsIsDefault": { "type": "boolean", "nullable": true, "readOnly": true, "description": "Whether the stored payment details are the default for the customer. Returned only by GetFullCustomer/GetCustomerById." },
+              "IsUniqueIdValid": { "type": "boolean", "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
+              "IsAutomaicInvoices": { "type": "boolean", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
+              "AddToMailChimp": { "type": "boolean", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
+              "Token": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default. See HasToken." },
+              "BankNameEnglish": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
+              "BranchNameEnglish": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." }
             }
           }
         ]
@@ -3830,7 +3851,7 @@
               "Mobile": { "type": "string", "nullable": true },
               "TaxRate": { "type": "integer", "description": "Legal VAT rate or 0 (tax-exempt)." },
               "BusinessType": { "type": "integer", "nullable": true, "default": 1 },
-              "BundleID": { "type": "integer", "description": "Ignored by the server. The new organization's bundle is always server-assigned (a default trial bundle, overridden by mappings for specific partner integrations)." },
+              "BundleID": { "type": "integer", "description": "Ignored by the server. The new organization's bundle is always server-assigned — bundle 23 (a default trial bundle) by default; some partner integrations map to a different bundle." },
               "ApiKey": { "type": "string", "format": "uuid", "nullable": true, "description": "Pre-provisioned API key for the new account." }
             }
           }

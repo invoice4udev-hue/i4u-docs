@@ -34,7 +34,7 @@ An invalid or missing `token`, **or** an invalid `uniqueToken`, both return `Una
 | `Phone` / `Mobile` | string | No | Contact numbers. |
 | `TaxRate` | int | No | Must be the current legal VAT rate or `0` (tax-exempt). |
 | `BusinessType` | int | No | Business type enum (default `1` — authorized dealer). |
-| `BundleID` | int | No | **Ignored.** The server always assigns the new organization's subscription bundle — a default trial bundle, overridden by server-side mappings for specific partner integrations. Any value you send here is not used. |
+| `BundleID` | int | No | **Ignored.** The server always assigns the new organization's subscription bundle — bundle `23` (a default trial bundle) by default; some partner integrations map to a different bundle. Any value you send here is not used. |
 | `ApiKey` | string (GUID) | No | Pre-provisioned API key for the new account. |
 
 ### Example request
