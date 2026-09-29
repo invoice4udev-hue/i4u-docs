@@ -51,12 +51,18 @@ Content-Type: application/json
         "DocumentType": 3,
         "Total": 117.0,
         "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
-        "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=..."
+        "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
+        "PrintOriginalPDFLink": null,
+        "PrintCertifiedCopyPDFLink": null
       }
     ]
   }
 }
 ```
+
+{% hint style="info" %}
+‫`Print*PDFLink` נקבע רק ב[יצירת מסמך](create-document.md) — הדוח הזה תמיד מקבל שם `null`. בנו את כתובת ה-PDF בעצמכם מתוך `CipherText` / `CipherTextOriginal`; ראו [צפייה במסמך (קישורי PDF)](overview.md#viewing-the-document-pdf-links).‬
+{% endhint %}
 
 ## ‫הערות‬
 

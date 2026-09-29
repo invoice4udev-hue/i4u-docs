@@ -51,9 +51,9 @@
 | `UniqueID` | GUID | ‫GUID ייחודי של המסמך.‬ |
 | `StatusID` / `Status` | int / string | ‫ראו [סטטוסים](document-types.md#statusid).‬ |
 | `Total`, `TotalWithoutTax`, `TotalTaxAmount`, `TotalTaxExempt` | double | ‫סכומים מחושבים.‬ |
-| `CipherText` / `CipherTextOriginal` | string | ‫צפנים לכתובות צפייה/הדפסה.‬ |
-| `PrintOriginalPDFLink` | string | ‫קישור PDF ישיר — מקור.‬ |
-| `PrintCertifiedCopyPDFLink` | string | ‫קישור PDF ישיר — העתק נאמן למקור.‬ |
+| `CipherText` / `CipherTextOriginal` | string | ‫צפנים העומדים בבסיס כתובות ה-PDF לצפייה/הדפסה — קיימים תמיד. ראו [צפייה במסמך (קישורי PDF)](overview.md#viewing-the-document-pdf-links).‬ |
+| `PrintOriginalPDFLink` | string, nullable | ‫קישור PDF ישיר — מקור. מאוכלס רק ביצירת מסמך; `null` בכל מתודה אחרת (השתמשו שם ב-`CipherTextOriginal` במקום).‬ |
+| `PrintCertifiedCopyPDFLink` | string, nullable | ‫קישור PDF ישיר — העתק נאמן למקור. מאוכלס רק ביצירת מסמך; `null` בכל מתודה אחרת (השתמשו שם ב-`CipherText` במקום).‬ |
 | `AllocationNumber` | string | ‫מספר הקצאה מרשות המסים, כאשר רלוונטי.‬ |
 | `Paid`, `CreditAmount`, `Balance` | double | ‫מצב תשלומים/זיכויים.‬ |
 

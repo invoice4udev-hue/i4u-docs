@@ -51,9 +51,9 @@ Full field reference for the `Document` object and its child objects. Fields mar
 | `UniqueID` | GUID | Unique document GUID. |
 | `StatusID` / `Status` | int / string | See [statuses](document-types.md#document-statuses-statusid). |
 | `Total`, `TotalWithoutTax`, `TotalTaxAmount`, `TotalTaxExempt` | double | Calculated totals. |
-| `CipherText` / `CipherTextOriginal` | string | Ciphers for view/print URLs. |
-| `PrintOriginalPDFLink` | string | Direct PDF link — original. |
-| `PrintCertifiedCopyPDFLink` | string | Direct PDF link — certified copy. |
+| `CipherText` / `CipherTextOriginal` | string | Ciphers behind the PDF view/print URLs — always present. See [Viewing the document (PDF links)](overview.md#viewing-the-document-pdf-links). |
+| `PrintOriginalPDFLink` | string, nullable | Direct PDF link — original. Populated only by document creation; `null` on every other endpoint (use `CipherTextOriginal` there instead). |
+| `PrintCertifiedCopyPDFLink` | string, nullable | Direct PDF link — certified copy. Populated only by document creation; `null` on every other endpoint (use `CipherText` there instead). |
 | `AllocationNumber` | string | Israel Tax Authority allocation number, when applicable. |
 | `Paid`, `CreditAmount`, `Balance` | double | Payment/credit state. |
 

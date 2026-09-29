@@ -32,6 +32,7 @@
 | `ItemsIncluded`                                   | boolean       | ‫לא‬   | ‫**מתעלמים ממנו ב-`GetDocuments`** — אין לו השפעה על הכללת `Items` בתוצאות.‬ |
 | `PaymentsIncluded`                                | boolean       | ‫לא‬   | ‫**מתעלמים ממנו ב-`GetDocuments`** — אין לו השפעה על הכללת `Payments` בתוצאות.‬ |
 | `OnlyGeneralClient` / `GeneralClientName`         | bool / string | ‫לא‬   | ‫סינוני לקוח מזדמן.‬                                               |
+| `Limit`                                           | int           | ‫לא‬   | ‫מספר שורות מרבי.‬ |
 
 ## ‫דוגמת בקשה‬
 

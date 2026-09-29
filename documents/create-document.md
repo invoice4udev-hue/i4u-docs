@@ -51,7 +51,7 @@ Content-Type: application/json
       {
         "PaymentType": 1,
         "Amount": 117.00,
-        "Date": "/Date(1783198800000+0300)/",
+        "Date": "/Date(1788210000000+0300)/",
         "NumberOfPayments": 1,
         "PaymentNumber": "4242"
       }

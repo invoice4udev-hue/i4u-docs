@@ -1077,7 +1077,7 @@
                     { "Name": "Pro plan - June", "Quantity": 1, "Price": 117.0 }
                   ],
                   "Payments": [
-                    { "PaymentType": 1, "Amount": 117.0, "Date": "2026-07-05T00:00:00", "NumberOfPayments": 1 }
+                    { "PaymentType": 1, "Amount": 117.0, "Date": "/Date(1788210000000+0300)/", "NumberOfPayments": 1 }
                   ],
                   "AssociatedEmails": [
                     { "Mail": "billing@acme.example", "IsUserMail": false }
@@ -1269,8 +1269,8 @@
               "example": {
                 "dr": {
                   "DocumentType": 3,
-                  "From": "2026-06-01T00:00:00",
-                  "To": "2026-06-30T23:59:59"
+                  "From": "/Date(1780261200000+0300)/",
+                  "To": "/Date(1782853199000+0300)/"
                 },
                 "token": "<token>"
               }
@@ -3569,10 +3569,10 @@
               "TotalWithoutTax": { "type": "number", "format": "double", "readOnly": true },
               "TotalTaxAmount": { "type": "number", "format": "double", "readOnly": true },
               "StatusID": { "type": "integer", "readOnly": true, "description": "1 Open, 2 Closed, 3 FullyCredited, 4 PartiallyCredited, 5 Cancelled." },
-              "PrintOriginalPDFLink": { "type": "string", "readOnly": true, "description": "Direct link to view/print the original PDF: {baseViewUrl}/Views/PDF.aspx?cipher={CipherTextOriginal}. Base view URL is https://newview.invoice4u.co.il on production, https://newviewqa.invoice4u.co.il on QA. No separate Base64/raw-PDF-bytes field exists." },
-              "PrintCertifiedCopyPDFLink": { "type": "string", "readOnly": true, "description": "Direct link to view/print a certified copy: {baseViewUrl}/Views/PDF.aspx?cipher={CipherText}. Same base view URL as PrintOriginalPDFLink." },
-              "CipherText": { "type": "string", "readOnly": true, "description": "Encrypted token identifying this document; used as the cipher query param in PrintCertifiedCopyPDFLink." },
-              "CipherTextOriginal": { "type": "string", "readOnly": true, "description": "Encrypted token identifying this document as the original; used as the cipher query param in PrintOriginalPDFLink." },
+              "PrintOriginalPDFLink": { "type": "string", "nullable": true, "readOnly": true, "description": "Direct link to view/print the original PDF: {baseViewUrl}/Views/PDF.aspx?cipher={CipherTextOriginal}. Base view URL is https://newview.invoice4u.co.il on production, https://newviewqa.invoice4u.co.il on QA. Populated only by document creation (CreateDocument/CreateDocumentWithIdentifierValidation); null on every other endpoint — build the URL yourself from CipherTextOriginal there. No separate Base64/raw-PDF-bytes field exists." },
+              "PrintCertifiedCopyPDFLink": { "type": "string", "nullable": true, "readOnly": true, "description": "Direct link to view/print a certified copy: {baseViewUrl}/Views/PDF.aspx?cipher={CipherText}. Same base view URL as PrintOriginalPDFLink. Populated only by document creation; null on every other endpoint — build the URL yourself from CipherText there." },
+              "CipherText": { "type": "string", "readOnly": true, "description": "Encrypted token identifying this document; used as the cipher query param in PrintCertifiedCopyPDFLink. Always present on every endpoint that returns a Document." },
+              "CipherTextOriginal": { "type": "string", "readOnly": true, "description": "Encrypted token identifying this document as the original; used as the cipher query param in PrintOriginalPDFLink. Always present on every endpoint that returns a Document." },
               "AllocationNumber": { "type": "string", "nullable": true, "readOnly": true },
               "Paid": { "type": "number", "format": "double", "readOnly": true },
               "CreditAmount": { "type": "number", "format": "double", "readOnly": true },

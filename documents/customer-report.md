@@ -51,12 +51,18 @@ Content-Type: application/json
         "DocumentType": 3,
         "Total": 117.0,
         "CipherText": "zKlvEbG4Na3F9XzyXFa%2frM%2bVhJwl4Pwx...",
-        "PrintOriginalPDFLink": "https://newview.invoice4u.co.il/Views/PDF.aspx?cipher=..."
+        "CipherTextOriginal": "TBReFaFsHr1U%2fieSEr89F0G1N3P78jMtL...",
+        "PrintOriginalPDFLink": null,
+        "PrintCertifiedCopyPDFLink": null
       }
     ]
   }
 }
 ```
+
+{% hint style="info" %}
+`Print*PDFLink` is set only by [document creation](create-document.md) — this report always carries `null` there. Build the PDF URL yourself from `CipherText` / `CipherTextOriginal`; see [Viewing the document (PDF links)](overview.md#viewing-the-document-pdf-links).
+{% endhint %}
 
 ## Notes
 
