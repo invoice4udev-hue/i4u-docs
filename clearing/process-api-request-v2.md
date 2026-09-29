@@ -66,7 +66,7 @@ The clearing provider is the one configured on your terminal — one of the supp
 | `Sum` | double | **Yes** | Amount to charge. |
 | `CreditCardCompanyType` | int | No | Optional card-company code copied onto the internal charge record when greater than 0. It does **not** select the clearing provider — the provider used is your organization's configured clearing account (Cardcom, UPay or Meshulam). Leave unset unless directed otherwise by Invoice4U support. |
 | `Currency` | string | No | `"NIS"` (default), `"USD"`, `"EUR"`. |
-| `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments. Refunds are **not** triggered by `Type` — use `Refund: true` (see [Refunds](#refunds)); the server sets an internal value of `4` automatically in that case, so leave `Type` unset for a regular charge. |
+| `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments. `4` is internal and provider-specific — don't send it. To refund, use `Refund: true` + `PaymentId` (see [Refunds](#refunds)). |
 | `PaymentsNum` | int | No | Number of installments when `Type` is 2/3. |
 | `Description` | string | No | Charge description (shown on page/document). |
 | `IsQaMode` | boolean | No | `true` when testing against QA. |
