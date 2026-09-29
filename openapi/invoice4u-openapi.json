@@ -3606,9 +3606,15 @@
               "ExtNumber": { "type": "integer", "format": "int64", "nullable": true, "description": "Your external customer number. Unique per organization." },
               "Active": { "type": "boolean" },
               "PayTerms": { "type": "integer", "description": "Payment terms in days (0 = due now, 30 = EOM+30, ...)." },
+              "Retainer": { "type": "boolean", "description": "Whether the customer is on retainer." },
+              "RetainerAmount": { "type": "number", "format": "double", "nullable": true, "description": "Retainer amount." },
+              "RetainerTitle": { "type": "string", "nullable": true, "description": "Retainer title/label." },
               "IsNonUniqueNameCreation": { "type": "boolean", "nullable": true, "description": "Allow duplicate names. Default false." },
               "Guid": { "type": "string", "nullable": true, "description": "Your external GUID. Unique per organization." },
               "ClientCode": { "type": "integer" },
+              "Discount": { "type": "number", "format": "double", "nullable": true, "readOnly": true, "description": "Default discount, resolved from the customer's assigned pricelist. Returned only by GetFullCustomer/GetCustomerById." },
+              "DiscountType": { "type": "integer", "readOnly": true, "description": "Discount type, resolved from the customer's assigned pricelist. Returned only by GetFullCustomer/GetCustomerById." },
+              "PricelistID": { "type": "integer", "nullable": true, "readOnly": true, "description": "Assigned pricelist ID. Returned only by GetFullCustomer/GetCustomerById." },
               "ContactFirstName": { "type": "string", "nullable": true },
               "ContactLastName": { "type": "string", "nullable": true },
               "ContactName": { "type": "string", "nullable": true },
@@ -3643,7 +3649,8 @@
               "AddToMailChimp": { "type": "boolean", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
               "Token": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default. See HasToken." },
               "BankNameEnglish": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
-              "BranchNameEnglish": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." }
+              "BranchNameEnglish": { "type": "string", "nullable": true, "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default." },
+              "FreeBalance": { "type": "number", "format": "double", "readOnly": true, "description": "Not currently populated by any endpoint — always returned empty/default (0)." }
             }
           }
         ]

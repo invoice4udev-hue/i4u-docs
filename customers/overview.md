@@ -62,7 +62,7 @@ The API also serializes these `Customer` fields in every response. Fields marked
 | `HasToken` | boolean | Yes | Whether a saved payment token exists for the customer — the token value itself is never returned. |
 | `PaymentDetailsIsDefault` | boolean | Yes | Whether the stored payment details are the default for the customer. Returned only by `GetFullCustomer`/`GetCustomerById`. |
 
-`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish` and `BranchNameEnglish` are also serialized on `Customer` but are not currently populated by any endpoint — they are always returned empty/default.
+`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish`, `BranchNameEnglish` and `FreeBalance` are also serialized on `Customer` but are not currently populated by any endpoint — they are always returned empty/default.
 
 ### Create/update result codes
 

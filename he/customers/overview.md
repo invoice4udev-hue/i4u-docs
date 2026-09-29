@@ -62,7 +62,7 @@
 | `HasToken` | boolean | ‫כן‬ | ‫האם קיים טוקן תשלום שמור ללקוח — ערך הטוקן עצמו אינו מוחזר לעולם.‬ |
 | `PaymentDetailsIsDefault` | boolean | ‫כן‬ | ‫האם פרטי התשלום המאוחסנים הם ברירת המחדל של הלקוח. מוחזר רק על ידי `GetFullCustomer`/`GetCustomerById`.‬ |
 
-‫`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish` ו-`BranchNameEnglish` מסריאליזים גם הם על `Customer` אך אינם מאוכלסים כרגע על ידי אף מתודה — הם תמיד מוחזרים ריקים/כברירת מחדל.‬
+‫`IsUniqueIdValid`, `IsAutomaicInvoices`, `AddToMailChimp`, `Token`, `BankNameEnglish`, `BranchNameEnglish` ו-`FreeBalance` מסריאליזים גם הם על `Customer` אך אינם מאוכלסים כרגע על ידי אף מתודה — הם תמיד מוחזרים ריקים/כברירת מחדל.‬
 
 ### ‫קודי תוצאה ביצירה/עדכון‬ {#createupdate-result-codes}
 
