@@ -114,5 +114,20 @@ Content-Type: application/json
 {% openapi-operation spec="invoice4u-api" path="/CreateOrUpdateDraftDocument" method="post" %}
 {% endopenapi-operation %}
 
+{% openapi-operation spec="invoice4u-api" path="/GetDraftDocument" method="post" %}
+{% endopenapi-operation %}
+
 {% openapi-operation spec="invoice4u-api" path="/GetDraftDocuments" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/CheckIfDraftExistsByDocumentType" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/DeleteDraftDocument" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/DeleteDraftDocuments" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetPreviewDocumentByToken" method="post" %}
 {% endopenapi-operation %}

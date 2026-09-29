@@ -98,3 +98,8 @@ flowchart LR
 | `ApiApplePayNotAllowedForUser` (317) | Apple Pay not enabled on the account. |
 | `ClearingTerminalDoesntExists` (96) | No active/valid clearing terminal (missing terminal/username/password). |
 | `ClearingError` (32) | Payment declined / provider error — details in `Paramters`. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}

@@ -140,3 +140,8 @@ Content-Type: application/json
 - ‫היסטוריית התנועות נרשמת לצורכי ביקורת.‬
 
 ‫ראו [דוחות מלאי](reports.md) כדי לבצע שאילתות על דוחות עלות ולאמת תנועות מלאי.‬
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/ReceiveToStock" method="post" %}
+{% endopenapi-operation %}

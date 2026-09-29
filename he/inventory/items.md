@@ -395,3 +395,20 @@ Content-Type: application/json
 | ---------- | ------- |
 | `InventorySerialNumberItemExistsForUser` (402) | ‫פריט אחר כבר משתמש ב-`SerialNumber` הזה עבור הארגון.‬ |
 | `InventoryCodeItemExistsForUser` (404) | ‫פריט אחר כבר משתמש ב-`Code` הזה עבור הארגון.‬ |
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetActiveInventoryItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryItem" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/CreateInventoryItem" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateInventoryItem" method="post" %}
+{% endopenapi-operation %}

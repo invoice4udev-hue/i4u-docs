@@ -120,3 +120,6 @@
 
 {% openapi-operation spec="invoice4u-api" path="/GetClearingLogByParams" method="post" %}
 {% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestClearingLogInsertREST_V2" method="get" %}
+{% endopenapi-operation %}

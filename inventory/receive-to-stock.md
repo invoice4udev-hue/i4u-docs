@@ -140,3 +140,8 @@ When a `DocumentType: 10` receipt is recorded:
 - Movement history is logged for audit purposes.
 
 See [Inventory Reports](reports.md) to query cost reports and verify stock movements.
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/ReceiveToStock" method="post" %}
+{% endopenapi-operation %}

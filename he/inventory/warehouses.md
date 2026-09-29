@@ -178,3 +178,14 @@ Content-Type: application/json
 ### ‫שגיאות‬
 
 ‫טוקן לא תקין/חסר מחזיר `null`. חשבון שפג תוקפו או רכיב מלאי כבוי מחזירים מערך בעל איבר אחד הנושא את `UnauthorizedUser` (80) או `UnauthorizedInventoryAttempt` (403) בהתאמה — ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/CreateWarehouse" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateWarehouse" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetWarehouses" method="post" %}
+{% endopenapi-operation %}

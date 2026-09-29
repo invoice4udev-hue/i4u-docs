@@ -116,3 +116,8 @@ flowchart LR
 | `ApiTokenWasCreatedChargeFailed` (313) | Token stored, charge declined. |
 | `ApiChargeAttemptPhoneInvalid` (314) | `AddToken`/`AddTokenAndCharge` (Meshulam, Cardcom): the hosted card-capture page failed, often due to invalid phone/customer data. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting mode flags. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}

@@ -421,3 +421,8 @@ curl -X POST "https://shop.example/api/i4u-recurring" \
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות (או שתוקפן פג) על המסוף.‬ |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫טוקנים לא מופעלים (או שתוקפם פג) על המסוף.‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלים סותרים, למשל `AddTokenAndCharge` + `IsStandingOrderClearance`.‬ |
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}

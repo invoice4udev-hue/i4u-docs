@@ -98,3 +98,8 @@ flowchart LR
 | `ApiApplePayNotAllowedForUser` (317) | ‫Apple Pay לא מופעל בחשבון.‬ |
 | `ClearingTerminalDoesntExists` (96) | ‫אין מסוף סליקה פעיל ותקין (חסר מסוף/שם משתמש/סיסמה).‬ |
 | `ClearingError` (32) | ‫התשלום נדחה / שגיאת ספק — פרטים ב-`Paramters`.‬ |
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}

@@ -366,3 +366,20 @@ Content-Type: application/json
 | Inactive Inventory module | One-element array carrying `UnauthorizedInventoryAttempt` (403) |
 
 See [module-inactive behavior](overview.md#module-inactive-behavior) for why the invalid-token and expired-token cases differ.
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryCostReport" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetTopSoldItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetHighestByValue" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetItemsMovementReport" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetTotalMovementReport" method="post" %}
+{% endopenapi-operation %}

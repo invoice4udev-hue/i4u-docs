@@ -109,10 +109,25 @@ Content-Type: application/json
 | `DraftDocumentDeleteError` (135) | ‫הטיוטה לא נמצאה / לא ניתן היה למחוק (פר `docId`).‬ |
 | `GeneralError` (0) | ‫שגיאת שרת.‬ |
 
-## נסו את זה
+## ‫נסו את זה‬
 
 {% openapi-operation spec="invoice4u-api" path="/CreateOrUpdateDraftDocument" method="post" %}
 {% endopenapi-operation %}
 
+{% openapi-operation spec="invoice4u-api" path="/GetDraftDocument" method="post" %}
+{% endopenapi-operation %}
+
 {% openapi-operation spec="invoice4u-api" path="/GetDraftDocuments" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/CheckIfDraftExistsByDocumentType" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/DeleteDraftDocument" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/DeleteDraftDocuments" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetPreviewDocumentByToken" method="post" %}
 {% endopenapi-operation %}

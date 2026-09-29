@@ -395,3 +395,20 @@ An invalid/missing token returns `null`. An expired account or an inactive Inven
 | ---------- | ------- |
 | `InventorySerialNumberItemExistsForUser` (402) | Another item already uses this `SerialNumber` for the organization. |
 | `InventoryCodeItemExistsForUser` (404) | Another item already uses this `Code` for the organization. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetActiveInventoryItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryItem" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/CreateInventoryItem" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateInventoryItem" method="post" %}
+{% endopenapi-operation %}

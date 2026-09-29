@@ -116,3 +116,8 @@ flowchart LR
 | `ApiTokenWasCreatedChargeFailed` (313) | ‫הטוקן נשמר, החיוב נדחה.‬ |
 | `ApiChargeAttemptPhoneInvalid` (314) | ‫`AddToken`/`AddTokenAndCharge` (משולם, קארדקום): דף לכידת הכרטיס המתארח נכשל, לרוב עקב מספר טלפון/פרטי לקוח שגויים.‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלי מצב סותרים.‬ |
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}

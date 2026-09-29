@@ -366,3 +366,20 @@ Content-Type: application/json
 | ‫רכיב מלאי כבוי‬ | ‫מערך בעל איבר אחד הנושא את `UnauthorizedInventoryAttempt` (403)‬ |
 
 ‫ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior) להסבר מדוע מקרי הטוקן הלא-תקין והטוקן שפג תוקפו שונים זה מזה.‬
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryCostReport" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetTopSoldItems" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetHighestByValue" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetItemsMovementReport" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetTotalMovementReport" method="post" %}
+{% endopenapi-operation %}

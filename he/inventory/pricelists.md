@@ -367,3 +367,23 @@ Content-Type: application/json
 ### ‫שגיאות‬
 
 ‫מתודה זו אף פעם לא מחזירה אובייקט שגיאה — היא מחזירה את הבוליאני `false` הפשוט עבור טוקן לא תקין, חשבון שפג תוקפו, רכיב מלאי כבוי, או כל שגיאת שרת. אין דרך להבחין בין המקרים הללו מתוך התשובה בלבד; ראו [התנהגות כאשר רכיב המלאי כבוי](overview.md#module-inactive-behavior).‬
+
+## ‫נסו את זה‬
+
+{% openapi-operation spec="invoice4u-api" path="/AddInventoryPricelist" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateInventoryPricelist" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelists" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelistByCustomerId" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelistByCustomerIds" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/RemoveCustomerFromInventoryPricelist" method="post" %}
+{% endopenapi-operation %}

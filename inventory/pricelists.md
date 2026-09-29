@@ -367,3 +367,23 @@ Content-Type: application/json
 ### Errors
 
 This endpoint never returns an error object — it returns the plain boolean `false` on an invalid token, an expired account, an inactive Inventory module, or any server error. There is no way to distinguish those cases from the response alone; see [module-inactive behavior](overview.md#module-inactive-behavior).
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/AddInventoryPricelist" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateInventoryPricelist" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelists" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelistByCustomerId" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetInventoryPricelistByCustomerIds" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/RemoveCustomerFromInventoryPricelist" method="post" %}
+{% endopenapi-operation %}

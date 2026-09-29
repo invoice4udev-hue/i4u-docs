@@ -178,3 +178,14 @@ Content-Type: application/json
 ### Errors
 
 An invalid/missing token returns `null`. An expired account or an inactive Inventory module returns a one-element array carrying `UnauthorizedUser` (80) or `UnauthorizedInventoryAttempt` (403) respectively — see [module-inactive behavior](overview.md#module-inactive-behavior).
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/CreateWarehouse" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/UpdateWarehouse" method="post" %}
+{% endopenapi-operation %}
+
+{% openapi-operation spec="invoice4u-api" path="/GetWarehouses" method="post" %}
+{% endopenapi-operation %}

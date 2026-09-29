@@ -421,3 +421,8 @@ No. At most 120 monthly charge dates are created. To continue after it ends, cre
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | Standing orders not enabled (or expired) on the terminal. |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Tokens not enabled (or expired) on the terminal. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting flags, e.g. `AddTokenAndCharge` + `IsStandingOrderClearance`. |
+
+## Try it
+
+{% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
+{% endopenapi-operation %}
