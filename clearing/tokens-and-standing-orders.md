@@ -8,7 +8,7 @@ Tokenization must be enabled on your clearing terminal. Otherwise you get `ApiTo
 
 ## Save a token — `AddToken`
 
-Opens a hosted page that captures the card and stores a token, **without charging**.
+Opens a hosted page that captures the card and stores a token, **without charging**. On Meshulam and Cardcom, a failed capture can return `ApiChargeAttemptPhoneInvalid` (314) — check the customer's phone number and retry.
 
 ```json
 {
@@ -46,7 +46,7 @@ flowchart LR
 
 ## Save + charge — `AddTokenAndCharge`
 
-Same as above but also charges `Sum` immediately. Cannot be combined with `IsStandingOrderClearance` (`ApiBadRequestChargeMethodMustBeSelected`, 319).
+Same as above but also charges `Sum` immediately. Cannot be combined with `IsStandingOrderClearance` (`ApiBadRequestChargeMethodMustBeSelected`, 319). On Meshulam and Cardcom, a failed card-capture attempt can return `ApiChargeAttemptPhoneInvalid` (314) — check the customer's phone number and retry.
 
 ```mermaid
 flowchart LR
@@ -85,7 +85,7 @@ Server-to-server, synchronous — no redirect:
 }
 ```
 
-The stored token for the customer is resolved automatically. A stored token must exist for the customer — otherwise `ApiTokenDoesntExistForThatCustomer` (304). Saving a new card for the customer **replaces** the previous token, so at most one token is kept per customer. On success the response carries the confirmation and, with `IsDocCreate`, the created document fields. If the token was created but a follow-up charge failed: `ApiTokenWasCreatedChargeFailed` (313).
+The stored token for the customer is resolved automatically. `CustomerId` is **required** — every provider integration dereferences it to find the stored token, so omitting it fails without a clean API error. A stored token must exist for the customer — otherwise `ApiTokenDoesntExistForThatCustomer` (304). Saving a new card for the customer **replaces** the previous token, so at most one token is kept per customer. On success the response carries the confirmation and, with `IsDocCreate`, the created document fields. If the token was created but a follow-up charge failed: `ApiTokenWasCreatedChargeFailed` (313).
 
 ```mermaid
 flowchart LR
@@ -114,4 +114,5 @@ flowchart LR
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Tokens not enabled on the terminal (or token feature expired). |
 | `ApiTokenDoesntExistForThatCustomer` (304) | No (or multiple) stored token for the customer. |
 | `ApiTokenWasCreatedChargeFailed` (313) | Token stored, charge declined. |
+| `ApiChargeAttemptPhoneInvalid` (314) | `AddToken`/`AddTokenAndCharge` (Meshulam, Cardcom): the hosted card-capture page failed, often due to invalid phone/customer data. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting mode flags. |

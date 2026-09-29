@@ -8,7 +8,7 @@
 
 ## ‫שמירת טוקן — `AddToken`‬
 
-‫פותח דף מתארח שקולט את הכרטיס ושומר טוקן, **ללא חיוב**.‬
+‫פותח דף מתארח שקולט את הכרטיס ושומר טוקן, **ללא חיוב**. במשולם ובקארדקום, ניסיון לכידה כושל עשוי להחזיר `ApiChargeAttemptPhoneInvalid` ‏(314) — בדקו את מספר הטלפון של הלקוח ונסו שוב.‬
 
 ```json
 {
@@ -29,7 +29,7 @@
 
 ## ‫שמירה + חיוב — `AddTokenAndCharge`‬
 
-‫זהה לקודם אך גם מחייב את `Sum` מיידית. לא ניתן לשלב עם `IsStandingOrderClearance` ‏(`ApiBadRequestChargeMethodMustBeSelected`, 319).‬
+‫זהה לקודם אך גם מחייב את `Sum` מיידית. לא ניתן לשלב עם `IsStandingOrderClearance` ‏(`ApiBadRequestChargeMethodMustBeSelected`, 319). במשולם ובקארדקום, ניסיון לכידה כושל עשוי להחזיר `ApiChargeAttemptPhoneInvalid` ‏(314) — בדקו את מספר הטלפון של הלקוח ונסו שוב.‬
 
 ## ‫חיוב טוקן שמור — `ChargeWithToken`‬
 
@@ -49,7 +49,7 @@
 }
 ```
 
-‫הטוקן השמור של הלקוח מזוהה אוטומטית. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).‬
+‫הטוקן השמור של הלקוח מזוהה אוטומטית. `CustomerId` **חובה** — כל אינטגרציית ספק דורשת אותו כדי לאתר את הטוקן השמור, ולכן השמטתו נכשלת ללא שגיאת API נקייה. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).‬
 
 ## ‫קשור‬
 
@@ -62,4 +62,5 @@
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג).‬ |
 | `ApiTokenDoesntExistForThatCustomer` (304) | ‫אין טוקן שמור (או שיש כמה) עבור הלקוח.‬ |
 | `ApiTokenWasCreatedChargeFailed` (313) | ‫הטוקן נשמר, החיוב נדחה.‬ |
+| `ApiChargeAttemptPhoneInvalid` (314) | ‫`AddToken`/`AddTokenAndCharge` (משולם, קארדקום): דף לכידת הכרטיס המתארח נכשל, לרוב עקב מספר טלפון/פרטי לקוח שגויים.‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלי מצב סותרים.‬ |

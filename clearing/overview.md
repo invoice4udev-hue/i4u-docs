@@ -4,13 +4,12 @@ The clearing API charges credit cards (and Bit / Google Pay / Apple Pay) through
 
 ### Supported clearing companies
 
-The clearing API supports **four providers** — the one configured on your account is used automatically:
+The clearing API supports **three providers** — the one configured on your account is used automatically:
 
 | `ClearingCompanies` value | Company |
 | ------------------------- | ------- |
 | `6` | UPay |
 | `7` | Meshulam |
-| `12` | YaadSarig |
 | `15` | Cardcom |
 
 The flow is identical from your side regardless of provider. The numeric value appears in [clearing logs](clearing-logs.md) as `ClearingCompany`.
@@ -65,6 +64,6 @@ flowchart LR
 
 ### Prerequisites
 
-* A clearing account configured and active on your organization (`GetClearingAccount` returns it).
+* A clearing account configured and active on your organization (set up in the Invoice4U web application).
 * For tokens / standing orders: the token / standing-order feature enabled on your clearing terminal (`ApiTokenizationNotApprovedInClearingTerminal` 309 / `ApiStandingOrderNotApprovedInClearingTerminal` 310 otherwise).
 * For Bit / Google Pay / Apple Pay: see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) — wallet methods need account enablement and vendor support.

@@ -51,9 +51,9 @@ flowchart LR
     classDef page fill:#F5F5F5,stroke:#999,color:#333
 
     A[ProcessApiRequestV2<br/>IsBitPayment]:::step --> B{Auth + account OK?}:::dec
-    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingTerminalDoesntExists 96]:::err
     B -- ✓ --> C{Terminal<br/>supports Bit?}:::dec
-    C -- ✗ --> E2[ClearingCompanyUndefined 8]:::err
+    C -- ✗ --> E2[ClearingTerminalDoesntExists 96]:::err
     C -- ✓ --> D[🖥 Bit page — QR /<br/>app handoff]:::page
     D --> F[Customer approves<br/>in Bit app]:::step
     F --> G{Payment OK?}:::dec
@@ -72,7 +72,7 @@ flowchart LR
     classDef page fill:#F5F5F5,stroke:#999,color:#333
 
     A[ProcessApiRequestV2<br/>IsGooglePay / IsApplePay]:::step --> B{Auth + account OK?}:::dec
-    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingCompanyUndefined 8]:::err
+    B -- ✗ --> E1[UnauthorizedUser 80<br/>ClearingTerminalDoesntExists 96]:::err
     B -- ✓ --> C{Wallet enabled<br/>on account?}:::dec
     C -- "GPay off" --> E2[ApiGooglePayNotAllowedForUser 316]:::err
     C -- "APay off" --> E3[ApiApplePayNotAllowedForUser 317]:::err
@@ -86,8 +86,8 @@ flowchart LR
 
 * **Account enablement required.** Google Pay and Apple Pay must be activated on your Invoice4U account — otherwise the request is rejected before reaching the provider (`ApiGooglePayNotAllowedForUser` 316 / `ApiApplePayNotAllowedForUser` 317).
 * **Vendor support varies.** Not every clearing provider supports every wallet — availability depends on the clearing company and terminal configured on your account. Confirm with Invoice4U support which methods your terminal supports before integrating.
-* **Hosted page only.** Wallet payments cannot be combined with `ChargeWithToken` — the customer must complete the payment interactively.
-* **No installments.** Wallet charges are single-payment; `Type`/`PaymentsNum` installment options apply to card clearing only.
+* **Hosted page only.** Wallet payments are designed for the interactive hosted page; the API does not validate or reject combining wallet flags with `ChargeWithToken` — behavior in that case is provider-dependent and unsupported, so don't combine them.
+* **No installments.** Wallet charges are intended as single-payment. The API does not validate this either — sending `PaymentsNum`/`Type` installment options alongside a wallet flag has provider-dependent, unspecified behavior; treat wallets as single-payment only.
 * Documents created for these charges record the payment with the matching payment type (e.g. Bit appears as payment type Bit/Other on the document), and the [clearing log](clearing-logs.md) rows carry the `IsBitPayment` / `IsGooglePay` / `IsApplePay` flags for reconciliation.
 
 ## Errors
@@ -96,5 +96,5 @@ flowchart LR
 | ---------- | ------- |
 | `ApiGooglePayNotAllowedForUser` (316) | Google Pay not enabled on the account. |
 | `ApiApplePayNotAllowedForUser` (317) | Apple Pay not enabled on the account. |
-| `ClearingCompanyUndefined` (8) | No active clearing account, or the terminal doesn't support the requested method. |
+| `ClearingTerminalDoesntExists` (96) | No active clearing account, or the terminal doesn't support the requested method. |
 | `ClearingError` (32) | Payment declined / provider error — details in `Paramters`. |

@@ -53,7 +53,7 @@ flowchart LR
 | `ReturnUrl` | string | ‫כן‬ | ‫לאן הדפדפן של הלקוח חוזר אחרי דף הכרטיס.‬ |
 | `CustomerId` / `IsAutoCreateCustomer` | int / boolean | ‫מומלץ‬ | ‫הטוקן השמור והוראת הקבע נקשרים ללקוח שזוהה; כל מסמך חוזר מופק ללקוח הזה ונשלח לכתובות המייל שבכרטיס הלקוח.‬ |
 | `FullName` / `Phone` / `Email` | string | ‫**כן** (בלי `CustomerId`)‬ | ‫פרטי המשלם, כמו בכל בקשת דף מתארח.‬ |
-| `CreditCardCompanyType` | int | ‫**כן**‬ | ‫חברת הסליקה שלכם: `6` UPay, ‏`7` משולם, ‏`15` קארדקום.‬ |
+| `CreditCardCompanyType` | int | ‫לא‬ | ‫קוד חברת כרטיס אשראי אופציונלי, מועתק לרשומת החיוב הפנימית כשהוא גדול מ-0. הוא **אינו** בוחר את הספק — הספק בו נעשה שימוש הוא חשבון הסליקה המוגדר בארגון שלכם (קארדקום, UPay או משולם). השאירו ללא הגדרה אלא אם צוין אחרת על ידי תמיכת Invoice4U.‬ |
 
 {% hint style="warning" %}
 * ‫**אל תשלחו** `Type` = 2/3 או `PaymentsNum` גדול מ-1 — תשלומים משנים את סוג העסקה מיצירת טוקן לעסקת תשלומים.‬
@@ -71,7 +71,6 @@ Content-Type: application/json
 {
   "request": {
     "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
-    "CreditCardCompanyType": 7,
     "IsStandingOrderClearance": true,
     "Sum": 99.0,
     "StandingOrderDuration": 12,

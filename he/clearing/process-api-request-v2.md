@@ -24,7 +24,7 @@
 | --- | ----- | ---- | ----- |
 | `Sum` | double | ‫**כן**‬ | ‫הסכום לחיוב.‬ |
 | `Currency` | string | ‫לא‬ | `"NIS"` (ברירת מחדל), `"USD"`, `"EUR"`. |
-| `Type` | int | ‫לא‬ | `1` רגיל (ברירת מחדל), `2` תשלומים, `3` תשלומי קרדיט, `4` זיכוי. |
+| `Type` | int | ‫לא‬ | `1` רגיל (ברירת מחדל), `2` תשלומים, `3` תשלומי קרדיט. זיכויים נשלטים אך ורק על ידי `Refund: true` (ראו [זיכויים](#refunds)) — הגדרת `Type` לערך `4` אינה יוצרת זיכוי; השרת קובע ערך פנימי `4` אוטומטית במקרה כזה, לכן השאירו את `Type` ללא הגדרה בחיוב רגיל. |
 | `PaymentsNum` | int | ‫לא‬ | ‫מספר תשלומים כאשר `Type` הוא 2/3.‬ |
 | `Description` | string | ‫לא‬ | ‫תיאור החיוב (מוצג בדף/במסמך).‬ |
 | `IsQaMode` | boolean | ‫לא‬ | `true` בבדיקות מול QA. |
@@ -40,7 +40,7 @@
 | `FullName` | string | ‫מותנה‬ | ‫שם מלא של הלקוח (חובה כשאין `CustomerId`). לא נבדק מראש על ידי ה-API; ערך חסר ייכשל בהמשך אצל ספק הסליקה.‬ |
 | `Phone` | string | ‫מותנה‬ | ‫טלפון הלקוח (משמש ל-SMS/זיהוי בדף התשלום). לא נבדק מראש על ידי ה-API; ערך חסר ייכשל בהמשך אצל ספק הסליקה.‬ |
 | `Email` | string | ‫לא‬ | ‫אימייל הלקוח — מקבל את המסמך.‬ |
-| `IsAutoCreateCustomer` | boolean | ‫לא‬ | ‫איתור-או-יצירה של רשומת לקוח אמיתית לפי טלפון/אימייל; אחרת החיוב משתמש בלקוח מזדמן.‬ |
+| `IsAutoCreateCustomer` | boolean | ‫לא‬ | ‫מאתר לקוח קיים לפי טלפון; אם לא נמצאת התאמה, נוצרת רשומת לקוח חדשה מתוך `FullName`/`Phone`/`Email`. התאמה לפי אימייל בלבד אינה נתמכת כרגע — ספקו `Phone` להתאמה אמינה. בלי הדגל הזה, החיוב משתמש בלקוח מזדמן.‬ |
 | `IsGeneralClient` | boolean | ‫לא (ברירת מחדל `true`)‬ | ‫המסמך מופק ללקוח מזדמן.‬ |
 
 ### ‫הפניות וקולבקים‬
@@ -119,7 +119,7 @@ Content-Type: application/json
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
 | `Refund` | boolean | ‫כן‬ | ‫מצב זיכוי.‬ |
-| `PaymentId` | string | ‫תלוי-ספק‬ | ‫אסמכתת התשלום/העסקה המקורית (חובה ב-UPay).‬ |
+| `PaymentId` | string | ‫כן‬ | ‫אסמכתת התשלום של החיוב המקורי — חובה בכל זיכוי, אצל כל ספק; משמשת לאיתור רשומת לוג הסליקה (`PaymentIDDoesntExists`, 60, כשלא נמצאת).‬ |
 | `Sum` | double | ‫כן‬ | ‫הסכום לזיכוי — לא יעלה על היתרה שטרם זוכתה.‬ |
 
 ‫מגבלות זיכוי: זיכויי קארדקום נבדקים מול היתרה שנותרה; זיכויי UPay אפשריים עד 5 חודשים מהחיוב (`ClearingErrorRefundTimeExceeded`, 158).‬
@@ -130,7 +130,7 @@ Content-Type: application/json
 | ---------- | ------- |
 | `EmptyObjectInRequest` (146) | ‫גוף הבקשה חסר.‬ |
 | `UnauthorizedUser` (80) | ‫מפתח API / פרטי גישה שגויים.‬ |
-| `ClearingCompanyUndefined` (8) | ‫אין חשבון סליקה פעיל, או שהחשבון מוגדר שגוי.‬ |
+| `ClearingTerminalDoesntExists` (96) | ‫אין חשבון סליקה, או שהמסוף של הספק שלכם מוגדר שגוי (חסר מסוף/שם משתמש/סיסמה).‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלים סותרים (למשל `AddTokenAndCharge` + `IsStandingOrderClearance`).‬ |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫פיצ'רי טוקן לא מופעלים על המסוף.‬ |
 | `ApiStandingOrderNotApprovedInClearingTerminal` (310) | ‫הוראות קבע לא מופעלות.‬ |
@@ -138,6 +138,7 @@ Content-Type: application/json
 | `NumberOfItemsIsNotEqual` (24) | ‫רשימות ה-`DocItem*` באורכים שונים.‬ |
 | `ClearingError` (32) | ‫החיוב נדחה / שגיאת ספק — פרטים ב-`Paramters`.‬ |
 | `ClearingErrorRefundTimeExceeded` (158) | ‫חלון הזיכוי חלף.‬ |
+| `ApiChargeAttemptPhoneInvalid` (314) | ‫`AddToken`/`AddTokenAndCharge` (משולם, קארדקום): דף לכידת הכרטיס המתארח נכשל, לרוב עקב מספר טלפון/פרטי לקוח שגויים.‬ |
 
 ## ‫נסו את זה‬
 

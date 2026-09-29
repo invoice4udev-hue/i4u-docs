@@ -53,7 +53,7 @@ flowchart LR
 | `ReturnUrl` | string | Yes | Where the customer's browser returns after the card page. |
 | `CustomerId` / `IsAutoCreateCustomer` | int / boolean | Recommended | The saved token and the standing order are attached to the resolved customer; each recurring document is issued to that customer and emailed to the addresses on its customer card. |
 | `FullName` / `Phone` / `Email` | string | **Yes** (without `CustomerId`) | Payer details, as for any hosted-page request. |
-| `CreditCardCompanyType` | int | **Yes** | Your provider: `6` UPay, `7` Meshulam, `15` Cardcom. |
+| `CreditCardCompanyType` | int | No | Optional card-company code copied onto the internal charge record when greater than 0. It does **not** select the provider — the provider used is your organization's configured clearing account (Cardcom, UPay or Meshulam). Leave unset unless directed otherwise by Invoice4U support. |
 
 {% hint style="warning" %}
 * **Don't send** `Type` = 2/3 or `PaymentsNum` > 1 — installments change the transaction type from token creation to an installments transaction.
@@ -71,7 +71,6 @@ Content-Type: application/json
 {
   "request": {
     "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
-    "CreditCardCompanyType": 7,
     "IsStandingOrderClearance": true,
     "Sum": 99.0,
     "StandingOrderDuration": 12,

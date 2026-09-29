@@ -30,7 +30,7 @@ flowchart LR
     D -- ✓ --> F{Customer}:::dec
     F -- "name/email/phone unresolvable" --> E4[CustomerNotFound 136]:::err
     F -- "CustomerId ✓" --> H[Customer resolved]:::step
-    F -- "IsAutoCreateCustomer" --> G[Find by phone → email<br/>→ create if missing]:::step --> H
+    F -- "IsAutoCreateCustomer" --> G[Find by phone<br/>→ create if missing]:::step --> H
     F -- "neither" --> G2[General one-off<br/>customer]:::step --> H
     H --> I{IsDocCreate +<br/>manual items valid?}:::dec
     I -- ✗ --> E5[NumberOfItemsIsNotEqual 24]:::err
@@ -57,16 +57,16 @@ flowchart LR
 Clearing requires an **active clearing account (terminal)** on your organization, and the customer identifiers below (`FullName`, `Phone`, `Email`) — they are used to authenticate the payer at the clearing terminal and for payment-page identification.
 {% endhint %}
 
-The clearing provider is the one configured on your terminal — one of the four supported companies (`ClearingCompanies`): **UPay (6)**, **Meshulam (7)**, **YaadSarig (12)** or **Cardcom (15)**. The request is identical for all of them; the API routes to your provider automatically.
+The clearing provider is the one configured on your terminal — one of the supported companies (`ClearingCompanies`): **Cardcom (15)**, **UPay (6)** or **Meshulam (7)**. The request is identical for all of them; the API routes to your provider automatically based on your organization's configured clearing account.
 
 ### Charge details
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `Sum` | double | **Yes** | Amount to charge. |
-| `CreditCardCompanyType` | int | **Yes** | Your clearing company type (`ClearingCompanies`): `6` UPay, `7` Meshulam, `12` YaadSarig, `15` Cardcom — must match the provider configured on your terminal. |
+| `CreditCardCompanyType` | int | No | Optional card-company code copied onto the internal charge record when greater than 0. It does **not** select the clearing provider — the provider used is your organization's configured clearing account (Cardcom, UPay or Meshulam). Leave unset unless directed otherwise by Invoice4U support. |
 | `Currency` | string | No | `"NIS"` (default), `"USD"`, `"EUR"`. |
-| `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments, `4` Refund. |
+| `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments. Refunds are **not** triggered by `Type` — use `Refund: true` (see [Refunds](#refunds)); the server sets an internal value of `4` automatically in that case, so leave `Type` unset for a regular charge. |
 | `PaymentsNum` | int | No | Number of installments when `Type` is 2/3. |
 | `Description` | string | No | Charge description (shown on page/document). |
 | `IsQaMode` | boolean | No | `true` when testing against QA. |
@@ -83,7 +83,7 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | `FullName` | string | **Yes** (without `CustomerId`) | Customer full name — used to authenticate the payer at the terminal. Not validated up front by the API; a missing value fails later at the clearing provider. |
 | `Phone` | string | **Yes** (without `CustomerId`) | Customer phone — payment-page SMS/identification. Not validated up front by the API; a missing value fails later at the clearing provider. |
 | `Email` | string | Recommended | Customer email — terminal identification and document delivery. |
-| `IsAutoCreateCustomer` | boolean | No | Find-or-create a real customer record by phone/email; otherwise the charge uses a general customer. |
+| `IsAutoCreateCustomer` | boolean | No | Finds an existing customer by phone; if no match is found, creates a new customer record from `FullName`/`Phone`/`Email`. Matching by email alone is not currently supported — provide `Phone` for reliable matching. Without this flag, the charge uses a general (one-off) customer. |
 | `IsGeneralClient` | boolean | No (default `true`) | Document is issued to a general (one-off) customer. |
 
 ### Redirects & callbacks
@@ -102,9 +102,8 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | `IsManualDocCreationsWithParams` | boolean | No | Provide explicit line items via the pipe-separated `DocItem*` fields below. |
 | `DocItemName` / `DocItemQuantity` / `DocItemPrice` | string | **With manual items** | Pipe-separated lists, equal length, e.g. `"Item A\|Item B"`, `"1\|2"`, `"100\|50"`. Missing/empty values return a clean API error (`DocumentItemMissingName` 39, `DocumentItemQuantityCannotBeZero` 40, `DocumentItemPriceCannotBeZero` 41). |
 | `DocItemTaxRate` | string | **With manual items** | Pipe-separated VAT-rate list, same length as `DocItemQuantity`/`DocItemPrice` (empty entries per item are fine, e.g. `"|"`). Not validated up front — if the field is **omitted entirely** the request fails with an unhandled server error (500) instead of a clean API error; if the pipe-count doesn't match the other lists, the request fails the same way. Always send it whenever `IsManualDocCreationsWithParams` is `true`. |
-| `DocItemCode` | string | No | Optional pipe-separated code list. |
-| `IsItemsBase64Encoded` | boolean | No | `DocItem*` values are Base64-encoded (for special characters). |
-| `DocBranchId` | string | No | Branch for the document. |
+| `DocItemCode` / `DocBranchId` | string | No | Accepted by the request but **not applied** to the created document in the current implementation — do not rely on them for item codes or branch assignment. |
+| `IsItemsBase64Encoded` | boolean | No | **Not supported** — decoding is incomplete in the current implementation. Send `DocItem*` values as plain UTF-8 text, not Base64. |
 | `DocComments` | string | No | Document comments. |
 | `Language` / `DocLanguage` | string | No | Page / document language (`"he"` / `"en"`). |
 | `TaxPercentage` | double | No | VAT override for the document. |
@@ -229,7 +228,7 @@ Set `Refund: true` and identify the original charge:
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `Refund` | boolean | Yes | Refund mode. |
-| `PaymentId` | string | Yes | Provider payment reference of the original charge — used to locate the clearing log (`PaymentIDDoesntExists`, 60, when not found). For UPay, `OrderIdClientUsage` is used as a fallback when empty. |
+| `PaymentId` | string | Yes | Provider payment reference of the original charge — required for **every** refund, on every provider; used to locate the clearing log (`PaymentIDDoesntExists`, 60, when not found). |
 | `Sum` | double | Yes | Amount to refund. |
 
 Refund behavior per provider (from the live implementation):
@@ -291,6 +290,7 @@ flowchart LR
 | `CreditAmountExceedsTotal` (155) | Refund: nothing left to refund on the original charge. |
 | `ClearingError` (32) | Charge declined / provider error — details in `Paramters`. |
 | `ClearingErrorRefundTimeExceeded` (158) | Refund window exceeded (UPay: 5 months). |
+| `ApiChargeAttemptPhoneInvalid` (314) | `AddToken`/`AddTokenAndCharge` (Meshulam, Cardcom): the hosted card-capture page failed, often due to invalid phone/customer data — see [Saved-Card Tokens](tokens-and-standing-orders.md). |
 
 ## Try it
 
