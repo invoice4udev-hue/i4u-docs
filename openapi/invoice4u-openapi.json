@@ -1748,11 +1748,27 @@
                 "properties": {
                   "searchParams": {
                     "type": "object",
-                    "description": "Filter object (date range, success flag, etc.).",
+                    "description": "Filter object; every field is optional and ignored when omitted.",
                     "properties": {
-                      "FromDate": { "$ref": "#/components/schemas/WcfDate" },
-                      "ToDate": { "$ref": "#/components/schemas/WcfDate" },
-                      "IsSuccess": { "type": "boolean" }
+                      "ClearingLogId": { "type": "integer", "nullable": true, "description": "Filter to a single log by ID. Only applied when greater than 0." },
+                      "OrganizationId": { "type": "integer", "nullable": true, "description": "Ignored — the API always scopes results to your token's organization." },
+                      "FromDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+                      "ToDate": { "allOf": [ { "$ref": "#/components/schemas/WcfDate" } ], "nullable": true },
+                      "IsSuccess": { "type": "boolean", "nullable": true },
+                      "CreditCardNumber": { "type": "string", "nullable": true, "description": "Card number/last digits as stored on the log." },
+                      "Currency": { "type": "integer", "nullable": true, "description": "1 NIS, 2 USD, 3 EUR." },
+                      "CreditCardType": { "type": "integer", "nullable": true, "description": "Your organization's credit-card company ID (matches the returned CreditType/CreditTypeName)." },
+                      "FromAmount": { "type": "number", "format": "float", "nullable": true },
+                      "ToAmount": { "type": "number", "format": "float", "nullable": true },
+                      "ClearingConfirmationNumber": { "type": "string", "nullable": true },
+                      "IsCredit": { "type": "boolean", "nullable": true, "description": "true to return only refund/credit rows." },
+                      "IsBitPayment": { "type": "boolean", "nullable": true },
+                      "IsGooglePay": { "type": "boolean", "nullable": true },
+                      "IsApplePay": { "type": "boolean", "nullable": true },
+                      "CompanyType": { "type": "integer", "nullable": true, "description": "ClearingCompanies enum: 6 UPay, 7 Meshulam, 12 YaadSarig (historical records only), 15 Cardcom." },
+                      "ClientName": { "type": "string", "nullable": true },
+                      "PaymentId": { "type": "string", "nullable": true },
+                      "TransactionType": { "type": "integer", "nullable": true, "description": "0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers." }
                     }
                   },
                   "token": { "type": "string" }
@@ -3737,14 +3753,19 @@
             "type": "object",
             "properties": {
               "Id": { "type": "integer" },
+              "OrganizationId": { "type": "integer", "description": "Your organization's ID; used internally for the ownership check on GetClearingLogById." },
               "Date": { "$ref": "#/components/schemas/WcfDate" },
               "LogType": { "type": "integer", "nullable": true, "description": "1 Request, 2 Response." },
               "ClientName": { "type": "string", "nullable": true },
+              "CustomerUniqueId": { "type": "string", "nullable": true, "description": "Payer identity/ID number captured at the hosted page — same value as UniqueId in the callback payload." },
               "Amount": { "type": "number", "format": "double" },
-              "PaymentNumber": { "type": "integer", "description": "Installments." },
               "Currency": { "type": "integer", "description": "1 NIS, 2 USD, 3 EUR." },
+              "CurrencyName": { "type": "string", "nullable": true, "description": "Text name of Currency, e.g. NIS." },
+              "PaymentNumber": { "type": "integer", "description": "Installments." },
               "CreditNumber": { "type": "string", "nullable": true, "description": "Last 4 card digits." },
-              "ClearingCompany": { "type": "integer", "description": "ClearingCompanies enum: 6 UPay, 7 Meshulam, 12 YaadSarig, 15 Cardcom." },
+              "CreditType": { "type": "integer", "description": "Your organization's credit-card company ID, as configured on your account — not a fixed system-wide code." },
+              "CreditTypeName": { "type": "string", "nullable": true, "description": "Text name of CreditType." },
+              "ClearingCompany": { "type": "integer", "description": "ClearingCompanies enum: 6 UPay, 7 Meshulam, 12 YaadSarig (historical records only), 15 Cardcom." },
               "ClearingCompanyName": { "type": "string", "nullable": true },
               "IsSuccess": { "type": "boolean" },
               "ErrorMessage": { "type": "string", "nullable": true },
@@ -3760,7 +3781,12 @@
               "IsApplePay": { "type": "boolean", "nullable": true },
               "IsDocumentCreated": { "type": "boolean", "nullable": true },
               "DocId": { "type": "string", "format": "uuid", "nullable": true },
-              "TransactionType": { "type": "integer", "nullable": true, "description": "0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers." }
+              "TransactionType": { "type": "integer", "nullable": true, "description": "0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers." },
+              "CreateDocumentType": { "type": "integer", "nullable": true, "description": "Internal document-type code recorded when a document was auto-created for the charge (0 when none was created)." },
+              "ClearingLogBaseId": { "type": "integer", "nullable": true, "description": "Internal. Links a response-type row (LogType 2) back to the request-type row (LogType 1) it belongs to." },
+              "TransactionId": { "type": "string", "nullable": true, "description": "Internal. Provider-specific transaction identifier; not required for integration." },
+              "TransactionToken": { "type": "string", "nullable": true, "description": "Internal. Provider-specific transaction token; not required for integration." },
+              "UpdateRequestLog": { "type": "boolean", "description": "Internal. Used only when inserting a log via ProcessApiRequestClearingLogInsertREST_V2; not meaningful when reading existing logs." }
             }
           }
         ]
