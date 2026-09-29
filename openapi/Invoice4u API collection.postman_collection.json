@@ -581,6 +581,41 @@
               "response": []
             },
             {
+              "name": "Create Document (CreateDocument)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"ClientID\": {{ClientID}},\r\n        \"DocumentType\": 1,\r\n        \"Subject\": \"Monthly retainer\",\r\n        \"Currency\": \"ILS\",\r\n        \"TaxIncluded\": true,\r\n        \"ApiIdentifier\": \"{{$guid}}\",\r\n        \"RoundAmount\": 0,\r\n        \"Items\": [\r\n            {\r\n                \"Code\": \"001\",\r\n                \"Name\": \"Consulting hours\",\r\n                \"Quantity\": 1,\r\n                \"Price\": 100\r\n            }\r\n        ],\r\n        \"AssociatedEmails\": [\r\n            { \"Mail\": \"user@yourcompany.test\", \"IsUserMail\": true },\r\n            { \"Mail\": \"client@acme.test\",      \"IsUserMail\": false }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseURL}}/Services/ApiService.svc/CreateDocument",
+                  "host": [
+                    "{{baseURL}}"
+                  ],
+                  "path": [
+                    "Services",
+                    "ApiService.svc",
+                    "CreateDocument"
+                  ]
+                },
+                "description": "Same body as \"Existing Customer - minimal taxable invoice\", but calling `CreateDocument` directly. This is the **non-idempotent** variant — a repeated call (e.g. after a timeout) creates a duplicate document. Prefer `CreateDocumentWithIdentifierValidation` for anything that can be retried."
+              },
+              "response": []
+            },
+            {
               "name": "Existing Customer - multiple line items (taxable + tax-exempt)",
               "request": {
                 "method": "POST",
@@ -651,7 +686,7 @@
               "response": []
             },
             {
-              "name": "Walk-in (one-time) Customer - GeneralCustomer",
+              "name": "Existing Customer - one-off invoice",
               "request": {
                 "method": "POST",
                 "header": [
@@ -663,7 +698,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"doc\": {\r\n        \"GeneralCustomer\": {\r\n            \"Name\": \"Walk-in customer\",\r\n            \"Identifier\": \"036859484\"\r\n        },\r\n        \"DocumentType\": 1,\r\n        \"Subject\": \"One-off invoice\",\r\n        \"Currency\": \"ILS\",\r\n        \"TaxIncluded\": true,\r\n        \"ApiIdentifier\": \"{{$guid}}\",\r\n        \"Items\": [\r\n            {\r\n                \"Code\": \"001\",\r\n                \"Name\": \"On-site service\",\r\n                \"Quantity\": 1,\r\n                \"Price\": 250\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"ClientID\": {{ClientID}},\r\n        \"DocumentType\": 1,\r\n        \"Subject\": \"One-off invoice\",\r\n        \"Currency\": \"ILS\",\r\n        \"TaxIncluded\": true,\r\n        \"ApiIdentifier\": \"{{$guid}}\",\r\n        \"Items\": [\r\n            {\r\n                \"Code\": \"001\",\r\n                \"Name\": \"On-site service\",\r\n                \"Quantity\": 1,\r\n                \"Price\": 250\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -681,7 +716,7 @@
                     "CreateDocumentWithIdentifierValidation"
                   ]
                 },
-                "description": "Use `GeneralCustomer` (instead of `ClientID`) when you don't want to persist a customer record. `Identifier` is the customer's Israeli ID / company number and is required for tax-invoice compliance over a certain amount."
+                "description": "Existing customer identified by `ClientID`. Walk-in (`GeneralCustomer`) customers are allowed only for document types 3 (Invoice Receipt), 4 (Credit Invoice) and 7 (Quote) — sending `GeneralCustomer` for an Invoice (type 1) fails with `TypeOfDocumentDoesntAllowGeneralCustomer` (38)."
               },
               "response": []
             },
@@ -797,7 +832,7 @@
               "response": []
             },
             {
-              "name": "Walk-in (one-time) Customer - split cash + credit card",
+              "name": "Existing Customer - split cash + credit card",
               "request": {
                 "method": "POST",
                 "header": [
@@ -809,7 +844,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"doc\": {\r\n        \"GeneralCustomer\": {\r\n            \"Name\": \"Walk-in customer\",\r\n            \"Identifier\": \"034698857\"\r\n        },\r\n        \"DocumentType\": 2,\r\n        \"Subject\": \"Cash payment\",\r\n        \"Currency\": \"ILS\",\r\n        \"ApiIdentifier\": \"{{$guid}}\",\r\n        \"Payments\": [\r\n            { \"Date\": \"{{CurrentMsDate}}\", \"Amount\": 1, \"PaymentType\": 4 },\r\n            { \"Date\": \"{{CurrentMsDate}}\", \"Amount\": 2, \"PaymentType\": 1 }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+                  "raw": "{\r\n    \"doc\": {\r\n        \"ClientID\": {{ClientID}},\r\n        \"DocumentType\": 2,\r\n        \"Subject\": \"Cash payment\",\r\n        \"Currency\": \"ILS\",\r\n        \"ApiIdentifier\": \"{{$guid}}\",\r\n        \"Payments\": [\r\n            {\r\n                \"Date\": \"{{CurrentMsDate}}\",\r\n                \"Amount\": 1,\r\n                \"PaymentType\": 4\r\n            },\r\n            {\r\n                \"Date\": \"{{CurrentMsDate}}\",\r\n                \"Amount\": 2,\r\n                \"PaymentType\": 1\r\n            }\r\n        ]\r\n    },\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -827,7 +862,7 @@
                     "CreateDocumentWithIdentifierValidation"
                   ]
                 },
-                "description": "Same as above, but for a walk-in / non-persistent customer."
+                "description": "Existing customer identified by `ClientID`, split across cash (`PaymentType:4`) and credit card (`PaymentType:1`). Walk-in (`GeneralCustomer`) customers are allowed only for document types 3, 4 and 7 — not for a Receipt (type 2), which fails with `TypeOfDocumentDoesntAllowGeneralCustomer` (38)."
               },
               "response": []
             },
@@ -1760,7 +1795,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"docId\": \"3212770B-4200-4461-926E-3A169AB03361\",\r\n    \"docNumber\": \"50029\",\r\n    \"isOriginal\": true,\r\n    \"isReCreate\": false,\r\n    \"outerToken\": \"\"\r\n}",
+                  "raw": "{\r\n    \"docId\": \"{{DocumentId}}\",\r\n    \"docNumber\": \"50029\",\r\n    \"isOriginal\": true,\r\n    \"isReCreate\": false,\r\n    \"outerToken\": \"\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1768,13 +1803,9 @@
                   }
                 },
                 "url": {
-                  "raw": "https://newview.invoice4u.co.il/Services/PrintService.svc/GetDocument",
-                  "protocol": "https",
+                  "raw": "{{viewBaseURL}}/Services/PrintService.svc/GetDocument",
                   "host": [
-                    "newview",
-                    "invoice4u",
-                    "co",
-                    "il"
+                    "{{viewBaseURL}}"
                   ],
                   "path": [
                     "Services",
@@ -2455,7 +2486,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Invoice4U Clearing\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": \"false\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"IsItemsBase64Encoded\": \"false\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"AddToken\": \"false\",\r\n        \"AddTokenAndCharge\": \"false\",\r\n        \"ChargeWithToken\": \"false\",\r\n        \"Refund\": \"false\",\r\n        \"IsStandingOrderClearance\": \"false\",\r\n        \"StandingOrderDuration\": \"0\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"Invoice4U Clearing\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"AddToken\": false,\r\n        \"AddTokenAndCharge\": false,\r\n        \"ChargeWithToken\": false,\r\n        \"Refund\": false,\r\n        \"IsStandingOrderClearance\": false,\r\n        \"StandingOrderDuration\": 0\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2490,7 +2521,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Invoice4U Clearing – Bit\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsBitPayment\": true\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"Invoice4U Clearing – Bit\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsBitPayment\": true\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2525,7 +2556,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Invoice4U Clearing – Google Pay\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsGooglePay\": true\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"Invoice4U Clearing – Google Pay\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsGooglePay\": true\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2560,7 +2591,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Invoice4U Clearing – Apple Pay\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsApplePay\": true\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"Invoice4U Clearing – Apple Pay\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"IsApplePay\": true\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2595,7 +2626,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"60\",\r\n        \"Description\": \"Order #ACME-1001 – card slice (60 of 100 ILS)\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"SHARED-ORDER-GUID-REPLACE-ME\",\r\n        \"IsDocCreate\": \"false\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 60,\r\n        \"Description\": \"Order #ACME-1001 – card slice (60 of 100 ILS)\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"SHARED-ORDER-GUID-REPLACE-ME\",\r\n        \"IsDocCreate\": false,\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2630,7 +2661,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"50\",\r\n        \"Description\": \"Order #ACME-1002 – card slice (50 of 120 ILS)\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"SHARED-ORDER-GUID-REPLACE-ME\",\r\n        \"IsDocCreate\": \"false\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 50,\r\n        \"Description\": \"Order #ACME-1002 – card slice (50 of 120 ILS)\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"SHARED-ORDER-GUID-REPLACE-ME\",\r\n        \"IsDocCreate\": false,\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2665,7 +2696,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Tokenisation\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"AddToken\": true,\r\n        \"AddTokenAndCharge\": \"false\",\r\n        \"ChargeWithToken\": \"false\",\r\n        \"Refund\": \"false\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"Tokenisation\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"AddToken\": true,\r\n        \"AddTokenAndCharge\": false,\r\n        \"ChargeWithToken\": false,\r\n        \"Refund\": false\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2700,7 +2731,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"2\",\r\n        \"Description\": \"Recurring charge\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocumentHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": \"true\",\r\n        \"AddToken\": \"false\",\r\n        \"AddTokenAndCharge\": \"false\",\r\n        \"Refund\": \"false\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"CustomerId\": {{ClientID}},\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 2,\r\n        \"Description\": \"Recurring charge\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": true,\r\n        \"AddToken\": false,\r\n        \"AddTokenAndCharge\": false,\r\n        \"Refund\": false\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2718,7 +2749,7 @@
                 "ProcessApiRequestV2"
               ]
             },
-            "description": "Charges a previously-tokenised customer **without** showing a hosted page. The token is resolved server-side from the customer details."
+            "description": "Charges a previously-tokenised customer **without** showing a hosted page. `CustomerId` is **required** — the stored token is resolved from the customer record, not from `FullName`/`Phone`/`Email`. A stored token must already exist for the customer (`ApiTokenDoesntExistForThatCustomer`, 304) — see Saved-Card Tokens."
           },
           "response": []
         },
@@ -2735,7 +2766,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"First charge + tokenise\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocumentHeadline\": \"Document headline\",\r\n        \"Comments\": \"Document comments\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": \"false\",\r\n        \"AddToken\": \"true\",\r\n        \"AddTokenAndCharge\": \"true\",\r\n        \"Refund\": \"false\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": 1,\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": 1,\r\n        \"Description\": \"First charge + tokenise\",\r\n        \"PaymentsNum\": 1,\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": true,\r\n        \"DocHeadline\": \"Document headline\",\r\n        \"DocComments\": \"Document comments\",\r\n        \"IsManualDocCreationsWithParams\": true,\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": true,\r\n        \"IsAutoCreateCustomer\": true,\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": false,\r\n        \"AddToken\": true,\r\n        \"AddTokenAndCharge\": true,\r\n        \"Refund\": false\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2770,7 +2801,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Monthly subscription\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocumentHeadline\": \"Subscription\",\r\n        \"Comments\": \"Monthly\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": \"false\",\r\n        \"AddToken\": \"true\",\r\n        \"AddTokenAndCharge\": \"false\",\r\n        \"Refund\": \"false\",\r\n        \"IsStandingOrderClearance\": \"true\",\r\n        \"StandingOrderDuration\": \"12\",\r\n        \"StandingOrderCallBackUrl\": \"https://mysitecallback.example.com/notify\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"IsStandingOrderClearance\": true,\r\n        \"Sum\": 1,\r\n        \"Description\": \"Monthly subscription\",\r\n        \"StandingOrderDuration\": 12,\r\n        \"DocHeadline\": \"Subscription\",\r\n        \"CustomerId\": {{ClientID}},\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"CallBackUrl\": \"https://webhook.site/123153\",\r\n        \"StandingOrderCallBackUrl\": \"https://mysitecallback.example.com/notify\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2788,7 +2819,7 @@
                 "ProcessApiRequestV2"
               ]
             },
-            "description": "Opens a 12-month standing order. The first charge fires immediately; subsequent charges are billed on the same day each month and notified to `StandingOrderCallBackUrl`."
+            "description": "Opens a 12-month standing order: a hosted card-capture page that saves the token **without** charging. The first charge fires the **day after** signup, then monthly on the same day; each attempt is notified to `StandingOrderCallBackUrl` and creates its own Invoice-Receipt. Per the docs, don't send `IsDocCreate`, `Type` 2/3 or manual `DocItem*` fields here — they don't apply to standing-order setup."
           },
           "response": []
         },
@@ -2805,7 +2836,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Type\": \"1\",\r\n        \"CreditCardCompanyType\": \"1\",\r\n        \"FullName\": \"Client Name\",\r\n        \"Phone\": \"0500000000\",\r\n        \"Email\": \"client@acme.test\",\r\n        \"Sum\": \"1\",\r\n        \"Description\": \"Refund of order #...\",\r\n        \"PaymentsNum\": \"1\",\r\n        \"Currency\": \"ILS\",\r\n        \"OrderIdClientUsage\": \"{{$guid}}\",\r\n        \"IsDocCreate\": \"true\",\r\n        \"DocumentHeadline\": \"Refund\",\r\n        \"Comments\": \"Refund\",\r\n        \"DocItemQuantity\": \"1|1\",\r\n        \"DocItemPrice\": \"10|10\",\r\n        \"DocItemTaxRate\": \"17|17\",\r\n        \"DocItemName\": \"first item|second item\",\r\n        \"IsGeneralClient\": \"true\",\r\n        \"IsAutoCreateCustomer\": \"true\",\r\n        \"ReturnUrl\": \"https://www.invoice4u.co.il/\",\r\n        \"ChargeWithToken\": \"false\",\r\n        \"AddToken\": \"false\",\r\n        \"AddTokenAndCharge\": \"false\",\r\n        \"Refund\": \"true\"\r\n    }\r\n}",
+              "raw": "{\r\n    \"request\": {\r\n        \"Invoice4UUserApiKey\": \"{{Invoice4u_ApiKey}}\",\r\n        \"Refund\": true,\r\n        \"PaymentId\": \"100200300\",\r\n        \"Sum\": 117\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2823,7 +2854,7 @@
                 "ProcessApiRequestV2"
               ]
             },
-            "description": "`Refund:true` reverses a charge and (when `IsDocCreate:true`) issues a credit invoice."
+            "description": "Reverses a charge. `PaymentId` is required for **every** refund, on every provider — replace `100200300` with the original charge's `PaymentId` (from the charge response, its callback, or a clearing-log lookup); an unknown `PaymentId` returns `PaymentIDDoesntExists` (60). If the original charge created a document, a credit invoice (InvoiceCredit) is issued automatically; otherwise issue one yourself via Create Document."
           },
           "response": []
         },
@@ -2946,7 +2977,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"user\": {\r\n        \"Email\": \"new-user@example.test\",\r\n        \"UserPassword\": \"NewPass1234!\",\r\n        \"FirstName\": \"Israel\",\r\n        \"LastName\": \"Israeli\",\r\n        \"Phone\": \"034444444\",\r\n        \"Mobile\": \"0522222222\",\r\n        \"CompanyName\": \"new-user-reg\",\r\n        \"TaxRate\": \"17\",\r\n        \"OrganizationUniqueId\": \"034693671\",\r\n        \"BundleID\": \"23\",\r\n        \"ApiActive\": \"true\",\r\n        \"ApiKey\": \"\",\r\n        \"IsFinishRegistration\": \"true\"\r\n    },\r\n    \"token\": \"\",\r\n    \"uniqueToken\": \"\"\r\n}",
+              "raw": "{\r\n    \"user\": {\r\n        \"Email\": \"new-user@example.test\",\r\n        \"UserPassword\": \"NewPass1234!\",\r\n        \"FirstName\": \"Israel\",\r\n        \"LastName\": \"Israeli\",\r\n        \"Phone\": \"034444444\",\r\n        \"Mobile\": \"0522222222\",\r\n        \"CompanyName\": \"new-user-reg\",\r\n        \"TaxRate\": 17,\r\n        \"OrganizationUniqueId\": \"034693671\",\r\n        \"BundleID\": 23,\r\n        \"ApiActive\": true,\r\n        \"ApiKey\": \"\",\r\n        \"IsFinishRegistration\": true\r\n    },\r\n    \"token\": \"\",\r\n    \"uniqueToken\": \"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4113,6 +4144,12 @@
       "value": "",
       "type": "default",
       "description": "Base URL of the Invoice4u API (e.g. https://api.invoice4u.co.il or http://localhost)."
+    },
+    {
+      "key": "viewBaseURL",
+      "value": "",
+      "type": "default",
+      "description": "Host for the legacy PrintService (document PDFs / view links) — https://newview.invoice4u.co.il (production) or https://newviewqa.invoice4u.co.il (QA)."
     },
     {
       "key": "Invoice4u_ApiKey",
