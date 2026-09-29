@@ -98,6 +98,25 @@ Content-Type: application/json
 * ‫ארגונים המחוברים ל-**2Sign** עם תהליכי מסמכים לחתימה מקבלים את המסמך כמשימת חתימה במקום אימייל רגיל.‬
 * ‫חלון כפילויות: מסמך זהה בתוך `ApiDuplicityTimeValidation` שניות (ברירת מחדל 60) ← `DocumentAlreadyCreated` (134).‬
 
+### ‫מהלך — סכומי InvoiceReceipt ו-AutoFix‬
+
+```mermaid
+flowchart TD
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+
+    A[InvoiceReceipt:<br/>Items + Payments]:::step --> B["paymentsTotal =<br/>Σ Payments + Deduction"]:::step
+    B --> C{"paymentsTotal == itemsTotal?<br/>(2 decimals)"}:::dec
+    C -- ✓ --> D[Create document]:::cb
+    C -- "±0.01 decimal artifact" --> D
+    C -- ✗ --> E{"diff == ±0.01 or<br/>AutoFixPaymentsMismatchItems?"}:::dec
+    E -- ✓ --> F["Adjustment item added<br/>(AutoFixMismatchItemName) → recalc"]:::step
+    F --> C
+    E -- ✗ --> G[PaymentAmountDoesntMatchItemsAmount 56<br/>+ OpenInfo PaymentMismatchDelta]:::err
+```
+
 ## ‫מסמכים במטבע חוץ‬
 
 ‫תשובות לשאלות שעולות הכי הרבה כשצריך להפיק מסמך במטבע חוץ (למשל `USD`) במקום במטבע הבסיס של הארגון.‬

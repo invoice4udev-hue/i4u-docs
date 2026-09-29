@@ -13,7 +13,7 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 | `ClientName` | string | Customer name. |
 | `CustomerUniqueId` | string | Payer identity/ID number captured at the hosted page — the same value as `UniqueId` in the [callback payload](process-api-request-v2.md#callback-payload). |
 | `Amount` | double | Charged amount. |
-| `Currency` | int | `1` NIS, `2` USD, `3` EUR. |
+| `Currency` | int | `1` NIS, `2` USD, `3` EUR, `4` GBP. |
 | `CurrencyName` | string | Text name of `Currency` (e.g. `"NIS"`). |
 | `PaymentNumber` | int | Number of installments. |
 | `CreditNumber` | string | Last 4 card digits. |
@@ -66,7 +66,7 @@ Every field below is optional; omit a filter to skip it.
 | `FromDate` / `ToDate` | datetime | Date range (WCF format, see example). |
 | `IsSuccess` | boolean | Filter by charge result. |
 | `CreditCardNumber` | string | Filter by the card number/last digits as stored on the log. |
-| `Currency` | int | Filter by `Currency` code (`1` NIS, `2` USD, `3` EUR). |
+| `Currency` | int | Filter by `Currency` code (`1` NIS, `2` USD, `3` EUR, `4` GBP). |
 | `CreditCardType` | int | Filter by your organization's credit-card company ID (matches the returned `CreditType`/`CreditTypeName`). |
 | `FromAmount` / `ToAmount` | double | Amount range. |
 | `ClearingConfirmationNumber` | string | Filter by the provider confirmation/auth number. |

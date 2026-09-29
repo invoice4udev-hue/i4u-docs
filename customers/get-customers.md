@@ -132,7 +132,7 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 
 `POST /GetCustomers` — filtered search; returns a `CommonCollection<Customer[]>` of matches. Only these `Customer` fields are honored as filters — any other field you populate in `cust` is ignored:
 
-`UniqueID`, `Name`, `ExtNumber`, `Active`, `Retainer`, `HasBeenExported`, `Email`, `Phone`, `Cell`, `FreeUniqueID`.
+`UniqueID`, `Name`, `ExtNumber`, `Active`, `Retainer` (applied only when `true`), `HasBeenExported`, `Email`, `Phone`, `Cell`, `FreeUniqueID`.
 
 {% hint style="warning" %}
 `Active` is a non-nullable field on `Customer`, so it is **always** sent to the search — even when you omit it from `cust`. Omitting it searches for **inactive** customers (`Active: false`). Send `"Active": true` explicitly to find active customers.

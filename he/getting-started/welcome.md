@@ -89,7 +89,7 @@ Content-Type: application/json
 ### ‫משאבים קריאים למכונה‬
 
 * ‫[מפרט OpenAPI 3.0 בפורמט JSON](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/invoice4u-openapi.json) — כל ממשק ה-API עבור מחוללי קוד, Postman וסוכני AI.‬
-* ‫[אוסף Postman](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — בקשות מוכנות כמעט לכל מתודה מתועדת (רק `GetExpDateByApiKey`, מתודת שותפים בלבד, אינה כלולה).‬
+* ‫[אוסף Postman](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — בקשות מוכנות עבור המתודות שבמפרט ה-OpenAPI; הכינויים מסוג REST (`/CreateDocumentREST`, `/CreateCustomerREST`, `/CreateCustomerParamsREST`, `/GetDocumentByNumberREST`) וכן `GetExpDateByApiKey` אינם כלולים.‬
 * ‫סוכני AI: האתר מגיש [llms.txt](https://invoice4u.gitbook.io/invoice4u-docs/llms.txt), וכל עמוד זמין כ-Markdown על ידי הוספת `.md` לכתובת שלו.‬
 
 ### ‫תמיכה‬

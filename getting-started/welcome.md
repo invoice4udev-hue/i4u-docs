@@ -89,7 +89,7 @@ Follow the [Quick Start](quick-start.md), then read [Key Tips & Differences](key
 ### Machine-readable resources
 
 * [OpenAPI 3.0 spec (JSON)](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/invoice4u-openapi.json) — the full API surface for code generators, Postman, and AI agents.
-* [Postman collection](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — ready-made requests for almost every documented endpoint (the partner-only `GetExpDateByApiKey` is the sole exception).
+* [Postman collection](https://raw.githubusercontent.com/invoice4udev-hue/i4u-docs/main/openapi/Invoice4u%20API%20collection.postman_collection.json) — ready-made requests for the endpoints in the OpenAPI spec; the REST-variant aliases (`/CreateDocumentREST`, `/CreateCustomerREST`, `/CreateCustomerParamsREST`, `/GetDocumentByNumberREST`) and `GetExpDateByApiKey` aren't included.
 * AI agents: this site serves [llms.txt](https://invoice4u.gitbook.io/invoice4u-docs/llms.txt), and every page is available as Markdown by appending `.md` to its URL.
 
 ### Support

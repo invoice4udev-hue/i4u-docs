@@ -10,18 +10,23 @@
 
 ‫רוב החיובים משתמשים בדף תשלום מתארח:‬
 
-```
-Your server                    Invoice4U                        Customer
-    │  ProcessApiRequestV2         │                               │
-    ├──────────────────────────────►                               │
-    │  ClearingRedirectUrl         │                               │
-    ◄──────────────────────────────┤                               │
-    │  redirect customer ──────────┼──────────────────────────────►│
-    │                              │   customer pays on the page   │
-    │                              ◄────────────────────────────────
-    │   CallBackUrl notification   │                               │
-    ◄──────────────────────────────┤                               │
-    │                              │  (optional) document created  │
+```mermaid
+flowchart LR
+    classDef step fill:#E7D9FC,stroke:#9B6DD6,color:#333
+    classDef dec fill:#D2F0D2,stroke:#4CAF50,color:#333
+    classDef err fill:#FFD9A0,stroke:#E8A33D,color:#333
+    classDef cb fill:#BBDEFB,stroke:#42A5F5,color:#333
+    classDef page fill:#F5F5F5,stroke:#999,color:#333
+
+    A[Your server:<br/>ProcessApiRequestV2]:::step --> B{Request, API key &<br/>terminal valid?}:::dec
+    B -- ✗ --> E1[EmptyObjectInRequest 146<br/>ApiKeyNotInCorrectFormat 303 · UnauthorizedUser 80<br/>ClearingTerminalDoesntExists 96]:::err
+    B -- ✓ --> C[ClearingRedirectUrl<br/>returned]:::step
+    C --> D[🖥 Customer pays on<br/>hosted page]:::page
+    D --> F{Charge OK?}:::dec
+    F -- ✓ --> G[Document created<br/>if IsDocCreate]:::step
+    F -- ✗ --> H
+    G --> H[POST CallBackUrl<br/>server-to-server result]:::cb
+    H --> I[Customer redirected<br/>to ReturnUrl]:::cb
 ```
 
 1. ‫קראו ל-[`ProcessApiRequestV2`](process-api-request-v2.md) עם הסכום, פרטי הלקוח והדגלים.‬

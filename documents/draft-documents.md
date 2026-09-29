@@ -39,7 +39,7 @@ Behavior differences vs. [Create a Document](create-document.md):
 * **Relaxed validation** — items are optional (totals are zeroed when absent), payments optional, no date-range or quota checks.
 * The customer is validated **only if `ClientID` is sent** (`ClientIDDoesntExists`, 37); Deposits drafts skip customer validation entirely.
 * Sending an existing draft `ID` **updates** that draft.
-* `IsPreviewDocument: true` targets the organization's single **preview document** slot (upserted) — see [`GetPreviewDocumentByToken`](#preview-document--getpreviewdocumentbytoken).
+* `IsPreviewDocument: true` targets the organization's single **preview document** slot (upserted) — see [`GetPreviewDocumentByToken`](#getpreviewdocumentbytoken).
 
 ```http
 POST /Services/ApiService.svc/CreateOrUpdateDraftDocument HTTP/1.1
@@ -91,7 +91,7 @@ Content-Type: application/json
 
 `POST /DeleteDraftDocument` — single draft. Batch variant `POST /DeleteDraftDocuments` takes `{ "docIds": ["...", "..."], "token": "..." }`.
 
-## Preview document — `GetPreviewDocumentByToken`
+## Preview document — `GetPreviewDocumentByToken` {#getpreviewdocumentbytoken}
 
 ```json
 { "token": "<token>" }

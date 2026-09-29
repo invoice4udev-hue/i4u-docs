@@ -13,7 +13,7 @@
 | `ClientName` | string | ‫שם הלקוח.‬ |
 | `CustomerUniqueId` | string | ‫מספר זהות של המשלם שנקלט בדף המתארח — אותו ערך כמו `UniqueId` ב[גוף הקולבק](process-api-request-v2.md#callback-payload).‬ |
 | `Amount` | double | ‫הסכום שחויב.‬ |
-| `Currency` | int | ‫`1` שקל, `2` דולר, `3` אירו.‬ |
+| `Currency` | int | ‫`1` שקל, `2` דולר, `3` אירו, `4` פאונד.‬ |
 | `CurrencyName` | string | ‫שם טקסטואלי של `Currency` (למשל `"NIS"`).‬ |
 | `PaymentNumber` | int | ‫מספר תשלומים.‬ |
 | `CreditNumber` | string | ‫4 ספרות אחרונות של הכרטיס.‬ |
@@ -66,7 +66,7 @@
 | `FromDate` / `ToDate` | datetime | ‫טווח תאריכים (בפורמט WCF, ראו דוגמה).‬ |
 | `IsSuccess` | boolean | ‫סינון לפי תוצאת החיוב.‬ |
 | `CreditCardNumber` | string | ‫סינון לפי מספר הכרטיס/הספרות האחרונות כפי שמאוחסנות בלוג.‬ |
-| `Currency` | int | ‫סינון לפי קוד `Currency` (`1` שקל, `2` דולר, `3` אירו).‬ |
+| `Currency` | int | ‫סינון לפי קוד `Currency` (`1` שקל, `2` דולר, `3` אירו, `4` פאונד).‬ |
 | `CreditCardType` | int | ‫סינון לפי מזהה חברת האשראי של הארגון שלכם (תואם ל-`CreditType`/`CreditTypeName` המוחזרים).‬ |
 | `FromAmount` / `ToAmount` | double | ‫טווח סכומים.‬ |
 | `ClearingConfirmationNumber` | string | ‫סינון לפי מספר אישור/אסמכתא מהספק.‬ |

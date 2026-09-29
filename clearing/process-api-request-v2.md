@@ -65,7 +65,7 @@ The clearing provider is the one configured on your terminal — one of the supp
 | ----- | ---- | -------- | ----------- |
 | `Sum` | double | **Yes** | Amount to charge. |
 | `CreditCardCompanyType` | int | No | Optional card-company code copied onto the internal charge record when greater than 0. It does **not** select the clearing provider — the provider used is your organization's configured clearing account (Cardcom, UPay or Meshulam). Leave unset unless directed otherwise by Invoice4U support. |
-| `Currency` | string | No | `"NIS"` (default), `"USD"`, `"EUR"`. |
+| `Currency` | string | No | `"NIS"` (default; `"ILS"` accepted as an alias), `"USD"`, `"EUR"`. |
 | `Type` | int | No | `1` Regular (default), `2` Payments (installments), `3` CreditPayments. `4` is internal and provider-specific — don't send it. To refund, use `Refund: true` + `PaymentId` (see [Refunds](#refunds)). |
 | `PaymentsNum` | int | No | Number of installments when `Type` is 2/3. |
 | `Description` | string | No | Charge description (shown on page/document). |
@@ -235,6 +235,7 @@ Refund behavior per provider (from the live implementation):
 
 * **Cardcom** — the refund is validated against the remaining un-refunded balance: if `Sum` exceeds it, the refund is **clamped to the balance** (not rejected); if nothing is left to refund, `CreditAmountExceedsTotal` (155) is returned.
 * **UPay** — refunds are possible up to **5 months** after the charge (`ClearingErrorRefundTimeExceeded`, 158).
+* **Meshulam** — no additional client-side limits; provider errors surface as `ClearingError` (32).
 
 ### Document creation on refunds
 
