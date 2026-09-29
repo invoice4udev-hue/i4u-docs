@@ -9,8 +9,18 @@
 | ‫**תשובה**‬ | `UserRegApiObject` (בדקו את `Errors`) |
 
 {% hint style="warning" %}
-‫מתודה זו **מוגבלת**. היא דורשת טוקן ייחודי לשותף המונפק על ידי Invoice4U **וגם** כתובת ה-IP של השרת הקורא חייבת להיות ברשימה הלבנה. היא אינה זמינה למשתמשי API רגילים.‬
+‫מתודה זו **מוגבלת**. כל קריאה חייבת לשאת שני אישורים: `token` תקין (נבדק באותו האופן כמו [`IsAuthenticated`](../authentication/is-authenticated.md)) **וגם** `uniqueToken` ייעודי לשותף המונפק על ידי Invoice4U. כתובת ה-IP של השרת הקורא חייבת גם היא להיות ברשימה הלבנה, אם כי חלק מהשותפים פטורים מהבדיקה הזו. היא אינה זמינה למשתמשי API רגילים.‬
 {% endhint %}
+
+### ‫סכימת הבקשה‬
+
+| ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
+| --- | ----- | ---- | ----- |
+| `user` | UserRegApiObject | ‫כן‬ | ‫החשבון החדש ליצירה — ראו את תיאור האובייקט למטה.‬ |
+| `token` | string | ‫כן‬ | ‫טוקן/מפתח API תקין, נבדק באותו האופן כמו `IsAuthenticated`.‬ |
+| `uniqueToken` | string | ‫כן‬ | ‫הטוקן הייעודי לשותף שלכם, המונפק על ידי Invoice4U.‬ |
+
+‫`token` לא תקין/חסר, **או** `uniqueToken` לא תקין, שניהם מחזירים `UnauthorizedUser` (80) — אין שגיאה ייעודית לטוקן שותף שגוי.‬
 
 ### ‫אובייקט ה-UserRegApiObject (לעיון)‬
 
@@ -24,15 +34,52 @@
 | `Phone` / `Mobile` | string | ‫לא‬ | ‫מספרי טלפון.‬ |
 | `TaxRate` | int | ‫לא‬ | ‫חייב להיות שיעור המע"מ החוקי הנוכחי או `0` (פטור ממס).‬ |
 | `BusinessType` | int | ‫לא‬ | enum של סוג עסק (ברירת מחדל `1` — עוסק מורשה). |
-| `BundleID` | int | ‫לא‬ | ‫חבילת מנוי.‬ |
+| `BundleID` | int | ‫לא‬ | ‫**מתעלמים ממנו.** השרת תמיד קובע את חבילת המנוי של הארגון החדש — חבילת ניסיון כברירת מחדל, שנדרסת על ידי מיפויים ייעודיים לשותפים מסוימים. כל ערך שתשלחו כאן אינו בשימוש.‬ |
 | `ApiKey` | string (GUID) | ‫לא‬ | ‫מפתח API מוקצה מראש לחשבון החדש.‬ |
+
+### ‫דוגמת בקשה‬
+
+```http
+POST /Services/ApiService.svc/UserRegistrationApi HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "user": {
+    "Email": "owner@newcustomer.example",
+    "UserPassword": "Str0ngP@ssw0rd!",
+    "FirstName": "Dana",
+    "LastName": "Cohen",
+    "CompanyName": "New Customer Ltd",
+    "OrganizationUniqueId": "512345678",
+    "TaxRate": 17
+  },
+  "token": "<token>",
+  "uniqueToken": "<partner-unique-token>"
+}
+```
+
+### ‫דוגמת תשובה‬
+
+```json
+{
+  "d": {
+    "Email": "owner@newcustomer.example",
+    "FirstName": "Dana",
+    "LastName": "Cohen",
+    "CompanyName": "New Customer Ltd",
+    "OrganizationUniqueId": "512345678",
+    "Errors": []
+  }
+}
+```
 
 ### ‫שגיאות נפוצות‬
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `ApiInvalidUniqueToken` (308) | ‫טוקן שותף חסר/לא תקין.‬ |
-| `ApiUnauthorizedAccessInvalidIPAddress` (306) | ‫ה-IP הקורא לא ברשימה הלבנה.‬ |
+| `UnauthorizedUser` (80) | ‫`token` לא תקין/חסר, או `uniqueToken` לא תקין/חסר.‬ |
+| `ApiUnauthorizedAccessInvalidIPAddress` (306) | ‫ה-IP הקורא לא ברשימה הלבנה (חלק מהשותפים פטורים).‬ |
 | `EmailExists` (1) / `EmailNotValid` (16) | ‫אימייל כפול/לא תקין.‬ |
 | `UniqueIdExists` (9) / `UniqueIDNotValid` (64) | ‫מספר עסק כפול/לא תקין.‬ |
 | `PasswordNotValid` (17) | ‫סיסמה חלשה.‬ |

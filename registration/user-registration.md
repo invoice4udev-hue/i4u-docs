@@ -9,8 +9,18 @@ The API includes a partner-only endpoint for registering new Invoice4U accounts 
 | **Response** | `UserRegApiObject` (check `Errors`) |
 
 {% hint style="warning" %}
-This endpoint is **restricted**. It requires a partner-specific unique token issued by Invoice4U **and** the calling server's IP address must be whitelisted. It is not available to regular API users.
+This endpoint is **restricted**. Every call must pass two credentials: a valid `token` (checked the same way as [`IsAuthenticated`](../authentication/is-authenticated.md)) **and** a partner-specific `uniqueToken` issued by Invoice4U. The calling server's IP address must also be whitelisted, though some partner integrations are exempt from that check. It is not available to regular API users.
 {% endhint %}
+
+### Request schema
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `user` | UserRegApiObject | Yes | The new account to create — see the object reference below. |
+| `token` | string | Yes | A valid API key/token, checked the same way as `IsAuthenticated`. |
+| `uniqueToken` | string | Yes | Your partner-specific token issued by Invoice4U. |
+
+An invalid or missing `token`, **or** an invalid `uniqueToken`, both return `UnauthorizedUser` (80) — there is no dedicated error for a bad partner token.
 
 ### The UserRegApiObject (for reference)
 
@@ -24,15 +34,52 @@ This endpoint is **restricted**. It requires a partner-specific unique token iss
 | `Phone` / `Mobile` | string | No | Contact numbers. |
 | `TaxRate` | int | No | Must be the current legal VAT rate or `0` (tax-exempt). |
 | `BusinessType` | int | No | Business type enum (default `1` — authorized dealer). |
-| `BundleID` | int | No | Subscription bundle. |
+| `BundleID` | int | No | **Ignored.** The server always assigns the new organization's subscription bundle — a default trial bundle, overridden by server-side mappings for specific partner integrations. Any value you send here is not used. |
 | `ApiKey` | string (GUID) | No | Pre-provisioned API key for the new account. |
+
+### Example request
+
+```http
+POST /Services/ApiService.svc/UserRegistrationApi HTTP/1.1
+Host: apiqa.invoice4u.co.il
+Content-Type: application/json
+
+{
+  "user": {
+    "Email": "owner@newcustomer.example",
+    "UserPassword": "Str0ngP@ssw0rd!",
+    "FirstName": "Dana",
+    "LastName": "Cohen",
+    "CompanyName": "New Customer Ltd",
+    "OrganizationUniqueId": "512345678",
+    "TaxRate": 17
+  },
+  "token": "<token>",
+  "uniqueToken": "<partner-unique-token>"
+}
+```
+
+### Example response
+
+```json
+{
+  "d": {
+    "Email": "owner@newcustomer.example",
+    "FirstName": "Dana",
+    "LastName": "Cohen",
+    "CompanyName": "New Customer Ltd",
+    "OrganizationUniqueId": "512345678",
+    "Errors": []
+  }
+}
+```
 
 ### Common errors
 
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `ApiInvalidUniqueToken` (308) | Missing/invalid partner token. |
-| `ApiUnauthorizedAccessInvalidIPAddress` (306) | Calling IP not whitelisted. |
+| `UnauthorizedUser` (80) | Invalid/missing `token`, or invalid/missing `uniqueToken`. |
+| `ApiUnauthorizedAccessInvalidIPAddress` (306) | Calling IP not whitelisted (some partner integrations are exempt). |
 | `EmailExists` (1) / `EmailNotValid` (16) | Email conflict/invalid. |
 | `UniqueIdExists` (9) / `UniqueIDNotValid` (64) | Business number conflict/invalid. |
 | `PasswordNotValid` (17) | Weak password. |

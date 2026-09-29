@@ -99,7 +99,7 @@
                       "properties": {
                         "ID": { "type": "integer" },
                         "Email": { "type": "string" },
-                        "OrgID": { "type": "integer" },
+                        "OrganizationID": { "type": "integer" },
                         "ExpirationDate": { "type": "string", "nullable": true },
                         "Errors": {
                           "type": "array",
@@ -129,7 +129,7 @@
                 "type": "object",
                 "required": ["cu", "token"],
                 "properties": {
-                  "cu": { "$ref": "#/components/schemas/Customer" },
+                  "cu": { "$ref": "#/components/schemas/CustomerCreateRequest" },
                   "token": { "type": "string" }
                 }
               },
@@ -167,7 +167,7 @@
         "tags": ["Customers"],
         "operationId": "UpdateCustomer",
         "summary": "Update a customer",
-        "description": "Updates an existing customer. `cu.ID` must be a valid existing customer ID.",
+        "description": "Updates an existing customer. `cu.ID` must be a valid existing customer ID. `PayTerms`, `Active` and `Retainer` are non-nullable, so the API always writes back whatever value you send for them — omit one and it resets to its default.",
         "requestBody": {
           "required": true,
           "content": {
@@ -176,7 +176,7 @@
                 "type": "object",
                 "required": ["cu", "token"],
                 "properties": {
-                  "cu": { "$ref": "#/components/schemas/Customer" },
+                  "cu": { "$ref": "#/components/schemas/CustomerUpdateRequest" },
                   "token": { "type": "string" }
                 }
               }
@@ -272,7 +272,7 @@
         "tags": ["Customers"],
         "operationId": "GetCustomers",
         "summary": "Search customers",
-        "description": "Filtered search. Populate any subset of Customer fields as the filter.",
+        "description": "Filtered search. Only `UniqueID`, `Name`, `ExtNumber`, `Active`, `Retainer`, `HasBeenExported`, `Email`, `Phone`, `Cell` and `FreeUniqueID` are honored as filters; any other populated field is ignored. `Active` is non-nullable and is always sent, so omitting it searches for inactive customers — send `Active: true` to find active ones.",
         "requestBody": {
           "required": true,
           "content": {
@@ -284,6 +284,10 @@
                   "cust": { "$ref": "#/components/schemas/Customer" },
                   "token": { "type": "string" }
                 }
+              },
+              "example": {
+                "cust": { "Name": "Acme", "Active": true },
+                "token": "<token>"
               }
             }
           }
@@ -1802,7 +1806,7 @@
         "tags": ["Registration"],
         "operationId": "UserRegistrationApi",
         "summary": "Register a new Invoice4U account (partners only)",
-        "description": "Restricted endpoint: requires a partner-specific unique token issued by Invoice4U and a whitelisted server IP. Contact Invoice4U business development for onboarding.",
+        "description": "Restricted endpoint: requires a valid `token` (checked the same way as IsAuthenticated) and a partner-specific `uniqueToken` issued by Invoice4U. The calling server IP must also be whitelisted, though some partner integrations are exempt. Contact Invoice4U business development for onboarding.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1821,7 +1825,7 @@
         },
         "responses": {
           "200": {
-            "description": "The registered account; check Errors (ApiInvalidUniqueToken=308, ApiUnauthorizedAccessInvalidIPAddress=306).",
+            "description": "The registered account; check Errors. An invalid/missing token or uniqueToken both return UnauthorizedUser (80); ApiUnauthorizedAccessInvalidIPAddress=306 for a non-whitelisted IP.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3586,7 +3590,6 @@
           { "$ref": "#/components/schemas/CommonObject" },
           {
             "type": "object",
-            "required": ["Name"],
             "properties": {
               "ID": { "type": "integer", "description": "0/omitted on create; required on update. Negative values are conflict codes: -1 name, -2 external number, -3 unique ID, -4 GUID." },
               "Name": { "type": "string" },
@@ -3614,11 +3617,26 @@
               "AccountNumber": { "type": "string", "nullable": true },
               "BankName": { "type": "string", "nullable": true },
               "BranchName": { "type": "string", "nullable": true },
+              "BankCode": { "type": "string", "nullable": true },
+              "BranchCode": { "type": "string", "nullable": true },
               "Website": { "type": "string", "nullable": true },
               "InternalNote": { "type": "string", "nullable": true },
+              "PrintInternalNoteOnQuote": { "type": "boolean", "nullable": true, "description": "Whether InternalNote is printed on quotes." },
               "OrgID": { "type": "integer", "readOnly": true }
             }
           }
+        ]
+      },
+      "CustomerCreateRequest": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Customer" },
+          { "type": "object", "required": ["Name"] }
+        ]
+      },
+      "CustomerUpdateRequest": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Customer" },
+          { "type": "object", "required": ["ID", "Name"] }
         ]
       },
       "CustomerCollection": {
@@ -3652,7 +3670,9 @@
           "Enabled": { "type": "boolean" },
           "IsDefault": { "type": "boolean" },
           "IsMain": { "type": "boolean" },
-          "Email": { "type": "string", "nullable": true }
+          "Email": { "type": "string", "nullable": true },
+          "New": { "type": "boolean", "readOnly": true, "description": "Internal flag; not meaningful for integrations." },
+          "Ucan2ID": { "type": "integer", "readOnly": true, "description": "Internal link to the legacy Ucan2 system; not meaningful for integrations." }
         }
       },
       "DocumentsRequest": {
@@ -3810,7 +3830,7 @@
               "Mobile": { "type": "string", "nullable": true },
               "TaxRate": { "type": "integer", "description": "Legal VAT rate or 0 (tax-exempt)." },
               "BusinessType": { "type": "integer", "nullable": true, "default": 1 },
-              "BundleID": { "type": "integer" },
+              "BundleID": { "type": "integer", "description": "Ignored by the server. The new organization's bundle is always server-assigned (a default trial bundle, overridden by mappings for specific partner integrations)." },
               "ApiKey": { "type": "string", "format": "uuid", "nullable": true, "description": "Pre-provisioned API key for the new account." }
             }
           }

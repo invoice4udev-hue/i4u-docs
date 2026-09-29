@@ -125,12 +125,20 @@ Returns the `Customer`. If the customer belongs to another organization: `Client
 
 ```json
 {
-  "cust": { "Name": "Acme" },
+  "cust": { "Name": "Acme", "Active": true },
   "token": "<token>"
 }
 ```
 
-`POST /GetCustomers` — filtered search. Populate any subset of `Customer` fields (`Name`, `Email`, `UniqueID`, …) as the filter; returns a `CommonCollection<Customer[]>` of matches.
+`POST /GetCustomers` — filtered search; returns a `CommonCollection<Customer[]>` of matches. Only these `Customer` fields are honored as filters — any other field you populate in `cust` is ignored:
+
+`UniqueID`, `Name`, `ExtNumber`, `Active`, `Retainer`, `HasBeenExported`, `Email`, `Phone`, `Cell`, `FreeUniqueID`.
+
+{% hint style="warning" %}
+`Active` is a non-nullable field on `Customer`, so it is **always** sent to the search — even when you omit it from `cust`. Omitting it searches for **inactive** customers (`Active: false`). Send `"Active": true` explicitly to find active customers.
+{% endhint %}
+
+Whether each honored field matches exactly or partially (`LIKE`) is not documented here — the underlying search logic isn't part of the published contract.
 
 ## Errors (all endpoints)
 

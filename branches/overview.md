@@ -13,6 +13,8 @@ Branches represent business locations/units under your organization. Documents c
 | `IsDefault` | boolean | Default branch for new documents. |
 | `IsMain` | boolean | Marks the main branch. |
 | `Email` | string | Branch email. |
+| `New` | boolean | Internal flag; not meaningful for integrations. |
+| `Ucan2ID` | int | Internal link to the legacy Ucan2 system; not meaningful for integrations. |
 
 ### Pages in this section
 

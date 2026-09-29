@@ -14,8 +14,12 @@ Updates an existing customer. The customer must exist and belong to the authenti
 
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
-| `cu` | Customer | Yes | The customer to update. `ID` **must** be a valid existing customer ID (`ID = 0` is rejected). All other fields per [the Customer object](overview.md#the-customer-object) — supply the full desired state. |
+| `cu` | Customer | Yes | The customer to update. `ID` **must** be a valid existing customer ID (`ID = 0` is rejected). All other fields per [the Customer object](overview.md#the-customer-object). |
 | `token` | string | Yes | Authentication token. |
+
+{% hint style="warning" %}
+`PayTerms`, `Active` and `Retainer` are non-nullable on the `Customer` object, so the API always writes back whatever value you send for them — omitting one from `cu` **resets** it to its default (`PayTerms: 0`, `Active: false`, `Retainer: false`). Always send the customer's **current** values for these three fields. Every other field — strings and nullable fields such as `Email`, `Phone` or `RetainerAmount` — is only updated when you include it; omitting it leaves the existing value unchanged.
+{% endhint %}
 
 ## Example request
 
@@ -30,7 +34,8 @@ Content-Type: application/json
     "Name": "Acme Ltd",
     "Email": "accounts@acme.example",
     "PayTerms": 60,
-    "Active": true
+    "Active": true,
+    "Retainer": false
   },
   "token": "<token>"
 }
@@ -45,6 +50,8 @@ Content-Type: application/json
     "Name": "Acme Ltd",
     "Email": "accounts@acme.example",
     "PayTerms": 60,
+    "Active": true,
+    "Retainer": false,
     "Errors": []
   }
 }

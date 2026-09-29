@@ -14,8 +14,12 @@
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
-| `cu` | Customer | ‫כן‬ | ‫הלקוח לעדכון. `ID` **חייב** להיות מזהה לקוח קיים ותקין (`ID = 0` נדחה). שאר השדות לפי [אובייקט ה-Customer](overview.md#the-customer-object) — שלחו את המצב המלא הרצוי.‬ |
+| `cu` | Customer | ‫כן‬ | ‫הלקוח לעדכון. `ID` **חייב** להיות מזהה לקוח קיים ותקין (`ID = 0` נדחה). שאר השדות לפי [אובייקט ה-Customer](overview.md#the-customer-object).‬ |
 | `token` | string | ‫כן‬ | ‫טוקן אימות.‬ |
+
+{% hint style="warning" %}
+‫`PayTerms`, `Active` ו-`Retainer` אינם nullable באובייקט ה-`Customer`, ולכן ה-API תמיד כותב מחדש כל ערך שתשלחו עבורם — השמטת אחד מהם מ-`cu` **מאפסת** אותו לברירת המחדל שלו (`PayTerms: 0`, `Active: false`, `Retainer: false`). שלחו תמיד את הערכים ה**נוכחיים** של הלקוח עבור שלושת השדות האלה. כל שדה אחר — מחרוזות ושדות nullable כמו `Email`, `Phone` או `RetainerAmount` — מתעדכן רק כאשר אתם כוללים אותו; השמטתו משאירה את הערך הקיים ללא שינוי.‬
+{% endhint %}
 
 ## ‫דוגמת בקשה‬
 
@@ -30,7 +34,8 @@ Content-Type: application/json
     "Name": "Acme Ltd",
     "Email": "accounts@acme.example",
     "PayTerms": 60,
-    "Active": true
+    "Active": true,
+    "Retainer": false
   },
   "token": "<token>"
 }
@@ -45,6 +50,8 @@ Content-Type: application/json
     "Name": "Acme Ltd",
     "Email": "accounts@acme.example",
     "PayTerms": 60,
+    "Active": true,
+    "Retainer": false,
     "Errors": []
   }
 }

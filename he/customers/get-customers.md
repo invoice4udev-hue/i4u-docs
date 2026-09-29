@@ -125,12 +125,20 @@
 
 ```json
 {
-  "cust": { "Name": "Acme" },
+  "cust": { "Name": "Acme", "Active": true },
   "token": "<token>"
 }
 ```
 
-‫`POST /GetCustomers` — חיפוש מסונן. מלאו כל תת-קבוצה של שדות `Customer`‏ (`Name`, `Email`, `UniqueID`, …) כפילטר; מוחזר `CommonCollection<Customer[]>` של ההתאמות.‬
+‫`POST /GetCustomers` — חיפוש מסונן; מוחזר `CommonCollection<Customer[]>` של ההתאמות. רק השדות הבאים ב-`Customer` נכבדים כפילטרים בתוך `cust` — כל שדה אחר שתמלאו מתעלם ממנו:‬
+
+`UniqueID`, `Name`, `ExtNumber`, `Active`, `Retainer`, `HasBeenExported`, `Email`, `Phone`, `Cell`, `FreeUniqueID`.
+
+{% hint style="warning" %}
+‫`Active` הוא שדה שאינו nullable ב-`Customer`, ולכן הוא **תמיד** נשלח לחיפוש — גם כאשר משמיטים אותו מ-`cust`. השמטתו מחפשת לקוחות **לא פעילים** (`Active: false`). שלחו `"Active": true` במפורש כדי למצוא לקוחות פעילים.‬
+{% endhint %}
+
+‫האם כל שדה נתמך מתבצע כהתאמה מדויקת או חלקית (`LIKE`) אינו מתועד כאן — לוגיקת החיפוש הפנימית אינה חלק מהחוזה המפורסם.‬
 
 ## ‫שגיאות (כל המתודות)‬
 
