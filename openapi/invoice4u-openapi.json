@@ -1070,25 +1070,69 @@
                   "token": { "type": "string" }
                 }
               },
-              "example": {
-                "doc": {
-                  "DocumentType": 3,
-                  "Subject": "Monthly subscription",
-                  "ClientID": 88231,
-                  "TaxIncluded": true,
-                  "Currency": "ILS",
-                  "ApiIdentifier": "my-system-order-10045",
-                  "Items": [
-                    { "Name": "Pro plan - June", "Quantity": 1, "Price": 117.0 }
-                  ],
-                  "Payments": [
-                    { "PaymentType": 1, "Amount": 117.0, "Date": "/Date(1788210000000+0300)/", "NumberOfPayments": 1 }
-                  ],
-                  "AssociatedEmails": [
-                    { "Mail": "billing@acme.example", "IsUserMail": false }
-                  ]
+              "examples": {
+                "invoice-receipt": {
+                  "summary": "InvoiceReceipt (type 3) with payment",
+                  "value": {
+                    "doc": {
+                      "DocumentType": 3,
+                      "Subject": "Monthly subscription",
+                      "ClientID": 88231,
+                      "TaxIncluded": true,
+                      "Currency": "ILS",
+                      "ApiIdentifier": "my-system-order-10045",
+                      "Items": [
+                        {
+                          "Name": "Pro plan - June",
+                          "Quantity": 1,
+                          "Price": 117
+                        }
+                      ],
+                      "Payments": [
+                        {
+                          "PaymentType": 1,
+                          "Amount": 117,
+                          "Date": "/Date(1788210000000+0300)/",
+                          "NumberOfPayments": 1,
+                          "PaymentNumber": "4242"
+                        }
+                      ],
+                      "AssociatedEmails": [
+                        {
+                          "Mail": "billing@acme.example",
+                          "IsUserMail": false
+                        }
+                      ]
+                    },
+                    "token": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f"
+                  }
                 },
-                "token": "<token>"
+                "referenced-credit": {
+                  "summary": "Credit invoice referencing an existing invoice",
+                  "value": {
+                    "doc": {
+                      "DocumentType": 4,
+                      "DocumentReffType": 1,
+                      "ClientID": 88231,
+                      "Subject": "Credit for invoice 20260123",
+                      "TaxIncluded": true,
+                      "Invoices": [
+                        {
+                          "ID": "7f6a2c1e-1111-2222-3333-444455556666",
+                          "ReceiptAmount": 50
+                        }
+                      ],
+                      "Items": [
+                        {
+                          "Name": "Refund - Pro plan June",
+                          "Quantity": 1,
+                          "Price": 50
+                        }
+                      ]
+                    },
+                    "token": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f"
+                  }
+                }
               }
             }
           }
@@ -1680,6 +1724,79 @@
                       "Phone": "0501234567",
                       "Email": "israel@example.com",
                       "Description": "Refund for order #10045",
+                      "IsQaMode": true
+                    }
+                  }
+                },
+                "standing-order": {
+                  "summary": "Standing order (recurring monthly charge)",
+                  "description": "See the documentation page for this scenario (clearing/standing-orders.md).",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "IsStandingOrderClearance": true,
+                      "Sum": 99,
+                      "StandingOrderDuration": 12,
+                      "StandingOrderFirstChargeAmount": 49,
+                      "DocHeadline": "Pro plan subscription",
+                      "CustomerId": 88231,
+                      "FullName": "Israel Israeli",
+                      "Phone": "0501234567",
+                      "Email": "israel@example.com",
+                      "OrderIdClientUsage": "sub-10045",
+                      "ReturnUrl": "https://shop.example/subscribed",
+                      "CallBackUrl": "https://shop.example/api/i4u-callback",
+                      "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring",
+                      "IsQaMode": true
+                    }
+                  }
+                },
+                "add-token": {
+                  "summary": "Save a card token (no charge)",
+                  "description": "See the documentation page for this scenario (clearing/tokens-and-standing-orders.md).",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "AddToken": true,
+                      "FullName": "Israel Israeli",
+                      "Phone": "0501234567",
+                      "Email": "israel@example.com",
+                      "CustomerId": 88231,
+                      "ReturnUrl": "https://shop.example/card-saved",
+                      "CallBackUrl": "https://shop.example/api/i4u-callback"
+                    }
+                  }
+                },
+                "charge-with-token": {
+                  "summary": "Charge a saved token (server-to-server)",
+                  "description": "See the documentation page for this scenario (clearing/tokens-and-standing-orders.md).",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "ChargeWithToken": true,
+                      "CustomerId": 88231,
+                      "Sum": 117,
+                      "Description": "Monthly subscription - July",
+                      "IsDocCreate": true,
+                      "DocHeadline": "Monthly subscription - July"
+                    }
+                  }
+                },
+                "bit-payment": {
+                  "summary": "Bit payment + auto document",
+                  "description": "See the documentation page for this scenario (clearing/alternative-payment-methods.md).",
+                  "value": {
+                    "request": {
+                      "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+                      "IsBitPayment": true,
+                      "Sum": 117,
+                      "FullName": "Israel Israeli",
+                      "Phone": "0501234567",
+                      "Email": "israel@example.com",
+                      "Description": "Order #10045",
+                      "IsDocCreate": true,
+                      "ReturnUrl": "https://shop.example/thanks",
+                      "CallBackUrl": "https://shop.example/api/i4u-callback",
                       "IsQaMode": true
                     }
                   }

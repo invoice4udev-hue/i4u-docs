@@ -157,6 +157,8 @@ Example: an organization whose base currency is ILS creating a USD invoice just 
 
 ## Try it
 
+In the sandbox, choose the **InvoiceReceipt (type 3) with payment** example to run this request as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
 {% endopenapi-operation %}
 

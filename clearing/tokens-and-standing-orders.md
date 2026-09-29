@@ -119,5 +119,7 @@ flowchart LR
 
 ## Try it
 
+In the sandbox, choose the **Save a card token (no charge)** or **Charge a saved token (server-to-server)** example to run these requests as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

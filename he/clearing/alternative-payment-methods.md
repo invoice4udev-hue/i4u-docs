@@ -101,5 +101,7 @@ flowchart LR
 
 ## ‫נסו את זה‬
 
+‫בארגז החול, בחרו בדוגמה **Bit payment + auto document** כדי להריץ את הבקשה הזו כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

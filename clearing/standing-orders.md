@@ -424,5 +424,7 @@ No. At most 120 monthly charge dates are created. To continue after it ends, cre
 
 ## Try it
 
+In the sandbox, choose the **Standing order (recurring monthly charge)** example to run this request as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

@@ -295,6 +295,8 @@ flowchart LR
 
 ## ‫נסו את זה‬
 
+‫רשימת הדוגמאות בארגז החול מכסה כל תרחיש בעמודים האלה — דף סליקה מתארח, זיכוי, Bit, שמירת טוקן וחיוב טוקן, הוראת קבע — וכל אחת ניתנת להרצה כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}
 

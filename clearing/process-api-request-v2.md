@@ -295,6 +295,8 @@ flowchart LR
 
 ## Try it
 
+The sandbox's example list covers every scenario on these pages — hosted page, refund, Bit, saving and charging a token, standing order — each runnable as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}
 

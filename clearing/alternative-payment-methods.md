@@ -101,5 +101,7 @@ flowchart LR
 
 ## Try it
 
+In the sandbox, choose the **Bit payment + auto document** example to run this request as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

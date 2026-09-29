@@ -99,5 +99,7 @@ $$0 < \text{ReceiptAmount} \le \text{Total} - \text{CreditAmount}$$
 
 ## ‫נסו את זה‬
 
+‫בארגז החול, בחרו בדוגמה **Credit invoice referencing an existing invoice** כדי להריץ את הבקשה הזו כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
 {% endopenapi-operation %}

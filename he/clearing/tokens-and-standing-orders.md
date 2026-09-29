@@ -119,5 +119,7 @@ flowchart LR
 
 ## ‫נסו את זה‬
 
+‫בארגז החול, בחרו בדוגמה **Save a card token (no charge)** או **Charge a saved token (server-to-server)** כדי להריץ את הבקשות האלה כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

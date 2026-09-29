@@ -424,5 +424,7 @@ curl -X POST "https://shop.example/api/i4u-recurring" \
 
 ## ‫נסו את זה‬
 
+‫בארגז החול, בחרו בדוגמה **Standing order (recurring monthly charge)** כדי להריץ את הבקשה הזו כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/ProcessApiRequestV2" method="post" %}
 {% endopenapi-operation %}

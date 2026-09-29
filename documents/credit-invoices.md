@@ -129,5 +129,7 @@ flowchart TD
 
 ## Try it
 
+In the sandbox, choose the **Credit invoice referencing an existing invoice** example to run this request as cURL, JavaScript, Python or HTTP.
+
 {% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
 {% endopenapi-operation %}

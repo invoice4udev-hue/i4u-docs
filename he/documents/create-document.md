@@ -157,5 +157,7 @@ flowchart TD
 
 ## ‫נסו את זה‬
 
+‫בארגז החול, בחרו בדוגמה **InvoiceReceipt (type 3) with payment** כדי להריץ את הבקשה הזו כ-cURL, JavaScript, Python או HTTP.‬
+
 {% openapi-operation spec="invoice4u-api" path="/CreateDocument" method="post" %}
 {% endopenapi-operation %}
