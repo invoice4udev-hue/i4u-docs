@@ -15,6 +15,10 @@
 
 ‫`docId` הוא ה-GUID של המסמך (ה-`ID` שהוחזר ביצירה). מחזיר את ה-`Document`, או `ApiDocumentDoesNotExistForUser` (321) אם הוא שייך לארגון אחר; `null` על GUID לא תקין.‬
 
+{% hint style="warning" %}
+‫`docId` חייב להיות ה-GUID — **לא** מספר המסמך. שליחת מספר (למשל `"docId": 1045`) מחזירה `{ "d": null }` ללא שגיאה. ל-`GetDocument` אין גם פרמטר `documentNumber` / `DocumentNumber`; שמות פרמטרים לא מוכרים פשוט מתעלמים מהם, כך שגם אז מתקבל `{ "d": null }`. יש לכם רק את המספר? השתמשו ב-[`GetDocumentByNumber`](#get-by-number-getdocumentbynumber) שלהלן.‬
+{% endhint %}
+
 ## ‫שליפה לפי מספר — `GetDocumentByNumber`‬
 
 | | |
@@ -26,7 +30,7 @@
 { "docNumber": 20260123, "documentType": 3, "token": "<token>" }
 ```
 
-‫מספרי מסמכים הם רציפים **פר סוג**, ולכן הסוג נדרש. וריאציית GET‏: `/GetDocumentByNumberREST`.‬
+‫מספרי מסמכים הם רציפים **פר סוג**, ולכן הסוג נדרש — למשל קבלה מס' 1045 היא `{ "docNumber": 1045, "documentType": 2, ... }` (ראו [סוגי מסמכים](document-types.md)). וריאציית GET‏: `/GetDocumentByNumberREST`.‬
 
 ## ‫שליפה לפי מזהה API — ‏`GetDocumentByApiIdentifier`‬
 
@@ -90,8 +94,15 @@ Host: apiqa.invoice4u.co.il
 
 | ‫שגיאה (ID)‬ | ‫משמעות‬ |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | ‫טוקן לא תקין.‬ |
+| `UnauthorizedUser` (80) | ‫הטוקן זוהה אך אינו תקף לקריאה זו (למשל חשבון שפג תוקפו).‬ |
 | `ApiDocumentDoesNotExistForUser` (321) | ‫המסמך שייך לארגון אחר.‬ |
+
+{% hint style="warning" %}
+‫**תשובת `{ "d": null }` לא בהכרח אומרת שהמסמך לא קיים — בדקו קודם את הבקשה.** `GetDocument` ו-`GetDocumentByNumber` מחזירות `{ "d": null }` (HTTP 200, ללא `Errors`) כאשר:‬
+
+* ‫לא ניתן לפענח את הטוקן כלל — למשל כשנשארו סביבו תווי placeholder כמו `<...>`, או תווים מיותרים. שלחו את מחרוזת הטוקן בלבד. בדקו אותו עם [`IsAuthenticated`](../authentication/is-authenticated.md);‬
+* ‫`docId` אינו GUID (ראו למעלה).‬
+{% endhint %}
 
 ## ‫נסו את זה‬
 

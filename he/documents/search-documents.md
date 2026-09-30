@@ -85,6 +85,10 @@ Content-Type: application/json
 | `UnauthorizedUser` (80)  | ‫טוקן לא תקין.‬                        |
 | `ClientDoesntExists` (7) | ‫לא קיים לקוח בשם שנשלח ב-`CustomerName`.‬ |
 
+{% hint style="warning" %}
+‫**השמטת `DocumentType` מחזירה `{ "d": null }`** (HTTP 200, ללא `Errors`) — לא רשימה ריקה ולא שגיאת ולידציה. אם חזר `null`, בדקו קודם ש-`dr.DocumentType` נשלח. שליחת שדות אחרים כמו `ItemsIncluded`, `PaymentsIncluded` או `Limit` לא מחליפה את `DocumentType` החסר.‬
+{% endhint %}
+
 {% hint style="info" %}
 ‫המתודה מחזירה **סוג מסמך אחד בלבד לקריאה** — `DocumentType` מקבל ערך יחיד ולא רשימה. כדי לחפש כמה סוגים, בצעו קריאה נפרדת לכל סוג ואחדו את התוצאות בצד הלקוח.‬
 {% endhint %}

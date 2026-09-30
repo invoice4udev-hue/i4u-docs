@@ -15,6 +15,10 @@ Three lookups for fetching one document. All are scoped to the authenticated org
 
 `docId` is the document GUID (the `ID` returned on creation). Returns the `Document`, or `ApiDocumentDoesNotExistForUser` (321) if it belongs to another organization; `null` on a malformed GUID.
 
+{% hint style="warning" %}
+`docId` must be the GUID — **not** the document number. Sending a number (e.g. `"docId": 1045`) returns `{ "d": null }` with no error. `GetDocument` has no `documentNumber` / `DocumentNumber` parameter either; unknown parameter names are silently ignored, so you also get `{ "d": null }`. Only have the number? Use [`GetDocumentByNumber`](#get-by-number-getdocumentbynumber) below.
+{% endhint %}
+
 ## Get by number — `GetDocumentByNumber`
 
 | | |
@@ -26,7 +30,7 @@ Three lookups for fetching one document. All are scoped to the authenticated org
 { "docNumber": 20260123, "documentType": 3, "token": "<token>" }
 ```
 
-Document numbers are sequential **per type**, so the type is required. GET variant: `/GetDocumentByNumberREST`.
+Document numbers are sequential **per type**, so the type is required — e.g. receipt #1045 is `{ "docNumber": 1045, "documentType": 2, ... }` (see [document types](document-types.md)). GET variant: `/GetDocumentByNumberREST`.
 
 ## Get by API identifier — `GetDocumentByApiIdentifier`
 
@@ -90,8 +94,15 @@ All three return the full [Document object](document-object.md):
 
 | Error (ID) | Meaning |
 | ---------- | ------- |
-| `UnauthorizedUser` (80) | Invalid token. |
+| `UnauthorizedUser` (80) | Token was recognized but is not valid for this call (e.g. expired account). |
 | `ApiDocumentDoesNotExistForUser` (321) | Document belongs to another organization. |
+
+{% hint style="warning" %}
+**A `{ "d": null }` response doesn't necessarily mean the document doesn't exist — check your request first.** `GetDocument` and `GetDocumentByNumber` return `{ "d": null }` (HTTP 200, no `Errors`) when:
+
+* the token can't be decoded at all — e.g. it still has placeholder characters such as `<...>` around it, or extra characters. Send the bare token string. Check it with [`IsAuthenticated`](../authentication/is-authenticated.md);
+* `docId` is not a GUID (see above).
+{% endhint %}
 
 ## Try it
 

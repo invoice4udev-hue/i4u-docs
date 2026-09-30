@@ -85,6 +85,10 @@ Content-Type: application/json
 | `UnauthorizedUser` (80) | Invalid token. |
 | `ClientDoesntExists` (7) | No customer exists with the `CustomerName` you sent. |
 
+{% hint style="warning" %}
+**Omitting `DocumentType` returns `{ "d": null }`** (HTTP 200, no `Errors`) — not an empty list and not a validation error. If you get `null` back, first check that `dr.DocumentType` is set. Setting other fields such as `ItemsIncluded`, `PaymentsIncluded` or `Limit` does not make up for a missing `DocumentType`.
+{% endhint %}
+
 {% hint style="info" %}
 This endpoint can only retrieve **one document type per call** — `DocumentType` accepts a single value, not a list. To search across several types, issue one call per type and merge the results client-side.
 {% endhint %}
