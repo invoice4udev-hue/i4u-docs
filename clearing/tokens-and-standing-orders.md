@@ -13,7 +13,7 @@ Opens a hosted page that captures the card and stores a token, **without chargin
 ```json
 {
   "request": {
-    "Invoice4UUserApiKey": "<api-key>",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
     "AddToken": true,
     "FullName": "Israel Israeli",
     "Phone": "0501234567",
@@ -74,7 +74,7 @@ Server-to-server, synchronous — no redirect:
 ```json
 {
   "request": {
-    "Invoice4UUserApiKey": "<api-key>",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
     "ChargeWithToken": true,
     "CustomerId": 88231,
     "Sum": 117.0,
@@ -85,7 +85,7 @@ Server-to-server, synchronous — no redirect:
 }
 ```
 
-The stored token for the customer is resolved automatically. `CustomerId` is **required** — every provider integration dereferences it to find the stored token, so omitting it fails without a clean API error. A stored token must exist for the customer — otherwise `ApiTokenDoesntExistForThatCustomer` (304). Saving a new card for the customer **replaces** the previous token, so at most one token is kept per customer. On success the response carries the confirmation and, with `IsDocCreate`, the created document fields. If the token was created but a follow-up charge failed: `ApiTokenWasCreatedChargeFailed` (313).
+The stored token for the customer is resolved automatically. `CustomerId` is **required** — every provider integration dereferences it to find the stored token, so omitting it fails without a clean API error. Saving a new card for the customer **replaces** the previous token, so at most one token is kept per customer. The result is returned inline — see [Token charge response](#token-charge-response).
 
 ```mermaid
 flowchart LR
@@ -98,10 +98,97 @@ flowchart LR
     B -- ✗ --> E1[ApiTokenDoesntExist<br/>ForThatCustomer 304]:::err
     B -- ✓ --> C[Sync charge at provider<br/>no redirect]:::step
     C --> D{Charge OK?}:::dec
-    D -- ✓ --> F[Log + confirmation<br/>+ doc if IsDocCreate]:::step
+    D -- ✓ --> F[Log + Invoice-Receipt<br/>created]:::step
     F --> G[Result inline<br/>in response]:::cb
-    D -- ✗ --> H[ClearingError 32<br/>in response]:::err
+    D -- ✗ --> H[TokenClearanceStatus failed<br/>no Errors entry]:::err
 ```
+
+### Token charge response
+
+A declined charge does **not** add an entry to `Errors` — read `OpenInfo` → `TokenClearanceStatus` (or `ClearingRedirectUrl`):
+
+| Outcome | `ClearingRedirectUrl` | `OpenInfo` | `Errors` |
+| ------- | --------------------- | ---------- | -------- |
+| Charged | `"token-clearance-success"` | `PaymentId`, `TokenClearanceStatus: "success"`, `I4UClearingLogId`, `DocumentCreationStatus` (+ `DocumentError*` when the document failed; + `ClearingTraceId` on Meshulam and UPay) | `null` |
+| Declined by the provider | `"token-clearance-failed"` | `TokenClearanceStatus: "failed"` (may also carry provider details) | `null` |
+| No stored token for the customer | `"token-clearance-failed"` | `TokenClearanceStatus: "failed"` | `ApiTokenDoesntExistForThatCustomer` (304) |
+
+A decline has no error code in the response. On Cardcom, `OpenInfo` → `ClearingTraceId` carries the provider's raw reply (including its `Description`); on every provider, the reason is recorded as `ErrorMessage` on the response row in your [clearing logs](clearing-logs.md) (search with `IsSuccess: false`).
+
+The complete response to the request above, from a Cardcom terminal:
+
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "PaymentId", "Value": "100200301" },
+      { "Key": "TokenClearanceStatus", "Value": "success" },
+      { "Key": "I4UClearingLogId", "Value": "123460" },
+      { "Key": "DocumentCreationStatus", "Value": "success" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": null,
+    "ChargeWithToken": true,
+    "CipherText": "<document view cipher>",
+    "CipherTextOriginal": "<original document cipher>",
+    "ClearingRedirectUrl": "token-clearance-success",
+    "CreditCardCompanyType": null,
+    "Currency": null,
+    "CustomerId": 88231,
+    "Description": "Monthly subscription - July",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Monthly subscription - July",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": "d4c3b2a1-0000-4000-8000-000000000004",
+    "DocumentNumber": 0,
+    "Email": null,
+    "FullName": null,
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": false,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": null,
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": null,
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": null,
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 0
+  }
+}
+```
+
+{% hint style="warning" %}
+**A document is created after every successful token charge — even without `IsDocCreate`.** The token-charge flow doesn't check the flag: it issues an Invoice-Receipt and returns `IsDocCreate: true`. `DocumentNumber` is not returned (it stays `0`) — use `DocumentId` with [Get Document](../documents/get-document.md).
+{% endhint %}
 
 ## Related
 
@@ -113,7 +200,7 @@ flowchart LR
 | ---------- | ------- |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | Tokens not enabled on the terminal (or token feature expired). |
 | `ApiTokenDoesntExistForThatCustomer` (304) | No (or multiple) stored token for the customer. |
-| `ApiTokenWasCreatedChargeFailed` (313) | Token stored, charge declined. |
+| `ApiTokenWasCreatedChargeFailed` (313) | `AddTokenAndCharge` only: token stored, charge declined. |
 | `ApiChargeAttemptPhoneInvalid` (314) | `AddToken`/`AddTokenAndCharge` (Meshulam, Cardcom): the hosted card-capture page failed, often due to invalid phone/customer data. |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | Conflicting mode flags. |
 

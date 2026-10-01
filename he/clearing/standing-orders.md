@@ -89,18 +89,77 @@ Content-Type: application/json
 }
 ```
 
-‫התשובה זהה לכל בקשת דף מתארח — בדקו את `Errors` ואז הפנו את הלקוח ל-`ClearingRedirectUrl`:‬
+‫לתשובה אותו מבנה כמו לכל [תשובת דף מתארח](process-api-request-v2.md#example-response): בדקו את `Errors`, אמתו את `ClearingRedirectUrl` והפנו אליו את הלקוח. בשלב זה לא מתבצע חיוב, ו-`AddToken` מוחזר כ-`true` — הוראת קבע תמיד שומרת את הכרטיס. התשובה המלאה ממסוף Cardcom:‬
 
 ```json
 {
   "d": {
-    "Sum": 99.0,
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "ClearingTraceId", "Value": "a1b2c3d4-0000-4000-8000-000000000005" },
+      { "Key": "PaymentId", "Value": "0" },
+      { "Key": "I4UClearingLogId", "Value": "123470" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": true,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": "<Cardcom hosted-page URL>",
+    "CreditCardCompanyType": null,
+    "Currency": null,
+    "CustomerId": 88231,
+    "Description": null,
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Pro plan subscription",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": false,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": true,
+    "IsStandingOrderRequest": false,
+    "Language": null,
     "OrderIdClientUsage": "sub-10045",
-    "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",
-    "Errors": []
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/subscribed",
+    "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring",
+    "StandingOrderDuration": 12,
+    "StandingOrderFirstChargeAmount": 49,
+    "Sum": 99,
+    "TaxPercentage": null,
+    "Type": 0
   }
 }
 ```
+
+‫ב-Cardcom, הערך `ClearingTraceId` שב-`OpenInfo` תואם ל-`ClearingTraceId` של קולבק ההקמה. מזהה הוראת הקבע מגיע רק ב[קולבק ההקמה](#setup-callback-callbackurl).‬
 
 ## ‫לוח החיובים‬
 
@@ -155,7 +214,7 @@ Content-Type: application/json
 ‫שמרו את **`standingOrderId`** מקולבק ההקמה ברשומת המנוי שלכם. זה הקישור היחיד בין קולבקי החיוב החוזר למערכת שלכם — `OrderIdClientUsage` **לא** נכלל בקולבקי החיוב החוזר.‬
 {% endhint %}
 
-### ‫קולבק הקמה (`CallBackUrl`)‬
+### ‫קולבק הקמה (`CallBackUrl`)‬ {#setup-callback-callbackurl}
 
 ‫נשלח פעם אחת, רק אחרי שהוראת הקבע נוצרה. הוא בפורמט [קולבק הסליקה הרגיל](process-api-request-v2.md) — שדה טופס בשם `Data` שמכיל JSON, כל הערכים מחרוזות — עם אותם שדות. מה שייחודי להוראת קבע:‬
 

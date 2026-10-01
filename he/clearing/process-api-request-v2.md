@@ -8,7 +8,7 @@
 | - | - |
 | ‫**מתודה**‬ | `POST` |
 | ‫**נתיב**‬ | `/ProcessApiRequestV2` |
-| ‫**תשובה**‬ | ‫אותו אובייקט `ApiClearingRequest`, מועשר בתוצאות (`ClearingRedirectUrl`, `PaymentId`, `DocumentNumber`, …) — בדקו את `Errors` תחילה‬ |
+| ‫**תשובה**‬ | ‫ה-`ApiClearingRequest` שלכם מוחזר עם התוצאה (`ClearingRedirectUrl`, `OpenInfo`, …) — בדקו את `Errors` תחילה. ראו [שדות התשובה](#response-fields).‬ |
 
 ## ‫מהלך — חיוב רגיל‬
 
@@ -116,14 +116,34 @@ flowchart LR
 
 ‫ראו [טוקנים (כרטיסים שמורים)](tokens-and-standing-orders.md) עבור `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, ו[הוראות קבע](standing-orders.md) עבור `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — ו[זיכויים](#refunds) להלן עבור `Refund` + `PaymentId`. `IsStandingOrderRequest` שמור לשימוש פנימי.‬
 
-### ‫שדות תשובה בלבד‬
+### ‫שדות התשובה‬ {#response-fields}
+
+‫התשובה היא אובייקט ה-`request` שלכם, מוחזר במלואו — **כל** השדות, כולל אלה שלא שלחתם (כ-`null`, `false` או `0`) — יחד עם `__type` ושדות התוצאה שלהלן. ראו את [הדוגמה המלאה](#example-response).‬
 
 | ‫שדה‬ | ‫טיפוס‬ | ‫תיאור‬ |
 | --- | ----- | ----- |
-| `ClearingRedirectUrl` | string | ‫כתובת דף התשלום המתארח — הפנו את הלקוח לכאן.‬ |
-| `PaymentId` | string | ‫אסמכתת התשלום אצל הספק — שמרו אותה לצורך זיכויים.‬ |
-| `DocumentId` / `DocumentNumber` | GUID / long | ‫המסמך שנוצר אוטומטית (כאשר `IsDocCreate`).‬ |
-| `CipherText` / `CipherTextOriginal` | string | ‫ציפרים לקישורי הצפייה/הדפסה של המסמך.‬ |
+| `Errors` | array \| null | ‫שגיאות אימות וסליקה. **`null` כשאין שגיאות** (לא `[]`) — התייחסו ל-`null` ול-`[]` באותו אופן.‬ |
+| `Info` | array \| null | ‫בזיכויים בלבד: `[{ "ID": 2, "Info": "SuccessfulAction" }]` בהצלחה. אחרת `null`.‬ |
+| `OpenInfo` | array \| null | ‫ערכי התוצאה, כזוגות `{ "Key": "…", "Value": "…" }` (הערכים הם מחרוזות) — ראו [מפתחות OpenInfo](#openinfo-keys). `null` כשריק (למשל בזיכויים).‬ |
+| `ClearingRedirectUrl` | string | ‫בקשות דף מתארח: כתובת דף התשלום — הפנו את הלקוח לכאן (אמתו אותה קודם, ראו להלן). `ChargeWithToken`: `"token-clearance-success"` או `"token-clearance-failed"`. זיכויים: `null`.‬ |
+| `DocumentId` / `CipherText` / `CipherTextOriginal` | GUID / string | ‫ב-`ChargeWithToken` בלבד, כאשר נוצר מסמך (ו-`IsDocCreate` מוחזר כ-`true`). בדף מתארח המסמך נוצר אחרי התשלום — פרטיו מגיעים ב[קולבק](#callback-payload).‬ |
+| `PaymentId` | string | ‫**אינו שדה תוצאה** — זהו הד של ערך הבקשה (`null` אלא אם שלחתם אותו, למשל בזיכוי). אסמכתת התשלום של הספק נמצאת ב-`OpenInfo`.‬ |
+| `DocumentNumber` | long | ‫**אינו מאוכלס** בנקודת קצה זו — תמיד `0`. השתמשו ב-`DocumentNumber` מהקולבק, או ב[קבלת מסמך](../documents/get-document.md) עם `DocumentId`.‬ |
+
+{% hint style="warning" %}
+‫**אמתו את `ClearingRedirectUrl` לפני ההפניה.** כאשר ספק הסליקה דוחה את בקשת הדף (למשל מסוף שהוגדר שגוי), טקסט השגיאה של הספק מוחזר ב-`ClearingRedirectUrl` במקום כתובת, ו-`Errors` נשאר `null`. הפנו רק כאשר הערך הוא כתובת `https://`; אחרת התייחסו אליו כהודעת השגיאה. `ClearingError` (32) מתווסף רק כאשר הספק לא מחזיר ערך כלל.‬
+{% endhint %}
+
+### ‫מפתחות OpenInfo‬ {#openinfo-keys}
+
+| ‫מפתח‬ | ‫ערך‬ |
+| --- | ----- |
+| `ClearingTraceId` | ‫מזהה המעקב של הספק, כשקיים. **Cardcom** בדף מתארח: מזהה דף התשלום (LowProfile) — אותו ערך מגיע כ-`ClearingTraceId` ב[קולבק](#callback-payload). **Meshulam**: טוקן התהליך. **UPay**: GUID שנוצר ב-Invoice4U. כאשר Cardcom דוחה בקשה, הוא מכיל במקום זאת את התשובה הגולמית של Cardcom ‏(JSON עם `Description` של השגיאה).‬ |
+| `PaymentId` | ‫אסמכתת התשלום של הספק, כשקיימת. **Cardcom** בדף מתארח: `"0"` — מזהה העסקה נוצר רק אחרי התשלום ומגיע כ-`PaymentId` בקולבק. Cardcom בחיוב טוקן: מזהה העסקה. **Meshulam**: מזהה התהליך. **UPay**: מזהה הקופה (cashier ID). לזיכויים השתמשו ב-`PaymentId` מה**קולבק** (אותו ערך נמצא בשורת התשובה בלוגי הסליקה).‬ |
+| `I4UClearingLogId` | ‫בקשות דף מתארח וחיובי טוקן מוצלחים: מזהה שורת הבקשה שהקריאה כתבה ל[לוגי הסליקה](clearing-logs.md).‬ |
+| `TokenClearanceStatus` | ‫ב-`ChargeWithToken` בלבד: `"success"` או `"failed"`.‬ |
+| `DocumentCreationStatus` | ‫ב-`ChargeWithToken` בלבד, אחרי חיוב מוצלח: `"success"` או `"failed"`.‬ |
+| `DocumentError` / `DocumentErrorId` / `DocumentErrorParameter` | ‫ב-`ChargeWithToken` בלבד, כשהחיוב הצליח אך יצירת המסמך נכשלה: שם השגיאה, המזהה והפרמטר שלה.‬ |
 
 ## ‫דוגמת בקשה — דף מתארח + מסמך אוטומטי‬
 
@@ -152,21 +172,153 @@ Content-Type: application/json
 }
 ```
 
-## ‫דוגמת תשובה‬
+## ‫דוגמת תשובה‬ {#example-response}
 
+‫התשובה המלאה לבקשה שלמעלה. **הצלחה** — ממסוף Cardcom; ספקים אחרים נבדלים רק בערכי `OpenInfo` ובכתובת הדף. **שגיאה** — נלכדה בקריאה חיה עם מפתח API לא מוכר.‬
+
+{% tabs %}
+{% tab title="הצלחה" %}
 ```json
 {
   "d": {
-    "Sum": 117.0,
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "ClearingTraceId", "Value": "a1b2c3d4-0000-4000-8000-000000000002" },
+      { "Key": "PaymentId", "Value": "0" },
+      { "Key": "I4UClearingLogId", "Value": "123455" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": "<Cardcom hosted-page URL>",
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Order #10045",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
     "OrderIdClientUsage": "10045",
-    "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",
-    "PaymentId": "ab12cd34",
-    "Errors": []
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/thanks",
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 1
   }
 }
 ```
+{% endtab %}
 
-‫הפנו את הלקוח ל-`ClearingRedirectUrl`. לאחר התשלום תקבלו את הקולבק, וכאשר `IsDocCreate` מוגדר, שדות המסמך (`DocumentId`, `DocumentNumber`, `CipherText`) מאוכלסים.‬
+{% tab title="שגיאה" %}
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": [
+      { "__type": "CommonError:#Invoice.Common", "Error": "UnauthorizedUser", "ID": 80, "Paramters": null }
+    ],
+    "Info": null,
+    "OpenInfo": null,
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": null,
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Order #10045",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": "10045",
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/thanks",
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 1
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+‫ערכים בתוך `<…>` משתנים מבקשה לבקשה. בתעבורה עצמה, `/` בתוך מחרוזות מוחזר כ-`\/` (למשל `"https:\/\/shop.example\/thanks"`) — כל מפענח JSON מפענח זאת.‬
+
+‫בדקו את `Errors`, אמתו את `ClearingRedirectUrl` והפנו אליו את הלקוח. שמרו את `ClearingTraceId` ואת `I4UClearingLogId` מתוך `OpenInfo` כדי להתאים לקולבק וללוגי הסליקה. תוצאת החיוב, פרטי הכרטיס, `PaymentId` ו — עם `IsDocCreate` — מספר המסמך, המזהה והציפרים שלו מגיעים ב[קולבק](#callback-payload), לא בתשובה זו.‬
 
 ## ‫גוף הקולבק‬ {#callback-payload}
 
@@ -178,7 +330,7 @@ Content-Type: application/json
   "TokenCaptureOnly": "False",
   "TokenCaptureAndCharge": "False",
   "ErrorMessage": "",
-  "OrderIdClientUsage": "b2f0c9d4-0000-4000-8000-000000000001",
+  "OrderIdClientUsage": "10045",
   "DocCreated": "True",
   "CardSuffix": "1234",
   "CardExpirationDate": "0828",
@@ -236,6 +388,80 @@ Content-Type: application/json
 * ‫**Cardcom** — הזיכוי נבדק מול היתרה שטרם זוכתה: אם `Sum` עולה עליה, הזיכוי **נחתך ליתרה** (ולא נדחה); אם לא נותרה יתרה לזיכוי, מוחזרת `CreditAmountExceedsTotal` (155).‬
 * ‫**UPay** — זיכויים אפשריים עד **5 חודשים** לאחר החיוב (`ClearingErrorRefundTimeExceeded`, 158).‬
 * ‫**Meshulam** — ללא הגבלות צד-לקוח נוספות; שגיאות ספק מוחזרות כ-`ClearingError` (32).‬
+
+### ‫תשובת זיכוי‬
+
+‫זיכויים הם סינכרוניים — התוצאה נמצאת בתשובה, וההצלחה מסומנת ב-`Info`. התשובה המלאה לדוגמה **Refund a previous charge by PaymentId** בארגז החול (מסוף Cardcom):‬
+
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": [
+      { "__type": "CommonInfo:#Invoice.Common", "ID": 2, "Info": "SuccessfulAction", "Paramters": null }
+    ],
+    "OpenInfo": null,
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": null,
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": null,
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Refund for order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": null,
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": false,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": null,
+    "PaymentId": "100200300",
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": true,
+    "ReturnUrl": null,
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 0
+  }
+}
+```
+
+* ‫**הצלחה:** `Info` מכיל `SuccessfulAction` (2) ו-`Errors` הוא `null`. `ClearingRedirectUrl` ו-`OpenInfo` נשארים `null` (ב-UPay נוסף `ClearingTraceId` ל-`OpenInfo`).‬
+* ‫**כישלון:** `Errors` מכיל את הסיבה — `PaymentIDDoesntExists` (60), `CreditAmountExceedsTotal` (155), `ClearingErrorRefundTimeExceeded` (158) או `ClearingError` (32).‬
+* ‫`Sum` מוחזר כפי שנשלח. כאשר Cardcom חותכת את הזיכוי ליתרה, בדקו ב[לוג הסליקה](clearing-logs.md) של החיוב המקורי (`CreditAmount`) את הסכום שזוכה בפועל.‬
 
 ### ‫יצירת מסמך בזיכויים‬
 

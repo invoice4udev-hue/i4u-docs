@@ -14,7 +14,7 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 | `CustomerUniqueId` | string | Payer identity/ID number captured at the hosted page — the same value as `UniqueId` in the [callback payload](process-api-request-v2.md#callback-payload). |
 | `Amount` | double | Charged amount. |
 | `Currency` | int | `1` NIS, `2` USD, `3` EUR, `4` GBP. |
-| `CurrencyName` | string | Text name of `Currency` (e.g. `"NIS"`). |
+| `CurrencyName` | string | Text name of `Currency`: `"ILS"`, `"USD"`, `"EUR"` or `"GBP"`. |
 | `PaymentNumber` | int | Number of installments. |
 | `CreditNumber` | string | Last 4 card digits. |
 | `CreditType` / `CreditTypeName` | int / string | Your organization's credit-card company ID and name, as configured on your account — not a fixed system-wide code. |
@@ -31,7 +31,7 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 | `IsDocumentCreated` / `DocId` | bool / GUID | Auto-created document reference. |
 | `TransactionType` | int | Unified type: 0 Charge, 1 TokenCreation, 2 TokenAndCharge, 3 ChargeByToken, 4 PaymentInNumbers, 5 PaymentWithFees, 6 Credit/refund, 7 MobileAppPersonalPayment, 8 TokenPaymentInNumbers. |
 | `CreateDocumentType` | int | Internal. Document-type code recorded when a document was auto-created for the charge (`0` when none was created). |
-| `ClearingLogBaseId` | int | Internal. Links a response-type row (`LogType` `2`) back to the request-type row (`LogType` `1`) it belongs to. |
+| `ClearingLogBaseId` | int | Internal. Links a charge's request row (`LogType` `1`) and response row (`LogType` `2`); `0` until the response row exists. To pair the rows, match on `ClearingTraceId` instead. |
 | `TransactionId` / `TransactionToken` | string | Internal. Provider-specific transaction identifiers; not required for integration. |
 | `UpdateRequestLog` | boolean | Internal. Used only when inserting a log via `ProcessApiRequestClearingLogInsertREST_V2`; not meaningful when reading existing logs. |
 
@@ -46,7 +46,61 @@ Every clearing request and response is recorded as a `ClearingLog` row. Use thes
 { "clearingLogId": 123456, "token": "<token>" }
 ```
 
-Returns the `ClearingLog`. Logs belonging to another organization return `ApiUnauthorizedAccessForEntityNotBelongingToUser` (322).
+Returns the `ClearingLog`, or `{ "d": null }` when no log has that ID. Example — the request row that the [Process a Clearing Request example](process-api-request-v2.md#example-response) wrote when it created the Cardcom hosted page, fetched with its `I4UClearingLogId` before the customer paid:
+
+```json
+{
+  "d": {
+    "__type": "ClearingLog:#Invoice.Common",
+    "Errors": [],
+    "Info": [],
+    "OpenInfo": [],
+    "RecaptchaToken": null,
+    "Amount": 117,
+    "ClearingCompany": 15,
+    "ClearingCompanyName": "<clearing company name>",
+    "ClearingConfirmationNumber": "",
+    "ClearingLogBaseId": 0,
+    "ClearingTraceId": "a1b2c3d4-0000-4000-8000-000000000002",
+    "ClientName": "Israel Israeli",
+    "CreateDocumentType": 1,
+    "CreditAmount": 0,
+    "CreditNumber": "",
+    "CreditType": 1,
+    "CreditTypeName": "<credit company name>",
+    "CreditedTransaction": false,
+    "Currency": 1,
+    "CurrencyName": "ILS",
+    "CustomerUniqueId": null,
+    "Date": "/Date(1788210000000+0300)/",
+    "DocId": null,
+    "ErrorMessage": "",
+    "Id": 123455,
+    "IsApplePay": false,
+    "IsBitPayment": false,
+    "IsCredit": false,
+    "IsDocumentCreated": false,
+    "IsGooglePay": false,
+    "IsSuccess": true,
+    "IsToken": false,
+    "LogType": 1,
+    "OrganizationId": 12345,
+    "PaymentId": "0",
+    "PaymentNumber": 1,
+    "TransactionId": "",
+    "TransactionToken": "",
+    "TransactionType": 0,
+    "UpdateRequestLog": false
+  }
+}
+```
+
+* `<…>` values come from your account's configuration.
+* A request row (`LogType` `1`) holds what was known when the page was created: no card details yet, `PaymentId` `"0"` on Cardcom, and `ClearingTraceId` = the `ClearingTraceId` from the response's `OpenInfo`.
+* When the customer pays, a response row (`LogType` `2`) is added with the result — `IsSuccess`, `CreditNumber` (last 4 digits), `ClearingConfirmationNumber` (the callback's `AuthNumber`), the provider `PaymentId` (the callback's `PaymentId`) and the same `ClearingTraceId`. Find it with `GetClearingLogByParams` by `PaymentId`.
+* `Errors`, `Info` and `OpenInfo` are empty arrays on success. `UpdateRequestLog` is always `false` when reading.
+
+A log belonging to another organization is rejected with `ApiUnauthorizedAccessForEntityNotBelongingToUser` (322) — see [Errors](#errors) for how errors currently arrive.
 
 ## Search — `GetClearingLogByParams`
 
@@ -90,7 +144,7 @@ Every field below is optional; omit a filter to skip it.
 }
 ```
 
-Returns `ClearingLog[]` matching the filters, scoped to your organization.
+Returns `{ "d": [ … ] }` — an array of `ClearingLog` objects like the example above, scoped to your organization (`[]` when nothing matches).
 
 ## Insert an external log — `ProcessApiRequestClearingLogInsertREST_V2`
 
@@ -112,6 +166,10 @@ Pass a `ClearingLog` object (`clearingLog`) with at least `ClientName`, `Amount`
 | `ClearingTerminalDoesntExists` (96) | `ProcessApiRequestClearingLogInsertREST_V2` | No clearing account, or the terminal for your provider is misconfigured (missing terminal/username/password). |
 
 `GetClearingLogById` and `GetClearingLogByParams` do not validate whether a clearing account is configured — they only check the token.
+
+{% hint style="warning" %}
+**Error responses from `GetClearingLogById` and `GetClearingLogByParams` currently don't reach the client.** Instead of returning `UnauthorizedUser` (80) or `ApiUnauthorizedAccessForEntityNotBelongingToUser` (322), the server closes the connection without a response (e.g. curl: `Recv failure: Connection was reset`) — verified on Production and QA with an invalid token. Treat a dropped connection on these endpoints as an authentication or ownership failure: check the token and the log ID.
+{% endhint %}
 
 ## Try it
 

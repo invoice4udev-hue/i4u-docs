@@ -70,6 +70,8 @@ Most result objects inherit a common envelope. Always check `Errors` before usin
 | `Info` | array | Informational messages. Each item: `ID`, `Info` (message name, e.g. `SuccessfulAction`), `Paramters`. |
 | `OpenInfo` | array | Key/value extras returned by some endpoints, as `{ "Key": "...", "Value": "..." }` pairs — e.g. `[{ "Key": "PaymentMismatchDelta", "Value": "0.01" }]`. |
 
+These collections can be `null` instead of `[]` when empty — notably on [ProcessApiRequestV2](../clearing/process-api-request-v2.md#response-fields), which echoes your request object. Treat `null` as empty.
+
 ### Dates
 
 Date fields are sent and returned in the WCF JSON date format: milliseconds since 1970-01-01 UTC, optionally followed by the time-zone offset.

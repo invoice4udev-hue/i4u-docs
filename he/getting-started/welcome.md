@@ -70,6 +70,8 @@ Content-Type: application/json
 | `Info` | array | ‫הודעות מידע. כל פריט: `ID`, `Info` (שם ההודעה, למשל `SuccessfulAction`), `Paramters`.‬ |
 | `OpenInfo` | array | ‫תוספות מפתח/ערך שחלק מהמתודות מחזירות, כזוגות `{ "Key": "...", "Value": "..." }` — למשל `[{ "Key": "PaymentMismatchDelta", "Value": "0.01" }]`.‬ |
 
+‫אוספים אלה עשויים להיות `null` במקום `[]` כשהם ריקים — בפרט ב-[ProcessApiRequestV2](../clearing/process-api-request-v2.md#response-fields), שמחזיר את אובייקט הבקשה שלכם. התייחסו ל-`null` כריק.‬
+
 ### ‫תאריכים‬ {#dates}
 
 ‫שדות תאריך נשלחים ומוחזרים בפורמט התאריך של WCF JSON: אלפיות שנייה מאז 1970-01-01 UTC, ואחריהן (אופציונלית) הפרש אזור הזמן.‬

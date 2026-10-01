@@ -13,7 +13,7 @@
 ```json
 {
   "request": {
-    "Invoice4UUserApiKey": "<api-key>",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
     "AddToken": true,
     "FullName": "Israel Israeli",
     "Phone": "0501234567",
@@ -74,7 +74,7 @@ flowchart LR
 ```json
 {
   "request": {
-    "Invoice4UUserApiKey": "<api-key>",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
     "ChargeWithToken": true,
     "CustomerId": 88231,
     "Sum": 117.0,
@@ -85,7 +85,7 @@ flowchart LR
 }
 ```
 
-‫הטוקן השמור של הלקוח מזוהה אוטומטית. `CustomerId` **חובה** — כל אינטגרציית ספק דורשת אותו כדי לאתר את הטוקן השמור, ולכן השמטתו נכשלת ללא שגיאת API נקייה. חייב להתקיים בדיוק טוקן אחד ללקוח — אחרת `ApiTokenDoesntExistForThatCustomer` ‏(304). בהצלחה, התשובה נושאת את האישור, ועם `IsDocCreate` — את שדות המסמך שנוצר. אם הטוקן נוצר אך חיוב ההמשך נכשל: `ApiTokenWasCreatedChargeFailed` ‏(313).‬
+‫הטוקן השמור של הלקוח מזוהה אוטומטית. `CustomerId` **חובה** — כל אינטגרציית ספק דורשת אותו כדי לאתר את הטוקן השמור, ולכן השמטתו נכשלת ללא שגיאת API נקייה. שמירת כרטיס חדש ללקוח **מחליפה** את הטוקן הקודם, כך שנשמר לכל היותר טוקן אחד ללקוח. התוצאה מוחזרת ישירות בתשובה — ראו [תשובת חיוב טוקן](#token-charge-response).‬
 
 ```mermaid
 flowchart LR
@@ -98,10 +98,97 @@ flowchart LR
     B -- ✗ --> E1[ApiTokenDoesntExist<br/>ForThatCustomer 304]:::err
     B -- ✓ --> C[Sync charge at provider<br/>no redirect]:::step
     C --> D{Charge OK?}:::dec
-    D -- ✓ --> F[Log + confirmation<br/>+ doc if IsDocCreate]:::step
+    D -- ✓ --> F[Log + Invoice-Receipt<br/>created]:::step
     F --> G[Result inline<br/>in response]:::cb
-    D -- ✗ --> H[ClearingError 32<br/>in response]:::err
+    D -- ✗ --> H[TokenClearanceStatus failed<br/>no Errors entry]:::err
 ```
+
+### ‫תשובת חיוב טוקן‬ {#token-charge-response}
+
+‫חיוב שנדחה **אינו** מוסיף רשומה ל-`Errors` — קראו את `TokenClearanceStatus` שב-`OpenInfo` (או את `ClearingRedirectUrl`):‬
+
+| ‫תוצאה‬ | `ClearingRedirectUrl` | `OpenInfo` | `Errors` |
+| ------- | --------------------- | ---------- | -------- |
+| ‫חויב‬ | `"token-clearance-success"` | ‫`PaymentId`, `TokenClearanceStatus: "success"`, `I4UClearingLogId`, `DocumentCreationStatus` (+ `DocumentError*` כשיצירת המסמך נכשלה; + `ClearingTraceId` ב-Meshulam וב-UPay)‬ | `null` |
+| ‫נדחה אצל הספק‬ | `"token-clearance-failed"` | ‫`TokenClearanceStatus: "failed"` (עשוי לכלול גם פרטים מהספק)‬ | `null` |
+| ‫אין טוקן שמור ללקוח‬ | `"token-clearance-failed"` | `TokenClearanceStatus: "failed"` | `ApiTokenDoesntExistForThatCustomer` (304) |
+
+‫לדחייה אין קוד שגיאה בתשובה. ב-Cardcom, הערך `ClearingTraceId` שב-`OpenInfo` מכיל את התשובה הגולמית של הספק (כולל ה-`Description` שלה); אצל כל הספקים, הסיבה נרשמת כ-`ErrorMessage` בשורת התשובה ב[לוגי הסליקה](clearing-logs.md) (חפשו עם `IsSuccess: false`).‬
+
+‫התשובה המלאה לבקשה שלמעלה, ממסוף Cardcom:‬
+
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "PaymentId", "Value": "100200301" },
+      { "Key": "TokenClearanceStatus", "Value": "success" },
+      { "Key": "I4UClearingLogId", "Value": "123460" },
+      { "Key": "DocumentCreationStatus", "Value": "success" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": null,
+    "ChargeWithToken": true,
+    "CipherText": "<document view cipher>",
+    "CipherTextOriginal": "<original document cipher>",
+    "ClearingRedirectUrl": "token-clearance-success",
+    "CreditCardCompanyType": null,
+    "Currency": null,
+    "CustomerId": 88231,
+    "Description": "Monthly subscription - July",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Monthly subscription - July",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": "d4c3b2a1-0000-4000-8000-000000000004",
+    "DocumentNumber": 0,
+    "Email": null,
+    "FullName": null,
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": false,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": null,
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": null,
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": null,
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 0
+  }
+}
+```
+
+{% hint style="warning" %}
+‫**מסמך נוצר אחרי כל חיוב טוקן מוצלח — גם ללא `IsDocCreate`.** תהליך חיוב הטוקן אינו בודק את הדגל: הוא מפיק חשבונית-קבלה ומחזיר `IsDocCreate: true`. `DocumentNumber` אינו מוחזר (נשאר `0`) — השתמשו ב-`DocumentId` עם [קבלת מסמך](../documents/get-document.md).‬
+{% endhint %}
 
 ## ‫קשור‬
 
@@ -113,7 +200,7 @@ flowchart LR
 | ---------- | ------- |
 | `ApiTokenizationNotApprovedInClearingTerminal` (309) | ‫טוקנים לא מופעלים על המסוף (או שתוקף פיצ'ר הטוקן פג).‬ |
 | `ApiTokenDoesntExistForThatCustomer` (304) | ‫אין טוקן שמור (או שיש כמה) עבור הלקוח.‬ |
-| `ApiTokenWasCreatedChargeFailed` (313) | ‫הטוקן נשמר, החיוב נדחה.‬ |
+| `ApiTokenWasCreatedChargeFailed` (313) | ‫ב-`AddTokenAndCharge` בלבד: הטוקן נשמר, החיוב נדחה.‬ |
 | `ApiChargeAttemptPhoneInvalid` (314) | ‫`AddToken`/`AddTokenAndCharge` (משולם, קארדקום): דף לכידת הכרטיס המתארח נכשל, לרוב עקב מספר טלפון/פרטי לקוח שגויים.‬ |
 | `ApiBadRequestChargeMethodMustBeSelected` (319) | ‫דגלי מצב סותרים.‬ |
 

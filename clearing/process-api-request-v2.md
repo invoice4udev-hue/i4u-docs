@@ -8,7 +8,7 @@ The main clearing endpoint. Creates a hosted payment page, charges a saved token
 | - | - |
 | **Method** | `POST` |
 | **Path** | `/ProcessApiRequestV2` |
-| **Response** | The same `ApiClearingRequest` object, enriched with results (`ClearingRedirectUrl`, `PaymentId`, `DocumentNumber`, …) — check `Errors` first |
+| **Response** | Your `ApiClearingRequest` echoed back with the result filled in (`ClearingRedirectUrl`, `OpenInfo`, …) — check `Errors` first. See [Response fields](#response-fields). |
 
 ## Flow — standard charge
 
@@ -116,14 +116,34 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 
 See [Saved-Card Tokens](tokens-and-standing-orders.md) for `AddToken`, `AddTokenAndCharge`, `ChargeWithToken`, and [Standing Orders](standing-orders.md) for `IsStandingOrderClearance`, `StandingOrderDuration`, `StandingOrderFirstChargeAmount`, `StandingOrderCallBackUrl` — and [Refunds](#refunds) below for `Refund` + `PaymentId`. `IsStandingOrderRequest` is reserved for internal use.
 
-### Response-only fields
+### Response fields
+
+The response is your `request` object echoed back — **every** field, including the ones you didn't send (as `null`, `false` or `0`) — with `__type` and the result fields below. See the [full example](#example-response).
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| `ClearingRedirectUrl` | string | Hosted payment page URL — redirect the customer here. |
-| `PaymentId` | string | Provider payment reference — keep it for refunds. |
-| `DocumentId` / `DocumentNumber` | GUID / long | The auto-created document (when `IsDocCreate`). |
-| `CipherText` / `CipherTextOriginal` | string | Ciphers for the document view/print links. |
+| `Errors` | array \| null | Validation and clearing errors. **`null` when there are none** (not `[]`) — treat `null` and `[]` the same. |
+| `Info` | array \| null | Refunds only: `[{ "ID": 2, "Info": "SuccessfulAction" }]` on success. Otherwise `null`. |
+| `OpenInfo` | array \| null | The result values, as `{ "Key": "…", "Value": "…" }` pairs (values are strings) — see [OpenInfo keys](#openinfo-keys). `null` when empty (e.g. refunds). |
+| `ClearingRedirectUrl` | string | Hosted-page requests: the payment page URL — redirect the customer here (validate it first, see below). `ChargeWithToken`: `"token-clearance-success"` or `"token-clearance-failed"`. Refunds: `null`. |
+| `DocumentId` / `CipherText` / `CipherTextOriginal` | GUID / string | `ChargeWithToken` only, when a document was created (and `IsDocCreate` is returned as `true`). For hosted pages the document is created after payment — its details arrive in the [callback](#callback-payload). |
+| `PaymentId` | string | **Not a result field** — the echo of the request value (`null` unless you sent it, e.g. for a refund). The provider's payment reference is in `OpenInfo`. |
+| `DocumentNumber` | long | **Not populated** by this endpoint — always `0`. Use the callback's `DocumentNumber`, or [Get Document](../documents/get-document.md) with `DocumentId`. |
+
+{% hint style="warning" %}
+**Validate `ClearingRedirectUrl` before redirecting.** When the clearing provider rejects the page request (for example, a misconfigured terminal), the provider's error text is returned in `ClearingRedirectUrl` instead of a URL, and `Errors` stays `null`. Redirect only when the value is an `https://` URL; otherwise treat it as the error message. `ClearingError` (32) is added only when the provider returns no value at all.
+{% endhint %}
+
+### OpenInfo keys
+
+| Key | Value |
+| --- | ----- |
+| `ClearingTraceId` | Provider trace reference, when available. **Cardcom** hosted pages: the payment page (LowProfile) ID — the same value arrives as `ClearingTraceId` in the [callback](#callback-payload). **Meshulam**: the process token. **UPay**: an Invoice4U-generated GUID. When Cardcom rejects a request, it holds Cardcom's raw reply (JSON with the error `Description`) instead. |
+| `PaymentId` | Provider payment reference, when available. **Cardcom** hosted pages: `"0"` — the transaction ID exists only after payment and arrives as `PaymentId` in the callback. Cardcom token charges: the transaction ID. **Meshulam**: the process ID. **UPay**: the cashier ID. For refunds, use the `PaymentId` from the **callback** (the same value is on the response row in your clearing logs). |
+| `I4UClearingLogId` | Hosted-page requests and successful token charges: the ID of the request row this call wrote to your [clearing logs](clearing-logs.md). |
+| `TokenClearanceStatus` | `ChargeWithToken` only: `"success"` or `"failed"`. |
+| `DocumentCreationStatus` | `ChargeWithToken` only, after a successful charge: `"success"` or `"failed"`. |
+| `DocumentError` / `DocumentErrorId` / `DocumentErrorParameter` | `ChargeWithToken` only, when the charge succeeded but the document failed: the document error's name, ID and parameter. |
 
 ## Example request — hosted page + auto document
 
@@ -154,19 +174,151 @@ Content-Type: application/json
 
 ## Example response
 
+The complete response to the request above. **Success** is from a Cardcom terminal — other providers differ only in the `OpenInfo` values and the page URL. **Error** was captured live for an unrecognized API key.
+
+{% tabs %}
+{% tab title="Success" %}
 ```json
 {
   "d": {
-    "Sum": 117.0,
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "ClearingTraceId", "Value": "a1b2c3d4-0000-4000-8000-000000000002" },
+      { "Key": "PaymentId", "Value": "0" },
+      { "Key": "I4UClearingLogId", "Value": "123455" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": "<Cardcom hosted-page URL>",
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Order #10045",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
     "OrderIdClientUsage": "10045",
-    "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",
-    "PaymentId": "ab12cd34",
-    "Errors": []
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/thanks",
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 1
   }
 }
 ```
+{% endtab %}
 
-Redirect the customer to `ClearingRedirectUrl`. After payment you receive the callback and, when `IsDocCreate` is set, the document fields (`DocumentId`, `DocumentNumber`, `CipherText`) are populated.
+{% tab title="Error" %}
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": [
+      { "__type": "CommonError:#Invoice.Common", "Error": "UnauthorizedUser", "ID": 80, "Paramters": null }
+    ],
+    "Info": null,
+    "OpenInfo": null,
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": null,
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Order #10045",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": true,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": "10045",
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/thanks",
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 1
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Values in `<…>` vary per request. On the wire, `/` inside strings is escaped as `\/` (e.g. `"https:\/\/shop.example\/thanks"`) — any JSON parser decodes it.
+
+Check `Errors`, validate `ClearingRedirectUrl` and redirect the customer to it. Save `OpenInfo` → `ClearingTraceId` and `I4UClearingLogId` to match the callback and your clearing logs. The charge result, card details, `PaymentId` and — with `IsDocCreate` — the document's number, ID and ciphers arrive in the [callback](#callback-payload), not in this response.
 
 ## Callback payload
 
@@ -178,7 +330,7 @@ After the customer completes the hosted page, Invoice4U POSTs the result to your
   "TokenCaptureOnly": "False",
   "TokenCaptureAndCharge": "False",
   "ErrorMessage": "",
-  "OrderIdClientUsage": "b2f0c9d4-0000-4000-8000-000000000001",
+  "OrderIdClientUsage": "10045",
   "DocCreated": "True",
   "CardSuffix": "1234",
   "CardExpirationDate": "0828",
@@ -236,6 +388,80 @@ Refund behavior per provider (from the live implementation):
 * **Cardcom** — the refund is validated against the remaining un-refunded balance: if `Sum` exceeds it, the refund is **clamped to the balance** (not rejected); if nothing is left to refund, `CreditAmountExceedsTotal` (155) is returned.
 * **UPay** — refunds are possible up to **5 months** after the charge (`ClearingErrorRefundTimeExceeded`, 158).
 * **Meshulam** — no additional client-side limits; provider errors surface as `ClearingError` (32).
+
+### Refund response
+
+Refunds are synchronous — the result is in the response, and success is signalled by `Info`. The complete response to the sandbox example **Refund a previous charge by PaymentId** (Cardcom terminal):
+
+```json
+{
+  "d": {
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": [
+      { "__type": "CommonInfo:#Invoice.Common", "ID": 2, "Info": "SuccessfulAction", "Paramters": null }
+    ],
+    "OpenInfo": null,
+    "RecaptchaToken": null,
+    "AddToken": false,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": null,
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": null,
+    "CreditCardCompanyType": null,
+    "Currency": "NIS",
+    "CustomerId": null,
+    "Description": "Refund for order #10045",
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": null,
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": false,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": false,
+    "IsStandingOrderRequest": false,
+    "Language": null,
+    "OrderIdClientUsage": null,
+    "PaymentId": "100200300",
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": true,
+    "ReturnUrl": null,
+    "StandingOrderCallBackUrl": null,
+    "StandingOrderDuration": null,
+    "StandingOrderFirstChargeAmount": null,
+    "Sum": 117,
+    "TaxPercentage": null,
+    "Type": 0
+  }
+}
+```
+
+* **Success:** `Info` contains `SuccessfulAction` (2) and `Errors` is `null`. `ClearingRedirectUrl` and `OpenInfo` stay `null` (UPay adds a `ClearingTraceId` to `OpenInfo`).
+* **Failure:** `Errors` contains the reason — `PaymentIDDoesntExists` (60), `CreditAmountExceedsTotal` (155), `ClearingErrorRefundTimeExceeded` (158) or `ClearingError` (32).
+* `Sum` is echoed as sent. When Cardcom clamps the refund to the remaining balance, check the original charge's [clearing log](clearing-logs.md) (`CreditAmount`) for the amount actually refunded.
 
 ### Document creation on refunds
 

@@ -89,18 +89,77 @@ Content-Type: application/json
 }
 ```
 
-The response is the same as for any hosted-page request — check `Errors`, then redirect the customer to `ClearingRedirectUrl`:
+The response has the same shape as any [hosted-page response](process-api-request-v2.md#example-response): check `Errors`, validate `ClearingRedirectUrl` and redirect the customer to it. Nothing is charged at this stage, and `AddToken` comes back `true` — a standing order always saves the card. The complete response from a Cardcom terminal:
 
 ```json
 {
   "d": {
-    "Sum": 99.0,
+    "__type": "ApiClearingRequest:#Invoice.Common",
+    "Errors": null,
+    "Info": null,
+    "OpenInfo": [
+      { "Key": "ClearingTraceId", "Value": "a1b2c3d4-0000-4000-8000-000000000005" },
+      { "Key": "PaymentId", "Value": "0" },
+      { "Key": "I4UClearingLogId", "Value": "123470" }
+    ],
+    "RecaptchaToken": null,
+    "AddToken": true,
+    "AddTokenAndCharge": false,
+    "CallBackUrl": "https://shop.example/api/i4u-callback",
+    "ChargeWithToken": false,
+    "CipherText": null,
+    "CipherTextOriginal": null,
+    "ClearingRedirectUrl": "<Cardcom hosted-page URL>",
+    "CreditCardCompanyType": null,
+    "Currency": null,
+    "CustomerId": 88231,
+    "Description": null,
+    "DocBranchId": null,
+    "DocComments": null,
+    "DocHeadline": "Pro plan subscription",
+    "DocItemCode": null,
+    "DocItemName": null,
+    "DocItemPrice": null,
+    "DocItemQuantity": null,
+    "DocItemTaxRate": null,
+    "DocLanguage": null,
+    "DocumentId": null,
+    "DocumentNumber": 0,
+    "Email": "israel@example.com",
+    "FullName": "Israel Israeli",
+    "Invoice4UUserApiKey": "d2f1a6b3-1234-4c9a-9f00-1a2b3c4d5e6f",
+    "Invoice4UUserEmail": null,
+    "Invoice4UUserPassword": null,
+    "IsApplePay": null,
+    "IsAutoCreateCustomer": false,
+    "IsBitPayment": null,
+    "IsDocCreate": false,
+    "IsGeneralClient": false,
+    "IsGooglePay": null,
+    "IsItemsBase64Encoded": null,
+    "IsManualDocCreationsWithParams": false,
+    "IsQaMode": true,
+    "IsStandingOrderClearance": true,
+    "IsStandingOrderRequest": false,
+    "Language": null,
     "OrderIdClientUsage": "sub-10045",
-    "ClearingRedirectUrl": "https://pay.example-provider.co.il/page/abc123",
-    "Errors": []
+    "PaymentId": null,
+    "PaymentsNum": 0,
+    "Phone": "0501234567",
+    "Platform": null,
+    "Refund": false,
+    "ReturnUrl": "https://shop.example/subscribed",
+    "StandingOrderCallBackUrl": "https://shop.example/api/i4u-recurring",
+    "StandingOrderDuration": 12,
+    "StandingOrderFirstChargeAmount": 49,
+    "Sum": 99,
+    "TaxPercentage": null,
+    "Type": 0
   }
 }
 ```
+
+On Cardcom, `OpenInfo` → `ClearingTraceId` matches the `ClearingTraceId` of the setup callback. The standing order's ID arrives only in the [setup callback](#setup-callback-callbackurl).
 
 ## Charge schedule
 

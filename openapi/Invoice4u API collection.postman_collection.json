@@ -2644,7 +2644,7 @@
                 "ProcessApiRequestV2"
               ]
             },
-            "description": "**Scenario:** the customer wants to pay a single 100 ILS order in two parts – 60 ILS on a credit card and 40 ILS on Bit.\n\n**How to run:**\n1. Generate one GUID and use it as `OrderIdClientUsage` in **both** slices – replace `SHARED-ORDER-GUID-REPLACE-ME` with that GUID. This ties the slices together in the clearing log via `ClearingTraceId`.\n2. Send this request first (card slice, `Sum:60`, `IsDocCreate:false`).\n3. Duplicate the request, change `Sum` to `40`, add `\"IsBitPayment\": true`, and set `IsDocCreate:true` on that last slice so a single Invoice-Receipt is issued for the full 100 ILS.\n\n**Notes:**\n- Only one wallet flag per call – for a card slice, leave all `Is*Pay` flags out.\n- Each slice returns its own `PaymentId` / clearing log row. Use **🔍 Search Clearing Logs** with `OrderIdClientUsage` to reconcile.\n- If any slice fails, refund the successful ones via the ↩️ Refund request (same `OrderIdClientUsage`)."
+            "description": "**Scenario:** the customer wants to pay a single 100 ILS order in two parts – 60 ILS on a credit card and 40 ILS on Bit.\n\n**How to run:**\n1. Generate one GUID and use it as `OrderIdClientUsage` in **both** slices – replace `SHARED-ORDER-GUID-REPLACE-ME` with that GUID. This ties the slices together in the clearing log via `ClearingTraceId`.\n2. Send this request first (card slice, `Sum:60`, `IsDocCreate:false`).\n3. Duplicate the request, change `Sum` to `40`, add `\"IsBitPayment\": true`, and set `IsDocCreate:true` on that last slice so a single Invoice-Receipt is issued for the full 100 ILS.\n\n**Notes:**\n- Only one wallet flag per call – for a card slice, leave all `Is*Pay` flags out.\n- Each slice gets its own response (`OpenInfo` → `ClearingTraceId`, `I4UClearingLogId`), callback and clearing-log rows. Reconcile with the `PaymentId` from each callback — e.g. **🔍 Search Clearing Logs** by `PaymentId` (there is no `OrderIdClientUsage` filter).\n- If any slice fails, refund the successful ones via the ↩️ Refund request (same `OrderIdClientUsage`)."
           },
           "response": []
         },
@@ -2854,7 +2854,7 @@
                 "ProcessApiRequestV2"
               ]
             },
-            "description": "Reverses a charge. `PaymentId` is required for **every** refund, on every provider — replace `100200300` with the original charge's `PaymentId` (from the charge response, its callback, or a clearing-log lookup); an unknown `PaymentId` returns `PaymentIDDoesntExists` (60). If the original charge created a document, a credit invoice (InvoiceCredit) is issued automatically; otherwise issue one yourself via Create Document."
+            "description": "Reverses a charge. `PaymentId` is required for **every** refund, on every provider — replace `100200300` with the original charge's `PaymentId` — take it from the charge's callback (or the response row in your clearing logs), not from the hosted-page response, where Cardcom returns `\"0\"`; an unknown `PaymentId` returns `PaymentIDDoesntExists` (60). If the original charge created a document, a credit invoice (InvoiceCredit) is issued automatically; otherwise issue one yourself via Create Document."
           },
           "response": []
         },
