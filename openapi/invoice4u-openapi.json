@@ -2163,6 +2163,107 @@
         }
       }
     },
+    "/GetClearingAccount": {
+      "post": {
+        "tags": ["Clearing"],
+        "operationId": "GetClearingAccount",
+        "summary": "Get your clearing account",
+        "description": "Returns the clearing account (terminal) configured for the authenticated user: provider, active state and enabled features. The response contains the clearing provider credentials (UserName, Password, Terminal) in plain text — call it server-side only and never log or forward the raw response.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "token": { "type": "string", "description": "Authentication token (your API key)." }
+                }
+              },
+              "example": { "token": "<token>" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The clearing account. When no clearing account is configured, CompanyType is 0, every other field is null and Errors is empty. Auth failures return the object with Errors (UnauthorizedUser 80, ExpiredAccount 66).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "d": { "$ref": "#/components/schemas/ClearingAccount" } }
+                },
+                "examples": {
+                  "cardcom-tokens": {
+                    "summary": "Cardcom terminal with tokens enabled",
+                    "description": "Standing orders not enabled (ExpirationDateSO is the 2000-01-01 default). Values in <...> come from your account configuration.",
+                    "value": {
+                      "d": {
+                        "__type": "ClearingAccount:#Invoice.Common",
+                        "Errors": [],
+                        "Info": [],
+                        "OpenInfo": [],
+                        "RecaptchaToken": null,
+                        "CompanyType": 15,
+                        "DateCreated": null,
+                        "EmvTerminalNumber": null,
+                        "ExpirationDateSO": "/Date(946677600000+0200)/",
+                        "ExpirationDateToken": "/Date(1830290400000+0200)/",
+                        "IsActive": true,
+                        "IsApplePay": false,
+                        "IsBitService": true,
+                        "IsEMVService": false,
+                        "IsGooglePay": false,
+                        "IsNewApi": false,
+                        "IsStandingOrder": false,
+                        "IsToken": true,
+                        "Password": "<provider password>",
+                        "Terminal": "<terminal number>",
+                        "UpayType": 0,
+                        "UserID": 12345,
+                        "UserName": "<provider username>"
+                      }
+                    }
+                  },
+                  "invalid-token": {
+                    "summary": "Invalid token (verified on QA)",
+                    "value": {
+                      "d": {
+                        "__type": "ClearingAccount:#Invoice.Common",
+                        "Errors": [
+                          { "__type": "CommonError:#Invoice.Common", "Error": "UnauthorizedUser", "ID": 80, "Paramters": null }
+                        ],
+                        "Info": [],
+                        "OpenInfo": [],
+                        "RecaptchaToken": null,
+                        "CompanyType": 0,
+                        "DateCreated": null,
+                        "EmvTerminalNumber": null,
+                        "ExpirationDateSO": null,
+                        "ExpirationDateToken": null,
+                        "IsActive": null,
+                        "IsApplePay": null,
+                        "IsBitService": null,
+                        "IsEMVService": null,
+                        "IsGooglePay": null,
+                        "IsNewApi": null,
+                        "IsStandingOrder": null,
+                        "IsToken": null,
+                        "Password": null,
+                        "Terminal": null,
+                        "UpayType": 0,
+                        "UserID": 0,
+                        "UserName": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GetClearingLogById": {
       "post": {
         "tags": ["Clearing"],
@@ -4338,6 +4439,34 @@
               "DocumentNumber": { "type": "integer", "format": "int64", "readOnly": true, "description": "Not populated by ProcessApiRequestV2 (always 0). Use the callback's DocumentNumber, or GetDocument with DocumentId." },
               "CipherText": { "type": "string", "nullable": true, "readOnly": true, "description": "ChargeWithToken only: the created document's view cipher." },
               "CipherTextOriginal": { "type": "string", "nullable": true, "readOnly": true, "description": "ChargeWithToken only: the created document's original-copy cipher." }
+            }
+          }
+        ]
+      },
+      "ClearingAccount": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CommonObject" },
+          {
+            "type": "object",
+            "properties": {
+              "UserID": { "type": "integer", "description": "The Invoice4U user the clearing account belongs to." },
+              "CompanyType": { "type": "integer", "description": "ClearingCompanies enum: 6 UPay, 7 Meshulam, 15 Cardcom. 0 = no clearing account configured." },
+              "IsActive": { "type": "boolean", "nullable": true },
+              "UserName": { "type": "string", "nullable": true, "description": "Sensitive: clearing provider username." },
+              "Password": { "type": "string", "format": "password", "nullable": true, "description": "Sensitive: clearing provider password / API secret." },
+              "Terminal": { "type": "string", "nullable": true, "description": "Sensitive: clearing provider terminal number." },
+              "IsToken": { "type": "boolean", "nullable": true, "description": "Saved-card tokens enabled on the terminal." },
+              "ExpirationDateToken": { "type": "string", "nullable": true, "description": "Token feature expiry (WCF date). 2000-01-01 when not set." },
+              "IsStandingOrder": { "type": "boolean", "nullable": true, "description": "Standing orders enabled on the terminal." },
+              "ExpirationDateSO": { "type": "string", "nullable": true, "description": "Standing-order feature expiry (WCF date). 2000-01-01 when not set." },
+              "IsBitService": { "type": "boolean", "nullable": true, "description": "Bit enabled. Informational — not checked by ProcessApiRequestV2." },
+              "IsGooglePay": { "type": "boolean", "nullable": true },
+              "IsApplePay": { "type": "boolean", "nullable": true },
+              "IsEMVService": { "type": "boolean", "nullable": true, "description": "Internal. EMV (physical card reader) setting." },
+              "EmvTerminalNumber": { "type": "string", "nullable": true, "description": "Internal. EMV terminal number." },
+              "IsNewApi": { "type": "boolean", "nullable": true, "description": "Internal." },
+              "DateCreated": { "type": "string", "nullable": true, "description": "Not populated by GetClearingAccount (always null)." },
+              "UpayType": { "type": "integer", "description": "Not populated by GetClearingAccount (always 0)." }
             }
           }
         ]

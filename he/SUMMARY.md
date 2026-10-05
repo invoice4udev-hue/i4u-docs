@@ -45,6 +45,7 @@
 ## סליקה ותשלומים (Clearing Payments)
 
 * [סקירת מתודות סליקה](clearing/overview.md)
+* [שליפת חשבון הסליקה](clearing/get-clearing-account.md)
 * [ביצוע בקשת סליקה (גרסה 2)](clearing/process-api-request-v2.md)
 * [אמצעי תשלום חלופיים](clearing/alternative-payment-methods.md)
 * [טוקנים (כרטיסים שמורים)](clearing/tokens-and-standing-orders.md)

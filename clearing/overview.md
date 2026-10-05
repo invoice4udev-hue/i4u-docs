@@ -57,6 +57,7 @@ flowchart LR
 | Standing order (recurring) | `IsStandingOrderClearance` | [Standing Orders (Recurring Charges)](standing-orders.md) |
 | Refund | `Refund` | [Process a Clearing Request (V2)](process-api-request-v2.md#refunds) |
 | Query charge history | — | [Clearing Logs](clearing-logs.md) |
+| Check your clearing account & enabled features | — | [Get Your Clearing Account](get-clearing-account.md) |
 
 {% hint style="warning" %}
 `ProcessApiRequest` (V1) and the `ProcessApiRequestFullContents*` GET variants still work but are **legacy**. New integrations should use `ProcessApiRequestV2` only.
@@ -64,6 +65,6 @@ flowchart LR
 
 ### Prerequisites
 
-* A clearing account configured and active on your organization (set up in the Invoice4U web application).
+* A clearing account configured and active on your organization (set up in the Invoice4U web application). Check it with [`GetClearingAccount`](get-clearing-account.md).
 * For tokens / standing orders: the token / standing-order feature enabled on your clearing terminal (`ApiTokenizationNotApprovedInClearingTerminal` 309 / `ApiStandingOrderNotApprovedInClearingTerminal` 310 otherwise).
 * For Bit / Google Pay / Apple Pay: see [Bit, Google Pay & Apple Pay](alternative-payment-methods.md) — wallet methods need account enablement and vendor support.

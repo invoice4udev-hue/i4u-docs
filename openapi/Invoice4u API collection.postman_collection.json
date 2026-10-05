@@ -2859,6 +2859,41 @@
           "response": []
         },
         {
+          "name": "🔍 Get Clearing Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"token\": \"{{Invoice4u_ApiKey}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/Services/ApiService.svc/GetClearingAccount",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "Services",
+                "ApiService.svc",
+                "GetClearingAccount"
+              ]
+            },
+            "description": "Returns your clearing account: provider (`CompanyType`: 6 UPay, 7 Meshulam, 15 Cardcom, 0 = none configured), `IsActive`, and enabled features (`IsToken`/`ExpirationDateToken`, `IsStandingOrder`/`ExpirationDateSO`, `IsGooglePay`, `IsApplePay`). ⚠️ The response contains the provider `UserName`, `Password` and `Terminal` in plain text — call it server-side only and don't log or share the response."
+          },
+          "response": []
+        },
+        {
           "name": "🔍 Get Clearing Log by ID",
           "request": {
             "method": "POST",
