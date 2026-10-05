@@ -49,6 +49,7 @@ flowchart LR
 | ‫הוראת קבע (חיוב חוזר)‬ | `IsStandingOrderClearance` | ‫[הוראות קבע (חיובים חוזרים)](standing-orders.md)‬ |
 | ‫זיכוי‬ | `Refund` | ‫[ביצוע בקשת סליקה (V2)](process-api-request-v2.md#refunds)‬ |
 | ‫שאילתת היסטוריית חיובים‬ | — | ‫[לוגי סליקה](clearing-logs.md)‬ |
+| ‫בדיקת חשבון הסליקה והפיצ'רים המופעלים‬ | — | ‫[שליפת חשבון הסליקה](get-clearing-account.md)‬ |
 
 {% hint style="warning" %}
 ‫`ProcessApiRequest` (V1) ווריאציות ה-GET ‏`ProcessApiRequestFullContents*` עדיין עובדות אך הן **legacy**. אינטגרציות חדשות צריכות להשתמש ב-`ProcessApiRequestV2` בלבד.‬
@@ -56,6 +57,6 @@ flowchart LR
 
 ### ‫דרישות מוקדמות‬
 
-* ‫חשבון סליקה מוגדר ופעיל בארגון שלכם (מוגדר באפליקציית האינטרנט של Invoice4U).‬
+* ‫חשבון סליקה מוגדר ופעיל בארגון שלכם (מוגדר באפליקציית האינטרנט של Invoice4U). בדקו אותו עם [`GetClearingAccount`](get-clearing-account.md).‬
 * ‫לטוקנים / הוראות קבע: פיצ'ר הטוקן / הוראת הקבע מופעל על מסוף הסליקה שלכם (אחרת `ApiTokenizationNotApprovedInClearingTerminal` ‏309 / `ApiStandingOrderNotApprovedInClearingTerminal` ‏310).‬
 * ‫לביט / Google Pay / Apple Pay: ראו [ביט, Google Pay ו-Apple Pay](alternative-payment-methods.md) — אמצעי ארנק דורשים הפעלה בחשבון ותמיכת ספק.‬

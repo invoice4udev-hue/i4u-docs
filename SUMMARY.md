@@ -46,6 +46,7 @@
 ## Clearing (Payments)
 
 * [Clearing Endpoints Overview](clearing/overview.md)
+* [Get Your Clearing Account](clearing/get-clearing-account.md)
 * [Process a Clearing Request (V2)](clearing/process-api-request-v2.md)
 * [Bit, Google Pay & Apple Pay](clearing/alternative-payment-methods.md)
 * [Saved-Card Tokens](clearing/tokens-and-standing-orders.md)
