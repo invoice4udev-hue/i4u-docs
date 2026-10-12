@@ -31,7 +31,7 @@
 
 ### ‫סליקה‬
 
-* ‫תהליך דף הסליקה המתארח הוא **אסינכרוני**: `ProcessApiRequestV2` מחזיר `ClearingRedirectUrl`; תוצאת החיוב מגיעה ל-`CallBackUrl` שלכם.‬
+* ‫תהליך דף הסליקה המתארח הוא **אסינכרוני**: `ProcessApiRequestV2` מחזיר `ClearingRedirectUrl`; תוצאת החיוב מגיעה ל-`CallBackUrl` שלכם. הקולבק לא חתום ונשלח פעם אחת בלי ניסיונות חוזרים — אמתו אותו מול ה-API והריצו התאמה לקולבקים שפוספסו (ראו [קולבק תשלום](../clearing/callbacks-and-verification.md)).‬
 * ‫חיוב בטוקן (`ChargeWithToken`) וזיכויים הם **סינכרוניים** — התוצאה חוזרת בתשובה.‬
 * ‫קבעו `IsQaMode: true` בבדיקות מול סביבת QA.‬
 * ‫שמרו את ה-`PaymentId` מחיובים מוצלחים — תצטרכו אותו ל[זיכויים](../clearing/process-api-request-v2.md#refunds).‬

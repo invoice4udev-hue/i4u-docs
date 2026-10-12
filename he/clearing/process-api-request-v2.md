@@ -91,7 +91,7 @@ flowchart LR
 | ‫שדה‬ | ‫טיפוס‬ | ‫חובה‬ | ‫תיאור‬ |
 | --- | ----- | ---- | ----- |
 | `ReturnUrl` | string | ‫דף מתארח‬ | ‫לאן הלקוח מופנה לאחר התשלום.‬ |
-| `CallBackUrl` | string | ‫מומלץ‬ | ‫כתובת התראה שרת-לשרת.‬ |
+| `CallBackUrl` | string | ‫מומלץ‬ | ‫כתובת התראה שרת-לשרת. נשלחת פעם אחת, לא חתומה, בלי ניסיונות חוזרים — ראו [קולבק תשלום](callbacks-and-verification.md).‬ |
 
 ### ‫יצירת מסמך‬
 
@@ -370,7 +370,7 @@ Content-Type: application/json
 | `DocumentNumber` / `DocumentId` / `CipherText` / `CipherTextOriginal` | ‫מזהי המסמך שנוצר וציפרי הצפייה המקודדים ב-URL (בנו קישורי צפייה לפי [יצירת מסמך](../documents/create-document.md)).‬ |
 
 {% hint style="info" %}
-‫אמתו את הקולבק על ידי חיפוש `PaymentId` / `ClearingTraceId` ב[לוגי הסליקה](clearing-logs.md) שלכם לפני מימוש ההזמנה. אם לא מתקבל קולבק, התייחסו לתשלום כאילו לא הושלם — ייתכן שהלקוח נטש את הדף.‬
+‫הקולבק **אינו חתום** ונשלח **פעם אחת, בלי ניסיונות חוזרים**. אמתו אותו על ידי חיפוש `PaymentId` / `ClearingTraceId` ב[לוגי הסליקה](clearing-logs.md) שלכם לפני מימוש ההזמנה, והריצו התאמה להזמנות שהקולבק שלהן לא הגיע — היעדר קולבק לא מוכיח שהלקוח לא שילם. מדריך מלא: [קולבק תשלום: אימות, אישור הזמנה והתאמה](callbacks-and-verification.md).‬
 {% endhint %}
 
 ## ‫זיכויים‬ {#refunds}

@@ -31,7 +31,7 @@ Practical notes that save integration time. Read this before going live.
 
 ### Clearing
 
-* The hosted-page flow is **asynchronous**: `ProcessApiRequestV2` returns `ClearingRedirectUrl`; the actual charge result arrives at your `CallBackUrl`.
+* The hosted-page flow is **asynchronous**: `ProcessApiRequestV2` returns `ClearingRedirectUrl`; the actual charge result arrives at your `CallBackUrl`. The callback is unsigned and sent once with no retries — verify it via the API and reconcile missed ones (see [Payment Callbacks](../clearing/callbacks-and-verification.md)).
 * Token charges (`ChargeWithToken`) and refunds are **synchronous** — result in the response.
 * Set `IsQaMode: true` when testing on QA.
 * Keep the `PaymentId` from successful charges — you need it for [refunds](../clearing/process-api-request-v2.md#refunds).

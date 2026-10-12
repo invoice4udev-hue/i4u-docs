@@ -91,7 +91,7 @@ Bit / Google Pay / Apple Pay charges use the `IsBitPayment` / `IsGooglePay` / `I
 | Field | Type | Required | Description |
 | ----- | ---- | -------- | ----------- |
 | `ReturnUrl` | string | Hosted page | Where the customer is redirected after payment. |
-| `CallBackUrl` | string | Recommended | Server-to-server notification URL. |
+| `CallBackUrl` | string | Recommended | Server-to-server notification URL. Sent once, unsigned, no retries — see [Payment Callbacks](callbacks-and-verification.md). |
 
 ### Document creation
 
@@ -370,7 +370,7 @@ After the customer completes the hosted page, Invoice4U POSTs the result to your
 | `DocumentNumber` / `DocumentId` / `CipherText` / `CipherTextOriginal` | Created document identifiers and URL-encoded view ciphers (build view links per [Create Document](../documents/create-document.md)). |
 
 {% hint style="info" %}
-Validate the callback by looking up `PaymentId` / `ClearingTraceId` in your [clearing logs](clearing-logs.md) before fulfilling the order. If no callback arrives, treat the payment as not completed — the customer may have abandoned the page.
+The callback is **not signed** and is sent **once, with no retries**. Validate it by looking up `PaymentId` / `ClearingTraceId` in your [clearing logs](clearing-logs.md) before fulfilling the order, and reconcile orders whose callback never arrived — a missing callback doesn't prove the customer didn't pay. Full guide: [Payment Callbacks: Verify, Confirm & Reconcile](callbacks-and-verification.md).
 {% endhint %}
 
 ## Refunds

@@ -102,7 +102,7 @@
 
 ‫לוג השייך לארגון אחר נדחה עם `ApiUnauthorizedAccessForEntityNotBelongingToUser` (322) — ראו [שגיאות](#errors) לגבי האופן שבו שגיאות מגיעות כרגע.‬
 
-## ‫חיפוש — `GetClearingLogByParams`‬
+## ‫חיפוש — `GetClearingLogByParams`‬ {#search-getclearinglogbyparams}
 
 | | |
 | - | - |
